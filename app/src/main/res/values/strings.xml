@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Moveis!</string>
+
+
+    <!-- Place Holders -->
+    <string name="card_view_place_holder">Card View Place Holder</string>
+
+
+    <!-- Messages -->
+    <string name="fragment_loading_successful">Fragment loading successful</string>
+    <string name="fragment_loading_unsuccessful">Fragment loading unsuccessful</string>
+
+</resources>
