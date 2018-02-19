@@ -10,4 +10,31 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="CollapsingTextAppearance" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+    <style name="CollapsingTextAppearance.Inverse" >
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="ToolBarWithNavigationBack">
+        <item name="navigationIcon">@drawable/ic_back</item>
+    </style>
+
+    <style name="TextComponent"/>
+
+    <style name="TextComponent.ItemRow">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+    <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
+    <style name="TextAppearance.Header">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">?colorAccent</item>
+    </style>
+
 </resources>
