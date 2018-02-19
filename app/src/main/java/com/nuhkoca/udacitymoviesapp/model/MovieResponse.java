@@ -3,6 +3,7 @@ package com.nuhkoca.udacitymoviesapp.model;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.nuhkoca.udacitymoviesapp.BR;
 
@@ -13,13 +14,16 @@ import java.util.List;
  */
 
 public class MovieResponse extends BaseObservable {
-
+    @Expose
     @SerializedName("page")
     private String page;
+    @Expose
     @SerializedName("total_results")
     private String totalResults;
+    @Expose
     @SerializedName("total_pages")
     private String totalPages;
+    @Expose
     @SerializedName("results")
     private List<Result> results;
 

@@ -23,6 +23,7 @@ import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
 public class PopularMovieFragment extends Fragment implements MovieView {
 
     private FragmentPopularMovieBinding mFragmentPopularMovieBinding;
+    private static final int SPAN_COUNT = 2;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -38,7 +39,7 @@ public class PopularMovieFragment extends Fragment implements MovieView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mFragmentPopularMovieBinding.rvMovies.setHasFixedSize(true);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
         mFragmentPopularMovieBinding.rvMovies.setLayoutManager(gridLayoutManager);
 
         MovieAdapter mMovieAdapter = new MovieAdapter();

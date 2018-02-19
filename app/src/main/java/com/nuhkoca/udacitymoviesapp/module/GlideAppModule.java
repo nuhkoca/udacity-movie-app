@@ -54,7 +54,7 @@ public class GlideAppModule extends AppGlideModule {
         builder.build(context);
     }
 
-    private static RequestOptions requestOptions(Context context) {
+    private RequestOptions requestOptions(Context context) {
         return new RequestOptions()
                 .signature(new ObjectKey(
                         System.currentTimeMillis() / (24 * 60 * 60 * 1000)))

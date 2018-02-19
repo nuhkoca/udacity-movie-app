@@ -53,6 +53,12 @@ public class FragmentReplacer {
         return mFragmentManager.getBackStackEntryCount();
     }
 
+    public void removeFragmentsFromBackstack() {
+        for (int i = 0; i < mFragmentManager.getBackStackEntryCount(); i++) {
+            mFragmentManager.popBackStack();
+        }
+    }
+
     private void toastSuccess() {
         if (getBackStackEntryCount() > -1) {
             Timber.d(context.getString(R.string.fragment_loading_successful));

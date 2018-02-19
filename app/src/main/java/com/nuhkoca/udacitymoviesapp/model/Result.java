@@ -3,6 +3,8 @@ package com.nuhkoca.udacitymoviesapp.model;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.android.databinding.library.baseAdapters.BR;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -12,32 +14,46 @@ import java.util.List;
  */
 
 public class Result extends BaseObservable {
+    @Expose
     @SerializedName("vote_count")
     private int voteCount;
+    @Expose
     @SerializedName("id")
     private int id;
+    @Expose
     @SerializedName("video")
     private boolean video;
+    @Expose
     @SerializedName("vote_average")
     private float voteAverage;
+    @Expose
     @SerializedName("title")
     private String title;
+    @Expose
     @SerializedName("popularity")
     private float popularity;
+    @Expose
     @SerializedName("poster_path")
     private String posterPath;
+    @Expose
     @SerializedName("original_language")
     private String originalLanguage;
+    @Expose
     @SerializedName("original_title")
     private String originalTitle;
+    @Expose
     @SerializedName("genres_ids")
     private List<Integer> genreIds;
+    @Expose
     @SerializedName("backdrop_path")
     private String backdropPath;
+    @Expose
     @SerializedName("adult")
     private boolean adult;
+    @Expose
     @SerializedName("overview")
     private String overview;
+    @Expose
     @SerializedName("release_date")
     private String releaseDate;
 
@@ -49,6 +65,7 @@ public class Result extends BaseObservable {
 
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
+        notifyPropertyChanged(BR.voteCount);
     }
 
     @Bindable
@@ -58,6 +75,7 @@ public class Result extends BaseObservable {
 
     public void setId(int id) {
         this.id = id;
+        notifyPropertyChanged(BR.id);
     }
 
     @Bindable
@@ -67,6 +85,7 @@ public class Result extends BaseObservable {
 
     public void setVideo(boolean video) {
         this.video = video;
+        notifyPropertyChanged(BR.video);
     }
 
     @Bindable
@@ -76,6 +95,7 @@ public class Result extends BaseObservable {
 
     public void setVoteAverage(float voteAverage) {
         this.voteAverage = voteAverage;
+        notifyPropertyChanged(BR.voteAverage);
     }
 
     @Bindable
@@ -85,6 +105,7 @@ public class Result extends BaseObservable {
 
     public void setTitle(String title) {
         this.title = title;
+        notifyPropertyChanged(BR.title);
     }
 
     @Bindable
@@ -94,6 +115,7 @@ public class Result extends BaseObservable {
 
     public void setPopularity(float popularity) {
         this.popularity = popularity;
+        notifyPropertyChanged(BR.popularity);
     }
 
     @Bindable
@@ -103,6 +125,7 @@ public class Result extends BaseObservable {
 
     public void setPosterPath(String posterPath) {
         this.posterPath = posterPath;
+        notifyPropertyChanged(BR.posterPath);
     }
 
     @Bindable
@@ -112,6 +135,7 @@ public class Result extends BaseObservable {
 
     public void setOriginalLanguage(String originalLanguage) {
         this.originalLanguage = originalLanguage;
+        notifyPropertyChanged(BR.originalLanguage);
     }
 
     @Bindable
@@ -121,6 +145,7 @@ public class Result extends BaseObservable {
 
     public void setOriginalTitle(String originalTitle) {
         this.originalTitle = originalTitle;
+        notifyPropertyChanged(BR.originalTitle);
     }
 
     @Bindable
@@ -130,6 +155,7 @@ public class Result extends BaseObservable {
 
     public void setGenreIds(List<Integer> genreIds) {
         this.genreIds = genreIds;
+        notifyPropertyChanged(BR.genreIds);
     }
 
     @Bindable
@@ -139,6 +165,7 @@ public class Result extends BaseObservable {
 
     public void setBackdropPath(String backdropPath) {
         this.backdropPath = backdropPath;
+        notifyPropertyChanged(BR.backdropPath);
     }
 
     @Bindable
@@ -148,6 +175,7 @@ public class Result extends BaseObservable {
 
     public void setAdult(boolean adult) {
         this.adult = adult;
+        notifyPropertyChanged(BR.adult);
     }
 
     @Bindable
@@ -157,6 +185,7 @@ public class Result extends BaseObservable {
 
     public void setOverview(String overview) {
         this.overview = overview;
+        notifyPropertyChanged(BR.overview);
     }
 
     @Bindable
@@ -166,5 +195,6 @@ public class Result extends BaseObservable {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+        notifyPropertyChanged(BR.releaseDate);
     }
 }
