@@ -3,6 +3,7 @@ package com.nuhkoca.udacitymoviesapp.presenter.movie;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.callback.RecyclerViewItemTouchListener;
@@ -87,7 +88,7 @@ public class PopularMoviePresenterImpl implements MoviePresenter, RecyclerViewIt
     }
 
     @Override
-    public void onItemTouched(Result result) {
-
+    public void onItemTouched(Result result, ImageView imageView) {
+       mMovieView.onActivityOpened(result, imageView);
     }
 }

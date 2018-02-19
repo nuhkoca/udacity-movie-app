@@ -1,5 +1,7 @@
 package com.nuhkoca.udacitymoviesapp.callback;
 
+import android.widget.ImageView;
+
 import com.nuhkoca.udacitymoviesapp.model.Result;
 
 /**
@@ -7,5 +9,5 @@ import com.nuhkoca.udacitymoviesapp.model.Result;
  */
 
 public interface RecyclerViewItemTouchListener {
-    void onItemTouched(Result result);
+    void onItemTouched(Result result, ImageView imageView);
 }

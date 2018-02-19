@@ -1,12 +1,12 @@
-package com.nuhkoca.udacitymoviesapp.presenter.activity;
+package com.nuhkoca.udacitymoviesapp.presenter.main;
 
 import android.content.Context;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
 import com.nuhkoca.udacitymoviesapp.utils.FragmentReplacer;
-import com.nuhkoca.udacitymoviesapp.view.activity.MovieActivity;
-import com.nuhkoca.udacitymoviesapp.view.activity.MovieActivityView;
+import com.nuhkoca.udacitymoviesapp.view.main.MovieActivity;
+import com.nuhkoca.udacitymoviesapp.view.main.MovieActivityView;
 import com.nuhkoca.udacitymoviesapp.view.movie.PopularMovieFragment;
 
 /**

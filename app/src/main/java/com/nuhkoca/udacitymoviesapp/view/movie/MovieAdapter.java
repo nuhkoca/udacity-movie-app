@@ -75,7 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         void bindView(Result result) {
             mMovieListItemCardBinding.setVariable(BR.result, result);
-            mMovieListItemCardBinding.setVariable(BR.listener, mRecyclerViewItemTouchListener);
+            mMovieListItemCardBinding.setVariable(BR.touchListener, mRecyclerViewItemTouchListener);
 
             ViewCompat.setTransitionName(mMovieListItemCardBinding.ivMoviePoster,
                     "movie-poster" + getAdapterPosition());

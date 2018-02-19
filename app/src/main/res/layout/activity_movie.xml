@@ -6,9 +6,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.nuhkoca.udacitymoviesapp.view.activity.MovieActivity">
+        tools:context="com.nuhkoca.udacitymoviesapp.view.main.MovieActivity">
 
-    <include android:id="@+id/lMovieToolbar" layout="@layout/toolbar" />
+    <include android:id="@+id/lMovieToolbar"
+                     layout="@layout/toolbar" />
 
     <FrameLayout
         android:id="@+id/flFragmentHolder"

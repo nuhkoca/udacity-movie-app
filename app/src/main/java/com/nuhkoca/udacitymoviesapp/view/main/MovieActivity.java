@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.view.activity;
+package com.nuhkoca.udacitymoviesapp.view.main;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -8,8 +8,8 @@ import android.view.View;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieBinding;
-import com.nuhkoca.udacitymoviesapp.presenter.activity.MovieActivityPresenter;
-import com.nuhkoca.udacitymoviesapp.presenter.activity.MovieActivityPresenterImpl;
+import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenter;
+import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.FragmentReplacer;
 
 import timber.log.Timber;

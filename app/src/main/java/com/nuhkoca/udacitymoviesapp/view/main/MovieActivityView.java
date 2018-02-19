@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.view.activity;
+package com.nuhkoca.udacitymoviesapp.view.main;
 
 import com.nuhkoca.udacitymoviesapp.utils.FragmentReplacer;
 

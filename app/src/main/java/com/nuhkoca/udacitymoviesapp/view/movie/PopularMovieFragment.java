@@ -8,13 +8,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentPopularMovieBinding;
+import com.nuhkoca.udacitymoviesapp.model.Result;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.PopularMoviePresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
+
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,5 +53,10 @@ public class PopularMovieFragment extends Fragment implements MovieView {
     @Override
     public void onLoadingError(String message) {
         SnackbarPopper.pop(mFragmentPopularMovieBinding.flPopularMovie, message);
+    }
+
+    @Override
+    public void onActivityOpened(Result result, ImageView imageView) {
+        
     }
 }
