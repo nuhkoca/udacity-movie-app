@@ -1,0 +1,11 @@
+package com.nuhkoca.udacitymoviesapp.callback;
+
+import com.nuhkoca.udacitymoviesapp.model.Result;
+
+/**
+ * Created by nuhkoca on 2/19/18.
+ */
+
+public interface RecyclerViewItemTouchListener {
+    void onItemTouched(Result result);
+}

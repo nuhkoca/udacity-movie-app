@@ -1,11 +1,14 @@
 package com.nuhkoca.udacitymoviesapp.presenter.movie;
 
-import com.nuhkoca.udacitymoviesapp.view.movie.MovieAdapter;
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 
 /**
  * Created by nuhkoca on 2/16/18.
  */
 
 public interface MoviePresenter {
-    void loadMovies(MovieAdapter movieAdapter, String apiKey, int pageId);
+    void prepareUI(RecyclerView rvMovie);
+
+    void loadMovies(Context context, String apiKey, int pageId);
 }

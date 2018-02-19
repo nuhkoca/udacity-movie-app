@@ -1,12 +1,10 @@
 package com.nuhkoca.udacitymoviesapp.view.movie;
 
-
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,8 @@ import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentPopularMovieBinding;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
-import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
+import com.nuhkoca.udacitymoviesapp.presenter.movie.PopularMoviePresenterImpl;
+import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +22,6 @@ import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
 public class PopularMovieFragment extends Fragment implements MovieView {
 
     private FragmentPopularMovieBinding mFragmentPopularMovieBinding;
-    private static final int SPAN_COUNT = 2;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -37,25 +35,19 @@ public class PopularMovieFragment extends Fragment implements MovieView {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mFragmentPopularMovieBinding.rvMovies.setHasFixedSize(true);
+        MoviePresenter mMoviePresenter = new PopularMoviePresenterImpl(this);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
-        mFragmentPopularMovieBinding.rvMovies.setLayoutManager(gridLayoutManager);
-
-        MovieAdapter mMovieAdapter = new MovieAdapter();
-        mFragmentPopularMovieBinding.rvMovies.setAdapter(mMovieAdapter);
-
-        MoviePresenter mMoviePresenter = new MoviePresenterImpl(this);
-        mMoviePresenter.loadMovies(mMovieAdapter, BuildConfig.APIKEY, 1);
+        mMoviePresenter.prepareUI(mFragmentPopularMovieBinding.rvPopularMovie);
+        mMoviePresenter.loadMovies(getActivity(), BuildConfig.APIKEY, 1);
     }
 
     @Override
-    public void onLoadingCompleted() {
-
+    public void onLoadingCompleted(String message) {
+        SnackbarPopper.pop(mFragmentPopularMovieBinding.flPopularMovie, message);
     }
 
     @Override
-    public void onLoadingError() {
-
+    public void onLoadingError(String message) {
+        SnackbarPopper.pop(mFragmentPopularMovieBinding.flPopularMovie, message);
     }
 }

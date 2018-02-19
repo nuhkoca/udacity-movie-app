@@ -1,6 +1,13 @@
 package com.nuhkoca.udacitymoviesapp.presenter.movie;
 
+import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.RecyclerViewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.model.MovieResponse;
+import com.nuhkoca.udacitymoviesapp.model.Result;
 import com.nuhkoca.udacitymoviesapp.networking.ObservableHelper;
 import com.nuhkoca.udacitymoviesapp.networking.RetrofitInterceptor;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieAdapter;
@@ -18,16 +25,30 @@ import timber.log.Timber;
  * Created by nuhkoca on 2/16/18.
  */
 
-public class MoviePresenterImpl implements MoviePresenter {
+public class PopularMoviePresenterImpl implements MoviePresenter, RecyclerViewItemTouchListener {
 
     private MovieView mMovieView;
+    private static final int SPAN_COUNT = 2;
+    private MovieAdapter mMovieAdapter;
 
-    public MoviePresenterImpl(MovieView mMovieView) {
+    public PopularMoviePresenterImpl(MovieView mMovieView) {
         this.mMovieView = mMovieView;
+        mMovieAdapter = new MovieAdapter(this);
     }
 
     @Override
-    public void loadMovies(final MovieAdapter movieAdapter, String apiKey, int pageId) {
+    public void prepareUI(RecyclerView rvMovie) {
+        rvMovie.setNestedScrollingEnabled(false);
+        rvMovie.setHasFixedSize(true);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(rvMovie.getContext(), SPAN_COUNT, 1, false);
+        rvMovie.setLayoutManager(gridLayoutManager);
+
+        rvMovie.setAdapter(mMovieAdapter);
+    }
+
+    @Override
+    public void loadMovies(final Context context, String apiKey, int pageId) {
         final Retrofit retrofit = RetrofitInterceptor.build();
 
         final Observable<MovieResponse> getMovies = ObservableHelper.getPopularMovies(retrofit, apiKey, pageId);
@@ -52,15 +73,21 @@ public class MoviePresenterImpl implements MoviePresenter {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e.getMessage());
-                        mMovieView.onLoadingError();
+                        mMovieView.onLoadingError(context.getString(R.string.data_not_loaded_successfully));
                     }
 
                     @Override
                     public void onNext(MovieResponse movieResponse) {
+                        mMovieAdapter.swapData(movieResponse.getResults());
+                        mMovieAdapter.notifyDataSetChanged();
 
-                        movieAdapter.swapData(movieResponse.getResults());
-                        mMovieView.onLoadingCompleted();
+                        mMovieView.onLoadingCompleted(context.getString(R.string.data_loaded_successfully));
                     }
                 });
+    }
+
+    @Override
+    public void onItemTouched(Result result) {
+
     }
 }

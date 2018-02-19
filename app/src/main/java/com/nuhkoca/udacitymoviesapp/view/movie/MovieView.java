@@ -5,7 +5,7 @@ package com.nuhkoca.udacitymoviesapp.view.movie;
  */
 
 public interface MovieView {
-    void onLoadingCompleted();
+    void onLoadingCompleted(String message);
 
-    void onLoadingError();
+    void onLoadingError(String message);
 }

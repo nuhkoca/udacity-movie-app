@@ -10,4 +10,6 @@ public interface MovieActivityView {
     void onFragmentLoadingCompleted(FragmentReplacer fragmentReplacer);
 
     void onFragmentLoadingFailed(String message);
+
+    void onNextLoaded(FragmentReplacer fragmentReplacer);
 }

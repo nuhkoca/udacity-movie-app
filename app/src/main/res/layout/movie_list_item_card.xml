@@ -7,13 +7,17 @@
         <variable
             name="movieResponse"
             type="com.nuhkoca.udacitymoviesapp.model.MovieResponse" />
+        <variable
+            name="listener"
+            type="com.nuhkoca.udacitymoviesapp.callback.RecyclerViewItemTouchListener" />
     </data>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cvMovie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="@dimen/dimension_4dp">
+        app:cardCornerRadius="0dp"
+        android:shape="rectangle">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,10 +38,12 @@
                     android:layout_centerInParent="true"/>
 
                 <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/ivMoviePoster"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/card_view_place_holder"
+                    android:scaleType="centerCrop"
                     android:src="@{result.posterPath}"
                     app:progressBar="@{pbMovie}"
                     app:floor="@{cvMovie}"
@@ -57,11 +63,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:gravity="start"
                 android:lineSpacingExtra="8dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:maxLines="1"
                 android:layout_marginStart="@dimen/dimension_28dp"
                 android:layout_marginEnd="@dimen/dimension_8dp"
-                android:layout_marginTop="@dimen/dimension_8dp"/>
+                android:layout_marginTop="@dimen/dimension_12dp"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMovieLanguage"
@@ -70,13 +76,13 @@
                 android:layout_gravity="start"
                 android:textStyle="normal"
                 android:fontFamily="sans-serif"
-                android:text="@{result.originalLanguage}"
+                android:text="@{Float.toString(result.voteAverage)}"
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:gravity="center"
                 android:maxLines="1"
                 android:lineSpacingExtra="@dimen/dimension_8dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:layout_marginStart="@dimen/dimension_28dp"
                 android:layout_marginEnd="@dimen/dimension_8dp"
                 android:layout_marginBottom="@dimen/dimension_16dp"/>

@@ -43,7 +43,7 @@ public class Result extends BaseObservable {
     private String originalTitle;
     @Expose
     @SerializedName("genres_ids")
-    private List<Integer> genreIds;
+    private List<Genres> genreIds;
     @Expose
     @SerializedName("backdrop_path")
     private String backdropPath;
@@ -149,11 +149,11 @@ public class Result extends BaseObservable {
     }
 
     @Bindable
-    public List<Integer> getGenreIds() {
+    public List<Genres> getGenreIds() {
         return genreIds;
     }
 
-    public void setGenreIds(List<Integer> genreIds) {
+    public void setGenreIds(List<Genres> genreIds) {
         this.genreIds = genreIds;
         notifyPropertyChanged(BR.genreIds);
     }

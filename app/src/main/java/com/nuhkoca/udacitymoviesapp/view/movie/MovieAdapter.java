@@ -2,6 +2,7 @@ package com.nuhkoca.udacitymoviesapp.view.movie;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.nuhkoca.udacitymoviesapp.BR;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.RecyclerViewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.MovieListItemCardBinding;
 import com.nuhkoca.udacitymoviesapp.model.Result;
 
@@ -22,8 +24,10 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private List<Result> mResults;
+    private RecyclerViewItemTouchListener mRecyclerViewItemTouchListener;
 
-    MovieAdapter() {
+    public MovieAdapter(RecyclerViewItemTouchListener recyclerViewItemTouchListener) {
+        this.mRecyclerViewItemTouchListener = recyclerViewItemTouchListener;
         this.mResults = new ArrayList<>();
     }
 
@@ -71,6 +75,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         void bindView(Result result) {
             mMovieListItemCardBinding.setVariable(BR.result, result);
+            mMovieListItemCardBinding.setVariable(BR.listener, mRecyclerViewItemTouchListener);
+
+            ViewCompat.setTransitionName(mMovieListItemCardBinding.ivMoviePoster,
+                    "movie-poster" + getAdapterPosition());
+
             mMovieListItemCardBinding.executePendingBindings();
         }
     }
