@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/annonce.main.coordinator"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/clMovieDetail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="RtlHardcoded">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/flexible.example.appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/flexible.example.collapsing"
+            android:id="@+id/ctlMovieDetail"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             app:expandedTitleMarginBottom="94dp"
@@ -25,19 +23,19 @@
             app:contentScrim="?colorPrimary">
 
             <ImageView
-                android:layout_width="fill_parent"
+                android:id="@+id/ivMovieDetail"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:tint="#BB3E50B4"
+                android:tint="@color/detailTint"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/image_place_holder" />
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/flexible.example.toolbar"
+                android:id="@+id/toolbarDetail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@null"
-                app:layout_collapseMode="pin"
-                style="@style/ToolBarWithNavigationBack" />
+                app:layout_collapseMode="pin" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -55,7 +53,7 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/flexible.example.cardview"
+                android:id="@+id/cvMovieDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentPaddingBottom="16dp"
@@ -90,14 +88,19 @@
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/flexible.example.fab"
+        android:id="@+id/fabMovieDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="32dp"
-        android:elevation="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginRight="@dimen/dimension_32dp"
+        android:elevation="@dimen/dimension_8dp"
         android:src="@drawable/ic_favorite"
-        app:layout_anchor="@id/flexible.example.cardview"
+        app:layout_anchor="@id/cvMovieDetail"
         app:layout_anchorGravity="top|right|end"
-        tools:ignore="RtlHardcoded"
-        />
+        tools:ignore="RtlHardcoded" />
+
 </android.support.design.widget.CoordinatorLayout>
+</layout>

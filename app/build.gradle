@@ -12,6 +12,7 @@ android {
 
         buildConfigField "String", "BASEURL", BASE_URL
         buildConfigField "String", "APIKEY", API_KEY
+        buildConfigField "String", "IMAGEURLPREFIX", IMAGE_URL_PREFIX
     }
 
     buildTypes {

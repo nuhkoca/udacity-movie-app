@@ -44,7 +44,7 @@ public class MovieActivityPresenterImpl implements MovieActivityPresenter {
         boolean isConnected = ConnectionSniffer.sniff(context);
 
         if (isConnected) {
-            mFragmentReplacer.replaceFragment(new MovieActivity().getInstance(), R.id.flFragmentHolder, new PopularMovieFragment());
+            mFragmentReplacer.replaceFragment(R.id.flFragmentHolder, new PopularMovieFragment());
         }
     }
 }

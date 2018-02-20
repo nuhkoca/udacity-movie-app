@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
         android:shape="rectangle"
+        android:layout_margin="1dp"
         android:onClick="@{() -> touchListener.onItemTouched(result, ivMoviePoster)}">
 
         <LinearLayout

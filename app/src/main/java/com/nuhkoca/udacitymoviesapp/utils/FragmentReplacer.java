@@ -1,5 +1,6 @@
 package com.nuhkoca.udacitymoviesapp.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,10 +27,10 @@ public class FragmentReplacer {
         return instance;
     }
 
-    public void replaceFragment(AppCompatActivity instance, int holderId, Fragment fragment) {
+    public void replaceFragment(int holderId, Fragment fragment) {
         String backStateName = fragment.getClass().getName();
 
-        mFragmentManager = instance.getSupportFragmentManager();
+        mFragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
         boolean fragmentPopped = mFragmentManager.popBackStackImmediate(backStateName, 0);
 
         if (!fragmentPopped && mFragmentManager.findFragmentByTag(backStateName) == null) { //fragment not in back stack, create it.

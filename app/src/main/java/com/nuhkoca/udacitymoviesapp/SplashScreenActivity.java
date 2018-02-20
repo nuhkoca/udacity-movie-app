@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.nuhkoca.udacitymoviesapp.view.main.MovieActivity;
 
@@ -13,6 +14,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initUI();
         startMovieActivity();
     }
 
@@ -27,5 +29,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(movieIntent);
             }
         }, delayInSeconds);
+    }
+
+    private void initUI(){
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        decorView.setSystemUiVisibility(uiOptions);
     }
 }

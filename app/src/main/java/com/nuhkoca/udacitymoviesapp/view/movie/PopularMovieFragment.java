@@ -1,5 +1,6 @@
 package com.nuhkoca.udacitymoviesapp.view.movie;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.nuhkoca.udacitymoviesapp.model.Result;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.PopularMoviePresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
+import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivity;
 
 import timber.log.Timber;
 
@@ -57,6 +59,10 @@ public class PopularMovieFragment extends Fragment implements MovieView {
 
     @Override
     public void onActivityOpened(Result result, ImageView imageView) {
-        
+        Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
+        detailIntent.putExtra("image", BuildConfig.IMAGEURLPREFIX + result.getPosterPath());
+        detailIntent.putExtra("title", result.getOriginalTitle());
+
+        startActivity(detailIntent);
     }
 }

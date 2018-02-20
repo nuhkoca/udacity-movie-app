@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
+import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
@@ -26,12 +27,11 @@ import com.nuhkoca.udacitymoviesapp.module.GlideApp;
  */
 
 public class CustomBindingAdapter {
-    private static final String IMAGE_URL_PREFIX = "http://image.tmdb.org/t/p/w500/";
 
     @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "language"})
     public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView language) {
 
-        logoUrl = IMAGE_URL_PREFIX + logoUrl;
+        logoUrl = BuildConfig.IMAGEURLPREFIX + logoUrl;
 
         if (!TextUtils.isEmpty(logoUrl)) {
             GlideApp.with(imageView.getContext())
@@ -72,13 +72,13 @@ public class CustomBindingAdapter {
 
         @Override
         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-            progressBar.setVisibility(View.GONE);
+            this.progressBar.setVisibility(View.GONE);
             return false;
         }
 
         @Override
         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-            progressBar.setVisibility(View.GONE);
+            this.progressBar.setVisibility(View.GONE);
             return false;
         }
     }

@@ -15,5 +15,7 @@
     <string name="fragment_loading_unsuccessful">Fragment loading unsuccessful</string>
     <string name="data_loaded_successfully">Successfully loaded</string>
     <string name="data_not_loaded_successfully">Check your network connection</string>
+    <string name="details_not_loaded">Details couldn\'t be loaded. Try again.</string>
+    <string name="twice_press_to_exit">Press again to exit.</string>
 
 </resources>
