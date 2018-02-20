@@ -10,5 +10,5 @@ import android.support.v7.widget.RecyclerView;
 public interface MoviePresenter {
     void prepareUI(RecyclerView rvMovie);
 
-    void loadMovies(Context context, String apiKey, int pageId);
+    void loadPopularMovies(Context context, String apiKey, int pageId, String tag);
 }

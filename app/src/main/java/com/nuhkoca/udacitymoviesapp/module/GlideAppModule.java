@@ -36,8 +36,8 @@ public class GlideAppModule extends AppGlideModule {
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
         OkHttpClient client = new OkHttpClient.Builder()
-                .readTimeout(10, TimeUnit.SECONDS)
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(20, TimeUnit.SECONDS)
                 .build();
 
         OkHttpUrlLoader.Factory factory = new OkHttpUrlLoader.Factory(client);

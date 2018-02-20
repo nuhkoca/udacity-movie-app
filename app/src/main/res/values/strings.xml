@@ -6,6 +6,9 @@
     <string name="image_place_holder">There is nothing to do</string>
 
 
+    <string name="popular_tag">popular</string>
+    <string name="top_rated_tag">top_rated</string>
+
     <!-- Headers -->
     <string name="popular_header">Popular</string>
     <string name="top_rated_header">Top Rated</string>

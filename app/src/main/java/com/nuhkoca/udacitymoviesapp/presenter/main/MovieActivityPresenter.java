@@ -5,6 +5,6 @@ package com.nuhkoca.udacitymoviesapp.presenter.main;
  */
 
 public interface MovieActivityPresenter {
-    void prepareFirstRun();
-    void loadNext();
+    void prepareFirstRun(String tag);
+    void loadNext(String tag);
 }

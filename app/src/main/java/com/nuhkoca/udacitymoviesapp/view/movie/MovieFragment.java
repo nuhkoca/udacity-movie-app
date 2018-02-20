@@ -16,18 +16,27 @@ import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentPopularMovieBinding;
 import com.nuhkoca.udacitymoviesapp.model.Result;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
-import com.nuhkoca.udacitymoviesapp.presenter.movie.PopularMoviePresenterImpl;
+import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivity;
-
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PopularMovieFragment extends Fragment implements MovieView {
+public class MovieFragment extends Fragment implements MovieView {
 
     private FragmentPopularMovieBinding mFragmentPopularMovieBinding;
+
+    public static MovieFragment getInstance(String tag) {
+        MovieFragment p = new MovieFragment();
+
+        Bundle arg =new Bundle();
+        arg.putString("tag", tag);
+        p.setArguments(arg);
+
+        return p;
+
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -41,10 +50,15 @@ public class PopularMovieFragment extends Fragment implements MovieView {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        MoviePresenter mMoviePresenter = new PopularMoviePresenterImpl(this);
+        MoviePresenter mMoviePresenter = new MoviePresenterImpl(this);
 
         mMoviePresenter.prepareUI(mFragmentPopularMovieBinding.rvPopularMovie);
-        mMoviePresenter.loadMovies(getActivity(), BuildConfig.APIKEY, 1);
+
+
+        if (getArguments()!=null) {
+            String tag = getArguments().getString("tag");
+            mMoviePresenter.loadPopularMovies(getActivity(), BuildConfig.APIKEY, 1, tag);
+        }
     }
 
     @Override

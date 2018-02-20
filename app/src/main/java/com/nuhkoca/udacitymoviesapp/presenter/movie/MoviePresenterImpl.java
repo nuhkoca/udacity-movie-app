@@ -14,6 +14,8 @@ import com.nuhkoca.udacitymoviesapp.networking.RetrofitInterceptor;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieAdapter;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieView;
 
+import java.util.Objects;
+
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
@@ -26,13 +28,13 @@ import timber.log.Timber;
  * Created by nuhkoca on 2/16/18.
  */
 
-public class PopularMoviePresenterImpl implements MoviePresenter, RecyclerViewItemTouchListener {
+public class MoviePresenterImpl implements MoviePresenter, RecyclerViewItemTouchListener {
 
     private MovieView mMovieView;
     private static final int SPAN_COUNT = 2;
     private MovieAdapter mMovieAdapter;
 
-    public PopularMoviePresenterImpl(MovieView mMovieView) {
+    public MoviePresenterImpl(MovieView mMovieView) {
         this.mMovieView = mMovieView;
         mMovieAdapter = new MovieAdapter(this);
     }
@@ -42,17 +44,26 @@ public class PopularMoviePresenterImpl implements MoviePresenter, RecyclerViewIt
         rvMovie.setNestedScrollingEnabled(false);
         rvMovie.setHasFixedSize(true);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(rvMovie.getContext(), SPAN_COUNT, 1, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(rvMovie.getContext(),
+                SPAN_COUNT,
+                1,
+                false);
         rvMovie.setLayoutManager(gridLayoutManager);
 
         rvMovie.setAdapter(mMovieAdapter);
     }
 
     @Override
-    public void loadMovies(final Context context, String apiKey, int pageId) {
+    public void loadPopularMovies(final Context context, String apiKey, int pageId, String tag) {
         final Retrofit retrofit = RetrofitInterceptor.build();
 
-        final Observable<MovieResponse> getMovies = ObservableHelper.getPopularMovies(retrofit, apiKey, pageId);
+        Observable<MovieResponse> getMovies;
+
+        if (Objects.equals(tag, "popular")) {
+            getMovies = ObservableHelper.getPopularMovies(retrofit, apiKey, pageId);
+        } else {
+            getMovies = ObservableHelper.getTopRatedMovies(retrofit, apiKey, pageId);
+        }
 
         getMovies.subscribeOn(Schedulers.io())
                 .retry(1)
@@ -89,6 +100,6 @@ public class PopularMoviePresenterImpl implements MoviePresenter, RecyclerViewIt
 
     @Override
     public void onItemTouched(Result result, ImageView imageView) {
-       mMovieView.onActivityOpened(result, imageView);
+        mMovieView.onActivityOpened(result, imageView);
     }
 }

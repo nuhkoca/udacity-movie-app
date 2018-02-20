@@ -12,7 +12,7 @@ import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieBinding;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.FragmentReplacer;
-import com.nuhkoca.udacitymoviesapp.view.movie.PopularMovieFragment;
+import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
 
 import timber.log.Timber;
 
@@ -30,8 +30,8 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(getString(R.string.app_name));
 
         MovieActivityPresenter mMovieActivityPresenter = new MovieActivityPresenterImpl(this, this);
-        mMovieActivityPresenter.prepareFirstRun();
-        mMovieActivityPresenter.loadNext();
+        mMovieActivityPresenter.prepareFirstRun(getString(R.string.popular_tag));
+        mMovieActivityPresenter.loadNext(getString(R.string.top_rated_tag));
 
         changeTitle(getString(R.string.popular_header));
     }
@@ -55,10 +55,12 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
 
                 if (backStackCount > 0) {
                     fragmentReplacer.removeFragmentsFromBackstack();
-                    fragmentReplacer.replaceFragment(R.id.flFragmentHolder, new PopularMovieFragment());
+                    fragmentReplacer.replaceFragment(R.id.flFragmentHolder, MovieFragment.getInstance(getString(R.string.top_rated_tag)));
                 } else {
-                    fragmentReplacer.replaceFragment(R.id.flFragmentHolder, new PopularMovieFragment());
+                    fragmentReplacer.replaceFragment(R.id.flFragmentHolder, MovieFragment.getInstance(getString(R.string.top_rated_tag)));
                 }
+
+                changeTitle(getString(R.string.top_rated_header));
             }
         });
     }

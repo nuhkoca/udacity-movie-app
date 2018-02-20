@@ -5,9 +5,8 @@ import android.content.Context;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
 import com.nuhkoca.udacitymoviesapp.utils.FragmentReplacer;
-import com.nuhkoca.udacitymoviesapp.view.main.MovieActivity;
 import com.nuhkoca.udacitymoviesapp.view.main.MovieActivityView;
-import com.nuhkoca.udacitymoviesapp.view.movie.PopularMovieFragment;
+import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
 
 /**
  * Created by nuhkoca on 2/17/18.
@@ -26,9 +25,9 @@ public class MovieActivityPresenterImpl implements MovieActivityPresenter {
     }
 
     @Override
-    public void prepareFirstRun() {
+    public void prepareFirstRun(String tag) {
         if (mFragmentReplacer != null) {
-            loadFirstRunFragment();
+            loadFirstRunFragment(tag);
             mMovieActivityView.onFragmentLoadingCompleted(mFragmentReplacer);
         } else {
             mMovieActivityView.onFragmentLoadingFailed(context.getString(R.string.fragment_loading_unsuccessful));
@@ -36,15 +35,15 @@ public class MovieActivityPresenterImpl implements MovieActivityPresenter {
     }
 
     @Override
-    public void loadNext() {
+    public void loadNext(String tag) {
         mMovieActivityView.onNextLoaded(mFragmentReplacer);
     }
 
-    private void loadFirstRunFragment(){
+    private void loadFirstRunFragment(String tag){
         boolean isConnected = ConnectionSniffer.sniff(context);
 
         if (isConnected) {
-            mFragmentReplacer.replaceFragment(R.id.flFragmentHolder, new PopularMovieFragment());
+            mFragmentReplacer.replaceFragment(R.id.flFragmentHolder, MovieFragment.getInstance(tag));
         }
     }
 }
