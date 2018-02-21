@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.networking;
+package com.nuhkoca.udacitymoviesapp.network;
 
 import com.nuhkoca.udacitymoviesapp.model.MovieResponse;
 

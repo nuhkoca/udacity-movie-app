@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.view.movie;
+package com.nuhkoca.udacitymoviesapp.view.movie.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;

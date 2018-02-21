@@ -6,6 +6,4 @@ package com.nuhkoca.udacitymoviesapp.view.detail;
 
 public interface MovieDetailActivityView {
     void onDetailsLoaded();
-
-    void onDetailsLoadingFailed(String message);
 }

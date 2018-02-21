@@ -14,11 +14,11 @@
     <string name="top_rated_header">Top Rated</string>
 
     <!-- Messages -->
-    <string name="fragment_loading_successful">Fragment loading successful</string>
-    <string name="fragment_loading_unsuccessful">Fragment loading unsuccessful</string>
-    <string name="data_loaded_successfully">Successfully loaded</string>
-    <string name="data_not_loaded_successfully">Check your network connection</string>
+    <string name="popular_movies_successfully_loaded">Popular movies successfully loaded</string>
+    <string name="top_rated_movies_successfully_loaded">Top Rated movies successfully loaded</string>
     <string name="details_not_loaded">Details couldn\'t be loaded. Try again.</string>
     <string name="twice_press_to_exit">Press again to exit.</string>
+    <string name="api_key_null">API Key is null</string>
+    <string name="movie_tag_key_null">Movie tag is null</string>
 
 </resources>

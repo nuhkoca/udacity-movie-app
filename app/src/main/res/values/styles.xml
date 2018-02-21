@@ -25,6 +25,10 @@
     <style name="TextComponent.ItemRow">
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">48dp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="TextAppearance" parent="TextAppearance.AppCompat"/>

@@ -1,17 +1,15 @@
 package com.nuhkoca.udacitymoviesapp.view.movie;
 
-import android.widget.ImageView;
-
 import com.nuhkoca.udacitymoviesapp.model.Result;
+
+import java.util.List;
 
 /**
  * Created by nuhkoca on 2/16/18.
  */
 
 public interface MovieView {
-    void onLoadingCompleted(String message);
+    void onLoadingCompleted(List<Result> result);
 
-    void onLoadingError(String message);
-
-    void onActivityOpened(Result result, ImageView imageView);
+    void onLoadingFailed(String message);
 }

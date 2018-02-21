@@ -47,7 +47,7 @@ public class GlideAppModule extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
-        int memoryCacheSizeBytes = 1024 * 1024 * 20; // 20mb
+        int memoryCacheSizeBytes = 1024 * 1024 * 30; // 30mb
         builder.setMemoryCache(new LruResourceCache(memoryCacheSizeBytes));
         builder.setDiskCache(new InternalCacheDiskCacheFactory(context, memoryCacheSizeBytes));
         builder.setDefaultRequestOptions(requestOptions(context));
@@ -63,7 +63,7 @@ public class GlideAppModule extends AppGlideModule {
                 .encodeQuality(100)
                 .fallback(ContextCompat.getDrawable(context, R.drawable.no_image))
                 .error(ContextCompat.getDrawable(context, R.drawable.no_image))
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .format(PREFER_ARGB_8888)
                 .skipMemoryCache(false);
     }

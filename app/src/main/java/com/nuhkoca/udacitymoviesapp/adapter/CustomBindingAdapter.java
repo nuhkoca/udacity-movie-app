@@ -31,7 +31,7 @@ public class CustomBindingAdapter {
     @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "language"})
     public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView language) {
 
-        logoUrl = BuildConfig.IMAGEURLPREFIX + logoUrl;
+        logoUrl = BuildConfig.W300MAGEURLPREFIX + logoUrl;
 
         if (!TextUtils.isEmpty(logoUrl)) {
             GlideApp.with(imageView.getContext())

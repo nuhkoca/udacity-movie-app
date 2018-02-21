@@ -11,75 +11,57 @@ import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieBinding;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenterImpl;
-import com.nuhkoca.udacitymoviesapp.utils.FragmentReplacer;
+import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
 
-import timber.log.Timber;
+import java.util.Objects;
 
-public class MovieActivity extends AppCompatActivity implements MovieActivityView {
+public class MovieActivity extends AppCompatActivity implements MovieActivityView, View.OnClickListener {
 
     private ActivityMovieBinding mActivityMovieBinding;
+    private MovieActivityPresenter mMovieActivityPresenter;
+
     private long backPressed;
+    private String fragmentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityMovieBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
-        Timber.plant(new Timber.DebugTree());
 
         mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(getString(R.string.app_name));
 
-        MovieActivityPresenter mMovieActivityPresenter = new MovieActivityPresenterImpl(this, this);
-        mMovieActivityPresenter.prepareFirstRun(getString(R.string.popular_tag));
-        mMovieActivityPresenter.loadNext(getString(R.string.top_rated_tag));
+        mMovieActivityPresenter = new MovieActivityPresenterImpl(this);
+        mMovieActivityPresenter.loadFragments();
 
+        mActivityMovieBinding.lMovieToolbar.ibSort.setOnClickListener(this);
+    }
+
+    @Override
+    public void onFragmentLoadingCompleted() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.popular_tag)))
+                .commit();
+
+        fragmentTag = getString(R.string.popular_tag);
         changeTitle(getString(R.string.popular_header));
-    }
 
-    @Override
-    public void onFragmentLoadingCompleted(FragmentReplacer fragmentReplacer) {
-
-    }
-
-    @Override
-    public void onFragmentLoadingFailed(String message) {
-        Timber.d(message);
-    }
-
-    @Override
-    public void onNextLoaded(final FragmentReplacer fragmentReplacer) {
-        mActivityMovieBinding.lMovieToolbar.ibSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int backStackCount = fragmentReplacer.getBackStackEntryCount();
-
-                if (backStackCount > 0) {
-                    fragmentReplacer.removeFragmentsFromBackstack();
-                    fragmentReplacer.replaceFragment(R.id.flFragmentHolder, MovieFragment.getInstance(getString(R.string.top_rated_tag)));
-                } else {
-                    fragmentReplacer.replaceFragment(R.id.flFragmentHolder, MovieFragment.getInstance(getString(R.string.top_rated_tag)));
-                }
-
-                changeTitle(getString(R.string.top_rated_header));
-            }
-        });
+        SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.popular_movies_successfully_loaded));
     }
 
     @Override
     public void onBackPressed() {
         int timeDelay = getResources().getInteger(R.integer.delay_in_seconds_to_close);
-        FragmentReplacer fragmentReplacer = new FragmentReplacer();
 
         if (backPressed + timeDelay > System.currentTimeMillis()) {
 
-            int backStackCount = fragmentReplacer.getBackStackEntryCount();
+            int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
 
             if (backStackCount > 0) {
-                fragmentReplacer.removeFragmentsFromBackstack();
-                super.onBackPressed();
-            } else {
                 super.onBackPressed();
             }
+            super.onBackPressed();
 
         } else {
             Toast.makeText(getBaseContext(), getString(R.string.twice_press_to_exit),
@@ -87,6 +69,37 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         }
 
         backPressed = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mMovieActivityPresenter.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (Objects.equals(fragmentTag, getString(R.string.popular_tag))) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.top_rated_tag)))
+                    .commit();
+
+            fragmentTag = getString(R.string.top_rated_tag);
+            changeTitle(getString(R.string.top_rated_header));
+
+            SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.top_rated_movies_successfully_loaded));
+        } else {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.popular_tag)))
+                    .commit();
+
+            fragmentTag = getString(R.string.popular_tag);
+            changeTitle(getString(R.string.popular_header));
+
+            SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.popular_movies_successfully_loaded));
+        }
     }
 
     private void changeTitle(final String title) {

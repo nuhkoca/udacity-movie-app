@@ -1,8 +1,7 @@
-package com.nuhkoca.udacitymoviesapp.networking;
+package com.nuhkoca.udacitymoviesapp.network;
 
 import com.nuhkoca.udacitymoviesapp.model.MovieResponse;
 
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
