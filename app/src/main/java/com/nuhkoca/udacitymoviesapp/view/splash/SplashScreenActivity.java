@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.presenter.splash.SplashScreenActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.splash.SplashScreenActivityPresenterImpl;
-import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
 import com.nuhkoca.udacitymoviesapp.view.main.MovieActivity;
 
 public class SplashScreenActivity extends AppCompatActivity implements SplashScreenActivityView {
@@ -33,20 +32,25 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
     @Override
     public void onActivityOpened() {
         int delayInSeconds = getResources().getInteger(R.integer.delay_in_seconds_to_activity);
-        final boolean isConnected = ConnectionSniffer.sniff(this);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (isConnected) {
-                    Intent movieIntent = new Intent(SplashScreenActivity.this, MovieActivity.class);
-                    movieIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(movieIntent);
-                } else {
-                    Toast.makeText(SplashScreenActivity.this, "No internet connection", Toast.LENGTH_SHORT).show();
-                }
+                Intent movieIntent = new Intent(SplashScreenActivity.this, MovieActivity.class);
+                movieIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(movieIntent);
             }
         }, delayInSeconds);
+    }
+
+    @Override
+    public void onConnectivityError(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_LONG);
+        toast.show();
+
+        if (!toast.getView().isShown()) {
+            finish();
+        }
     }
 
     @Override

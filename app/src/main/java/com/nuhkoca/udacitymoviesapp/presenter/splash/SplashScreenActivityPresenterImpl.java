@@ -2,7 +2,10 @@ package com.nuhkoca.udacitymoviesapp.presenter.splash;
 
 import android.content.Context;
 
+import com.nuhkoca.udacitymoviesapp.App;
+import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
+import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
 import com.nuhkoca.udacitymoviesapp.view.splash.SplashScreenActivityView;
 
 /**
@@ -21,14 +24,23 @@ public class SplashScreenActivityPresenterImpl implements SplashScreenActivityPr
 
     @Override
     public void openActivity() {
-        if (mSplashScreenActivityView!=null) {
+        if (mSplashScreenActivityView != null) {
             mBarConcealer.makeFullImmersive();
-            mSplashScreenActivityView.onActivityOpened();
+
+            final boolean isConnected = ConnectionSniffer.sniff();
+
+            if (isConnected) {
+                mSplashScreenActivityView.onActivityOpened();
+            } else {
+                mSplashScreenActivityView.onConnectivityError(App.getInstance().getString(R.string.no_internet_connection));
+            }
         }
     }
 
     @Override
     public void onDestroy() {
-        mSplashScreenActivityView = null;
+        if (mSplashScreenActivityView != null) {
+            mSplashScreenActivityView = null;
+        }
     }
 }

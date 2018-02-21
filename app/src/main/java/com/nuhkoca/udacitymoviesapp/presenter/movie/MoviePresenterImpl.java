@@ -42,6 +42,8 @@ public class MoviePresenterImpl implements MoviePresenter {
             return;
         }
 
+        mMovieView.showProgress(true);
+
         Observable<MovieResponse> getMovies;
 
         if (Objects.equals(movieTag, App.getInstance().getString(R.string.popular_tag))) {
@@ -66,12 +68,14 @@ public class MoviePresenterImpl implements MoviePresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mMovieView.onLoadingFailed(e.getMessage());
+                        mMovieView.onLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                        mMovieView.showProgress(true);
                     }
 
                     @Override
                     public void onNext(MovieResponse movieResponse) {
                         mMovieView.onLoadingCompleted(movieResponse.getResults());
+                        mMovieView.showProgress(false);
                     }
                 });
     }

@@ -6,4 +6,6 @@ package com.nuhkoca.udacitymoviesapp.view.splash;
 
 public interface SplashScreenActivityView {
     void onActivityOpened();
+
+    void onConnectivityError(String message);
 }

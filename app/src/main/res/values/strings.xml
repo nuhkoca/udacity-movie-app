@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Moveis!</string>
 
-
     <!-- Place Holders -->
     <string name="image_place_holder">There is nothing to do</string>
 
@@ -20,5 +19,6 @@
     <string name="twice_press_to_exit">Press again to exit.</string>
     <string name="api_key_null">API Key is null</string>
     <string name="movie_tag_key_null">Movie tag is null</string>
+    <string name="no_internet_connection">You are not connected with an active network connection</string>
 
 </resources>

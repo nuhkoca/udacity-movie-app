@@ -1,5 +1,7 @@
 package com.nuhkoca.udacitymoviesapp.view.movie;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -17,7 +19,7 @@ import android.widget.ImageView;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.callback.RecyclerViewItemTouchListener;
-import com.nuhkoca.udacitymoviesapp.databinding.FragmentPopularMovieBinding;
+import com.nuhkoca.udacitymoviesapp.databinding.FragmentMovieBinding;
 import com.nuhkoca.udacitymoviesapp.model.Result;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
@@ -33,7 +35,7 @@ import java.util.Objects;
  */
 public class MovieFragment extends Fragment implements MovieView, RecyclerViewItemTouchListener {
 
-    private FragmentPopularMovieBinding mFragmentPopularMovieBinding;
+    private FragmentMovieBinding mFragmentMovieBinding;
     private MoviePresenter mMoviePresenter;
     private MovieAdapter mMovieAdapter;
 
@@ -51,10 +53,10 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mFragmentPopularMovieBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_popular_movie, container, false);
+        mFragmentMovieBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_movie, container, false);
 
-        return mFragmentPopularMovieBinding.getRoot();
+        return mFragmentMovieBinding.getRoot();
     }
 
     @Override
@@ -69,8 +71,8 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
 
     @Override
     public void onLoadingCompleted(List<Result> result) {
-        mFragmentPopularMovieBinding.rvPopularMovie.setHasFixedSize(true);
-        mFragmentPopularMovieBinding.rvPopularMovie.setNestedScrollingEnabled(false);
+        mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
+        mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
 
         int spanCount = 0;
 
@@ -79,10 +81,10 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
         }
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
-        mFragmentPopularMovieBinding.rvPopularMovie.setLayoutManager(gridLayoutManager);
+        mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
 
         mMovieAdapter = new MovieAdapter(this);
-        mFragmentPopularMovieBinding.rvPopularMovie.setAdapter(mMovieAdapter);
+        mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
 
         mMovieAdapter.swapData(result);
         mMovieAdapter.notifyDataSetChanged();
@@ -90,7 +92,27 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
 
     @Override
     public void onLoadingFailed(String message) {
-        SnackbarPopper.pop(mFragmentPopularMovieBinding.flPopularMovie, message);
+        SnackbarPopper.popIndefinite(mFragmentMovieBinding.flMovie, message);
+    }
+
+    @Override
+    public void showProgress(final boolean visible) {
+        int duration = 0;
+
+        if (getActivity() != null) {
+            duration = getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime);
+        }
+
+        mFragmentMovieBinding.pbMovie.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mFragmentMovieBinding.pbMovie.animate()
+                .setDuration(duration)
+                .alpha(visible ? 1 : 0)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mFragmentMovieBinding.pbMovie.setVisibility(visible ? View.VISIBLE : View.GONE);
+                    }
+                });
     }
 
     @Override

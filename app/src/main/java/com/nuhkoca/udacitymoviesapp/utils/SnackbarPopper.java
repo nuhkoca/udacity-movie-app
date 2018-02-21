@@ -26,4 +26,19 @@ public class SnackbarPopper {
 
         snackbar.show();
     }
+
+    public static void popIndefinite(View view, String message){
+        Snackbar snackbar = Snackbar.make(view,
+                message,
+                Snackbar.LENGTH_INDEFINITE);
+
+        View currentView = snackbar.getView();
+        currentView.setBackgroundColor(ContextCompat.getColor(currentView.getContext(), R.color.colorPrimary));
+
+        TextView currentText = currentView.findViewById(android.support.design.R.id.snackbar_text);
+        currentText.setTextSize(16);
+        currentText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorWhite));
+
+        snackbar.show();
+    }
 }

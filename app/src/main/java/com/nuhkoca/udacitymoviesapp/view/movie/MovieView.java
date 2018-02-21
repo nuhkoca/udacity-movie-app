@@ -12,4 +12,6 @@ public interface MovieView {
     void onLoadingCompleted(List<Result> result);
 
     void onLoadingFailed(String message);
+
+    void showProgress(boolean visible);
 }

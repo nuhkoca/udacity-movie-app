@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
+import com.nuhkoca.udacitymoviesapp.App;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 
 import java.io.IOException;
@@ -19,8 +20,8 @@ public class ConnectionSniffer {
     private static final int TIMEOUT_DURATION = 5;
     private static boolean isReachable;
 
-    public static boolean sniff(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean sniff() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) App.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = null;
         if (connectivityManager != null) {
