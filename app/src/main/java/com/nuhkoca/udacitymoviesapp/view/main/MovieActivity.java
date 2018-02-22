@@ -138,6 +138,13 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
                 sendIntent.setData(Uri.parse("mailto:" + getString(R.string.mail_address)));
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
                 return true;
+
+            case R.id.menu_favorite:
+                SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.soon_main));
+                return true;
+
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -18,6 +18,7 @@ ext {
     supportLibraryVersion = '27.0.2'
     rxJavaLibraryVersion = '2.3.0'
     glideLibraryVersion = '4.6.1'
+    flipBoardBottomSheetVersion = '1.5.3'
 }
 
 allprojects {

@@ -2,6 +2,8 @@ package com.nuhkoca.udacitymoviesapp;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import timber.log.Timber;
 
 /**
@@ -20,6 +22,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
+        LeakCanary.install(this);
         app = this;
     }
 }

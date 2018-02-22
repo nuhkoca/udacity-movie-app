@@ -2,6 +2,8 @@ package com.nuhkoca.udacitymoviesapp.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.util.List;
  * Created by nuhkoca on 2/16/18.
  */
 
-public class MovieResponse extends BaseObservable {
+public class MovieResponse extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("page")
     private String page;
@@ -26,6 +28,16 @@ public class MovieResponse extends BaseObservable {
     @Expose
     @SerializedName("results")
     private List<Result> results;
+
+    public MovieResponse() {
+    }
+
+    private MovieResponse(Parcel in) {
+        page = in.readString();
+        totalResults = in.readString();
+        totalPages = in.readString();
+        results = in.createTypedArrayList(Result.CREATOR);
+    }
 
     @Bindable
     public String getPage() {
@@ -65,5 +77,30 @@ public class MovieResponse extends BaseObservable {
     public void setResults(List<Result> results) {
         this.results = results;
         notifyPropertyChanged(BR.results);
+    }
+
+    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
+        @Override
+        public MovieResponse createFromParcel(Parcel in) {
+            return new MovieResponse(in);
+        }
+
+        @Override
+        public MovieResponse[] newArray(int size) {
+            return new MovieResponse[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(page);
+        dest.writeString(totalResults);
+        dest.writeString(totalPages);
+        dest.writeTypedList(results);
     }
 }

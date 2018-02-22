@@ -22,11 +22,18 @@
     <string name="movie_tag_key_null">Movie tag is null</string>
     <string name="no_internet_connection">You are not connected with an active network connection</string>
     <string name="mail_address">nuhkocaa@gmail.com</string>
-    <string name="send_to">Send with…</string>
     <string name="soon">You will be adding your favorites soon :)</string>
+    <string name="soon_main">You will be viewing your favorites soon :)</string>
+
+
+    <!-- ShareIntent Texts -->
+    <string name="send_to">Send with…</string>
+    <string name="share_to">Share %s with others</string>
 
     <!-- Menu Texts -->
     <string name="report">Report</string>
+    <string name="my_favorites">Favorites</string>
+    <string name="share">Share</string>
 
     <!-- Movie Details Labels -->
     <string name="release_date">Release Date: </string>

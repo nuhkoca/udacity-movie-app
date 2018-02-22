@@ -12,25 +12,35 @@ import com.nuhkoca.udacitymoviesapp.R;
  */
 
 public class SnackbarPopper {
-    public static void pop(View view, String message){
-        Snackbar snackbar = Snackbar.make(view,
-                message,
-                Snackbar.LENGTH_SHORT);
 
-        View currentView = snackbar.getView();
-        currentView.setBackgroundColor(ContextCompat.getColor(currentView.getContext(), R.color.colorPrimary));
+    private enum Length {
+        SHORT,
+        INDEFINITE
+    }
 
-        TextView currentText = currentView.findViewById(android.support.design.R.id.snackbar_text);
-        currentText.setTextSize(16);
-        currentText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorWhite));
+    public static void pop(View view, String message) {
+        Snackbar snackbar = getSnackbar(view, message, Length.SHORT);
 
         snackbar.show();
     }
 
-    public static void popIndefinite(View view, String message){
-        Snackbar snackbar = Snackbar.make(view,
-                message,
-                Snackbar.LENGTH_INDEFINITE);
+    public static void popIndefinite(View view, String message) {
+        Snackbar snackbar = getSnackbar(view, message, Length.INDEFINITE);
+
+        snackbar.show();
+    }
+
+    private static Snackbar getSnackbar(View view, String message, Length duration) {
+        Snackbar snackbar = Snackbar.make(view, message, 0);
+
+        switch (duration) {
+            case SHORT:
+                snackbar = snackbar.setDuration(Snackbar.LENGTH_SHORT);
+                break;
+            case INDEFINITE:
+                snackbar = snackbar.setDuration(Snackbar.LENGTH_INDEFINITE);
+                break;
+        }
 
         View currentView = snackbar.getView();
         currentView.setBackgroundColor(ContextCompat.getColor(currentView.getContext(), R.color.colorPrimary));
@@ -39,6 +49,6 @@ public class SnackbarPopper {
         currentText.setTextSize(16);
         currentText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorWhite));
 
-        snackbar.show();
+        return snackbar;
     }
 }

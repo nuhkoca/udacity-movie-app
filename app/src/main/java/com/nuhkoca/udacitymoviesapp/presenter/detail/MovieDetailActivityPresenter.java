@@ -8,4 +8,10 @@ public interface MovieDetailActivityPresenter {
     void populateDetails();
 
     void onDestroy();
+
+    void onCreateBottomSheet();
+
+    void onChangeViewWidth();
+
+    void onScheduleStartPostponedTransition();
 }

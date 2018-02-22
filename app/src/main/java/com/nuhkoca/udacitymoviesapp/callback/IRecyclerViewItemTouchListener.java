@@ -8,6 +8,6 @@ import com.nuhkoca.udacitymoviesapp.model.Result;
  * Created by nuhkoca on 2/19/18.
  */
 
-public interface RecyclerViewItemTouchListener {
+public interface IRecyclerViewItemTouchListener {
     void onItemTouched(Result result, ImageView imageView);
 }

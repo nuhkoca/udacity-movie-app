@@ -2,6 +2,8 @@ package com.nuhkoca.udacitymoviesapp.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.google.gson.annotations.Expose;
@@ -13,7 +15,7 @@ import java.util.List;
  * Created by nuhkoca on 2/18/18.
  */
 
-public class Result extends BaseObservable {
+public class Result extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("vote_count")
     private int voteCount;
@@ -56,6 +58,24 @@ public class Result extends BaseObservable {
     @Expose
     @SerializedName("release_date")
     private String releaseDate;
+
+    public Result() {}
+
+    private Result(Parcel in) {
+        voteCount = in.readInt();
+        id = in.readInt();
+        video = in.readByte() != 0;
+        voteAverage = in.readFloat();
+        title = in.readString();
+        popularity = in.readFloat();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        originalTitle = in.readString();
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        releaseDate = in.readString();
+    }
 
 
     @Bindable
@@ -196,5 +216,39 @@ public class Result extends BaseObservable {
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
         notifyPropertyChanged(BR.releaseDate);
+    }
+
+    public static final Creator<Result> CREATOR = new Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel in) {
+            return new Result(in);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(voteCount);
+        dest.writeInt(id);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeFloat(voteAverage);
+        dest.writeString(title);
+        dest.writeFloat(popularity);
+        dest.writeString(posterPath);
+        dest.writeString(originalLanguage);
+        dest.writeString(originalTitle);
+        dest.writeString(backdropPath);
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
     }
 }
