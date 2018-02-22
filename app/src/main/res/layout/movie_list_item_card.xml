@@ -58,36 +58,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:fontFamily="sans-serif"
-                android:layout_gravity="start"
                 android:text="@{result.originalTitle}"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:gravity="start"
-                android:lineSpacingExtra="8dp"
                 android:textSize="16sp"
-                android:maxLines="1"
-                android:layout_marginStart="@dimen/dimension_28dp"
-                android:layout_marginEnd="@dimen/dimension_8dp"
-                android:layout_marginTop="@dimen/dimension_12dp"/>
+                android:layout_marginTop="@dimen/dimension_12dp"
+                style="@style/MovieListTextAppearance.ItemRow"/>
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvMovieLanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
                 android:textStyle="normal"
-                android:fontFamily="sans-serif"
                 android:text="@{Float.toString(result.voteAverage)}"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:gravity="center"
-                android:maxLines="1"
-                android:lineSpacingExtra="@dimen/dimension_8dp"
                 android:textSize="14sp"
-                android:layout_marginStart="@dimen/dimension_28dp"
-                android:layout_marginEnd="@dimen/dimension_8dp"
-                android:layout_marginBottom="@dimen/dimension_16dp"/>
+                android:layout_marginBottom="@dimen/dimension_16dp"
+                style="@style/MovieListTextAppearance.ItemRow"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

@@ -14,8 +14,7 @@
         android:name=".App"
         android:theme="@style/AppTheme">
         <activity android:name=".view.splash.SplashScreenActivity"
-            android:theme="@style/AppTheme.Launcher"
-            android:screenOrientation="portrait">
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,9 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.main.MovieActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".view.detail.MovieDetailActivity"
-            android:screenOrientation="portrait"/>
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity android:name=".view.detail.MovieDetailActivity" />
     </application>
 
 </manifest>

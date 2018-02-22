@@ -2,15 +2,16 @@
     <string name="app_name">Moveis!</string>
 
     <!-- Place Holders -->
-    <string name="image_place_holder">There is nothing to do</string>
+    <string name="image_place_holder" translatable="false">There is nothing to do</string>
 
-
-    <string name="popular_tag">popular</string>
-    <string name="top_rated_tag">top_rated</string>
+    <!-- Tags -->
+    <string name="popular_tag" translatable="false">popular</string>
+    <string name="top_rated_tag" translatable="false">top_rated</string>
 
     <!-- Headers -->
     <string name="popular_header">Popular</string>
     <string name="top_rated_header">Top Rated</string>
+    <string name="header_part_header">General Details</string>
 
     <!-- Messages -->
     <string name="popular_movies_successfully_loaded">Popular movies successfully loaded</string>
@@ -20,5 +21,18 @@
     <string name="api_key_null">API Key is null</string>
     <string name="movie_tag_key_null">Movie tag is null</string>
     <string name="no_internet_connection">You are not connected with an active network connection</string>
+    <string name="mail_address">nuhkocaa@gmail.com</string>
+    <string name="send_to">Send with…</string>
+    <string name="soon">You will be adding your favorites soon :)</string>
+
+    <!-- Menu Texts -->
+    <string name="report">Report</string>
+
+    <!-- Movie Details Labels -->
+    <string name="release_date">Release Date: </string>
+    <string name="vote_count">Vote Count: </string>
+    <string name="vote_average">Vote Average: </string>
+    <string name="overview">Overview: </string>
+
 
 </resources>

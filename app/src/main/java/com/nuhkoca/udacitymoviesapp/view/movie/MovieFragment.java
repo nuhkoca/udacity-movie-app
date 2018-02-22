@@ -30,6 +30,8 @@ import com.nuhkoca.udacitymoviesapp.view.movie.adapter.MovieAdapter;
 import java.util.List;
 import java.util.Objects;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -45,6 +47,12 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
         Bundle arg = new Bundle();
         arg.putString("tag", tag);
         movieFragment.setArguments(arg);
+
+        return movieFragment;
+    }
+
+    public static MovieFragment getInstance() {
+        MovieFragment movieFragment = new MovieFragment();
 
         return movieFragment;
     }
@@ -67,27 +75,29 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
             String tag = getArguments().getString("tag");
             mMoviePresenter.loadMovies(BuildConfig.APIKEY, tag);
         }
+
+        Timber.d("onViewCreated");
     }
 
     @Override
     public void onLoadingCompleted(List<Result> result) {
-        mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
-        mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
-
-        int spanCount = 0;
-
         if (getActivity() != null) {
-            spanCount = getActivity().getResources().getInteger(R.integer.span_count);
+            int spanCount = getActivity().getResources().getInteger(R.integer.span_count);
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
+            mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
+
+            mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
+            mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
+
+            mMovieAdapter = new MovieAdapter(this);
+            mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
+
+            mMovieAdapter.swapData(result);
+            mMovieAdapter.notifyDataSetChanged();
+
+            Timber.d("onLoadingCompleted");
         }
-
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
-        mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
-
-        mMovieAdapter = new MovieAdapter(this);
-        mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
-
-        mMovieAdapter.swapData(result);
-        mMovieAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -127,6 +137,10 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
         Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
         detailIntent.putExtra("movie-poster", BuildConfig.IMAGEURLPREFIX + result.getPosterPath());
         detailIntent.putExtra("movie-title", result.getOriginalTitle());
+        detailIntent.putExtra("release-date", result.getReleaseDate());
+        detailIntent.putExtra("vote-count", String.valueOf(result.getVoteCount()));
+        detailIntent.putExtra("vote-average", String.valueOf(result.getVoteAverage()));
+        detailIntent.putExtra("movie-overview", result.getOverview());
 
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()),
@@ -134,5 +148,17 @@ public class MovieFragment extends Fragment implements MovieView, RecyclerViewIt
                         ViewCompat.getTransitionName(imageView));
 
         startActivity(detailIntent, activityOptionsCompat.toBundle());
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        Timber.d("onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Timber.d("onViewStateRestored");
+        super.onViewStateRestored(savedInstanceState);
     }
 }

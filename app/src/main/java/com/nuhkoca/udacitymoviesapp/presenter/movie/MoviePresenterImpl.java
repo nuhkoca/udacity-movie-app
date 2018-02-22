@@ -82,7 +82,7 @@ public class MoviePresenterImpl implements MoviePresenter {
 
     @Override
     public void onDestroy() {
-        if (mMovieView!=null) {
+        if (mMovieView != null) {
             mMovieView = null;
         }
     }

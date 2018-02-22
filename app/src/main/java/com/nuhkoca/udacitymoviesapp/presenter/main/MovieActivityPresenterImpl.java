@@ -22,6 +22,11 @@ public class MovieActivityPresenterImpl implements MovieActivityPresenter {
     }
 
     @Override
+    public void beautifyUI() {
+        mMovieActivityView.onUIBeautified();
+    }
+
+    @Override
     public void onDestroy() {
         if (mMovieActivityView != null) {
             mMovieActivityView = null;

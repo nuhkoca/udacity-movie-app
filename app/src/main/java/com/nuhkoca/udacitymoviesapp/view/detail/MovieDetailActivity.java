@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.bumptech.glide.load.DataSource;
@@ -19,6 +20,7 @@ import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
+import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener {
 
@@ -40,7 +42,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        extras = getIntent().getExtras();
+        if (getIntent() != null) {
+            extras = getIntent().getExtras();
+        }
 
         mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this, this);
         mMovieDetailActivityPresenter.populateDetails();
@@ -85,13 +89,24 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        scheduleStartPostponedTransition(mActivityMovieDetailBinding.lMovieDetail.ivMovieDetail);
+                        scheduleStartPostponedTransition(mActivityMovieDetailBinding.ivMovieDetailPoster);
                         return false;
                     }
                 })
-                .into(mActivityMovieDetailBinding.lMovieDetail.ivMovieDetail);
+                .into(mActivityMovieDetailBinding.ivMovieDetailPoster);
 
         mActivityMovieDetailBinding.ctlMovieDetail.setTitle(extras.getString("movie-title"));
+        mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartReleaseDate.
+                setText(extras.getString("release-date"));
+        mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartVoteCount
+                .setText(extras.getString("vote-count"));
+        mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartVoteAverage
+                .setText(extras.getString("vote-average"));
+        mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartOverview
+                .setText(extras.getString("movie-overview"));
+
+
+        changeViewWidth();
     }
 
     @Override
@@ -102,7 +117,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onClick(View v) {
-        //TODO Stage 2 task with ContentProvider
+        SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, getString(R.string.soon));
     }
 
     private void scheduleStartPostponedTransition(final View sharedElement) {
@@ -115,5 +130,24 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                         return true;
                     }
                 });
+    }
+
+    private void changeViewWidth() {
+
+        mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartHeader.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartHeader.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.vMovieDetailHeaderPart.getLayoutParams();
+
+                layoutParams.width = mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.tvMovieDetailHeaderPartHeader.getWidth() + 100;
+
+                mActivityMovieDetailBinding.lMovieDetail.lMovieDetailHolderHeader.vMovieDetailHeaderPart.setLayoutParams(layoutParams);
+
+                return false;
+            }
+        });
     }
 }

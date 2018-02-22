@@ -9,6 +9,8 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:itemBackground">@color/colorWhite</item>
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 
     <style name="AppTheme.Launcher">
@@ -16,23 +18,36 @@
     </style>
 
     <style name="CollapsingTextAppearance" parent="Base.TextAppearance.AppCompat.Widget.ActionBar.Title"/>
-    <style name="CollapsingTextAppearance.Inverse" >
+    <style name="CollapsingTextAppearance.Inverse">
         <item name="android:textSize">30sp</item>
     </style>
 
-    <style name="TextComponent"/>
+    <style name="MovieDetailTextAppearance"/>
 
-    <style name="TextComponent.ItemRow">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:minHeight">48dp</item>
+    <style name="MovieDetailTextAppearance.ItemRow">
+        <item name="android:gravity">start</item>
+        <item name="android:minHeight">25dp</item>
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MovieListTextAppearance" parent="TextAppearance.AppCompat.Small"/>
+
+    <style name="MovieListTextAppearance.ItemRow">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:gravity">start</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:lineSpacingExtra">@dimen/dimension_8dp</item>
+        <item name="android:layout_marginStart">@dimen/dimension_28dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimension_8dp</item>
     </style>
 
     <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
     <style name="TextAppearance.Header">
+        <item name="android:minHeight">20dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">?colorAccent</item>
