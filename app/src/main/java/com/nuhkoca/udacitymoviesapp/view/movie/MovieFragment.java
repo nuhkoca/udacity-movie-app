@@ -20,7 +20,7 @@ import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.callback.IRecyclerViewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentMovieBinding;
-import com.nuhkoca.udacitymoviesapp.model.Result;
+import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
@@ -29,8 +29,6 @@ import com.nuhkoca.udacitymoviesapp.view.movie.adapter.MovieAdapter;
 
 import java.util.List;
 import java.util.Objects;
-
-import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,7 +78,7 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     }
 
     @Override
-    public void onLoadingCompleted(List<Result> result) {
+    public void onLoadingCompleted(List<Results> results) {
         if (getActivity() != null) {
             int spanCount = getActivity().getResources().getInteger(R.integer.span_count);
 
@@ -93,10 +91,8 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
             mMovieAdapter = new MovieAdapter(this);
             mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
 
-            mMovieAdapter.swapData(result);
+            mMovieAdapter.swapData(results);
             mMovieAdapter.notifyDataSetChanged();
-
-            Timber.d("onLoadingCompleted");
         }
     }
 
@@ -133,9 +129,9 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     }
 
     @Override
-    public void onItemTouched(Result result, ImageView imageView) {
+    public void onItemTouched(Results results, ImageView imageView) {
         Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
-        detailIntent.putExtra(MOVIE_MODEL_TAG, result);
+        detailIntent.putExtra(MOVIE_MODEL_TAG, results);
 
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()),

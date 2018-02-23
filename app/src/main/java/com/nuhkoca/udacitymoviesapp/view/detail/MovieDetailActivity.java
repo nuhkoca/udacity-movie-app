@@ -22,13 +22,15 @@ import com.flipboard.bottomsheet.commons.IntentPickerSheetView;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
-import com.nuhkoca.udacitymoviesapp.model.Result;
+import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
+
+import java.util.Comparator;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener {
 
@@ -92,12 +94,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
-    public void onDetailsLoaded(Result result) {
-        if (result != null) {
-            result = getIntent().getParcelableExtra(MovieFragment.MOVIE_MODEL_TAG);
+    public void onDetailsLoaded(Results results) {
+        if (results != null) {
+            results = getIntent().getParcelableExtra(MovieFragment.MOVIE_MODEL_TAG);
 
             GlideApp.with(this)
-                    .load(BuildConfig.IMAGEURLPREFIX + result.getPosterPath())
+                    .load(BuildConfig.W500IMAGEURLPREFIX + results.getPosterPath())
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -113,15 +115,15 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                     })
                     .into(mActivityMovieDetailBinding.ivMovieDetailPoster);
 
-            mActivityMovieDetailBinding.ctlMovieDetail.setTitle(result.getOriginalTitle());
+            mActivityMovieDetailBinding.ctlMovieDetail.setTitle(results.getOriginalTitle());
             mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartReleaseDate.
-                    setText(result.getReleaseDate());
+                    setText(results.getReleaseDate());
             mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartVoteCount
-                    .setText(String.valueOf(result.getVoteCount()));
+                    .setText(String.valueOf(results.getVoteCount()));
             mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartVoteAverage
-                    .setText(String.valueOf(result.getVoteAverage()));
+                    .setText(String.valueOf(results.getVoteAverage()));
             mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartOverview
-                    .setText(result.getOverview());
+                    .setText(results.getOverview());
 
 
             mMovieDetailActivityPresenter.onChangeViewWidth();
@@ -131,7 +133,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void onBottomSheetCreated() {
         final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_to), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_extra_text), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()));
         shareIntent.setType("text/plain");
 
         final IntentPickerSheetView intentPickerSheet = new IntentPickerSheetView(MovieDetailActivity.this, shareIntent, String.format(getString(R.string.share_to), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()), new IntentPickerSheetView.OnIntentPickedListener() {
@@ -139,6 +141,20 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             public void onIntentPicked(IntentPickerSheetView.ActivityInfo activityInfo) {
                 mActivityMovieDetailBinding.bslBottomSheetItemHolder.dismissSheet();
                 startActivity(activityInfo.getConcreteIntent(shareIntent));
+            }
+        });
+
+        intentPickerSheet.setFilter(new IntentPickerSheetView.Filter() {
+            @Override
+            public boolean include(IntentPickerSheetView.ActivityInfo info) {
+                return !info.componentName.getPackageName().startsWith("com.android");
+            }
+        });
+
+        intentPickerSheet.setSortMethod(new Comparator<IntentPickerSheetView.ActivityInfo>() {
+            @Override
+            public int compare(IntentPickerSheetView.ActivityInfo lhs, IntentPickerSheetView.ActivityInfo rhs) {
+                return rhs.label.compareTo(lhs.label);
             }
         });
 

@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="delay_in_seconds_to_activity">2000</integer>
-    <integer name="delay_in_seconds_to_title">2000</integer>
     <integer name="delay_in_seconds_to_close">1500</integer>
     <integer name="span_count">2</integer>
+
+    <!-- Genres IDs -->
+    <integer-array name="genresId">
+        <item name="28">28</item>
+        <item name="12">12</item>
+        <item name="16">16</item>
+        <item name="35">35</item>
+        <item name="80">80</item>
+        <item name="99">99</item>
+        <item name="18">18</item>
+        <item name="10751">10751</item>
+        <item name="14">14</item>
+        <item name="36">36</item>
+        <item name="27">27</item>
+        <item name="10402">10402</item>
+        <item name="9648">9648</item>
+        <item name="10749">10749</item>
+        <item name="878">878</item>
+        <item name="10770">10770</item>
+        <item name="53">53</item>
+        <item name="10752">10752</item>
+        <item name="37">37</item>
+    </integer-array>
+
 </resources>

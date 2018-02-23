@@ -1,13 +1,13 @@
 package com.nuhkoca.udacitymoviesapp.view.detail;
 
-import com.nuhkoca.udacitymoviesapp.model.Result;
+import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 
 /**
  * Created by nuhkoca on 2/19/18.
  */
 
 public interface MovieDetailActivityView {
-    void onDetailsLoaded(Result result);
+    void onDetailsLoaded(Results results);
 
     void onBottomSheetCreated();
 

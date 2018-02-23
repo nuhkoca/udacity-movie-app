@@ -12,7 +12,7 @@ import com.nuhkoca.udacitymoviesapp.BR;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.callback.IRecyclerViewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.MovieListItemCardBinding;
-import com.nuhkoca.udacitymoviesapp.model.Result;
+import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private List<Result> mResults;
+    private List<Results> mResults;
     private IRecyclerViewItemTouchListener mIRecyclerViewItemTouchListener;
 
     public MovieAdapter(IRecyclerViewItemTouchListener IRecyclerViewItemTouchListener) {
@@ -47,9 +47,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Result result = mResults.get(position);
+        Results results = mResults.get(position);
 
-        holder.bindView(result);
+        holder.bindView(results);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return mResults.size();
     }
 
-    public void swapData(List<Result> results) {
+    public void swapData(List<Results> results) {
         mResults = results;
 
         notifyDataSetChanged();
@@ -73,8 +73,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             mMovieListItemCardBinding = DataBindingUtil.bind(itemView);
         }
 
-        void bindView(Result result) {
-            mMovieListItemCardBinding.setVariable(BR.result, result);
+        void bindView(Results results) {
+            mMovieListItemCardBinding.setVariable(BR.results, results);
             mMovieListItemCardBinding.setVariable(BR.touchListener, mIRecyclerViewItemTouchListener);
 
             ViewCompat.setTransitionName(mMovieListItemCardBinding.ivMoviePoster,

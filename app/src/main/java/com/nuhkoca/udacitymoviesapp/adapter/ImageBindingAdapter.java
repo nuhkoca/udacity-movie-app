@@ -26,12 +26,12 @@ import com.nuhkoca.udacitymoviesapp.module.GlideApp;
  * Created by nuhkoca on 2/19/18.
  */
 
-public class CustomBindingAdapter {
+public class ImageBindingAdapter {
 
-    @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "language"})
-    public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView language) {
+    @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "genre"})
+    public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView genre) {
 
-        logoUrl = BuildConfig.W300MAGEURLPREFIX + logoUrl;
+        logoUrl = BuildConfig.W500IMAGEURLPREFIX + logoUrl;
 
         if (!TextUtils.isEmpty(logoUrl)) {
             GlideApp.with(imageView.getContext())
@@ -46,14 +46,14 @@ public class CustomBindingAdapter {
                                         floor.setCardBackgroundColor(palette.getVibrantSwatch().getRgb());
                                         title.setBackgroundColor(palette.getVibrantSwatch().getRgb());
                                         title.setTextColor(palette.getVibrantSwatch().getBodyTextColor());
-                                        language.setBackgroundColor(palette.getVibrantSwatch().getRgb());
-                                        language.setTextColor(palette.getVibrantSwatch().getBodyTextColor());
+                                        genre.setBackgroundColor(palette.getVibrantSwatch().getRgb());
+                                        genre.setTextColor(palette.getVibrantSwatch().getBodyTextColor());
                                     }else {
                                         floor.setCardBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
                                         title.setBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
                                         title.setTextColor(ContextCompat.getColor(imageView.getContext(), R.color.colorWhite));
-                                        language.setBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
-                                        language.setTextColor(ContextCompat.getColor(imageView.getContext(), R.color.colorWhite));
+                                        genre.setBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
+                                        genre.setTextColor(ContextCompat.getColor(imageView.getContext(), R.color.colorWhite));
                                     }
                                 }
                             })

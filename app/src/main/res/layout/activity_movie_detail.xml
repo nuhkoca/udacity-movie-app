@@ -73,6 +73,7 @@
                 <include android:id="@+id/lMovieDetailPartHolder" layout="@layout/movie_detail_part_holder" />
 
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

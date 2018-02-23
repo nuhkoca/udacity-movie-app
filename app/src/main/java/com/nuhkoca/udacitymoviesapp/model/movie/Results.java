@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.model;
+package com.nuhkoca.udacitymoviesapp.model.movie;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by nuhkoca on 2/18/18.
  */
 
-public class Result extends BaseObservable implements Parcelable {
+public class Results extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("vote_count")
     private int voteCount;
@@ -44,8 +44,8 @@ public class Result extends BaseObservable implements Parcelable {
     @SerializedName("original_title")
     private String originalTitle;
     @Expose
-    @SerializedName("genres_ids")
-    private List<Genres> genreIds;
+    @SerializedName("genre_ids")
+    private List<Integer> genreIds = null;
     @Expose
     @SerializedName("backdrop_path")
     private String backdropPath;
@@ -59,24 +59,7 @@ public class Result extends BaseObservable implements Parcelable {
     @SerializedName("release_date")
     private String releaseDate;
 
-    public Result() {}
-
-    private Result(Parcel in) {
-        voteCount = in.readInt();
-        id = in.readInt();
-        video = in.readByte() != 0;
-        voteAverage = in.readFloat();
-        title = in.readString();
-        popularity = in.readFloat();
-        posterPath = in.readString();
-        originalLanguage = in.readString();
-        originalTitle = in.readString();
-        backdropPath = in.readString();
-        adult = in.readByte() != 0;
-        overview = in.readString();
-        releaseDate = in.readString();
-    }
-
+    public Results(){}
 
     @Bindable
     public int getVoteCount() {
@@ -169,11 +152,11 @@ public class Result extends BaseObservable implements Parcelable {
     }
 
     @Bindable
-    public List<Genres> getGenreIds() {
+    public List<Integer> getGenreIds() {
         return genreIds;
     }
 
-    public void setGenreIds(List<Genres> genreIds) {
+    public void setGenreIds(List<Integer> genreIds) {
         this.genreIds = genreIds;
         notifyPropertyChanged(BR.genreIds);
     }
@@ -218,15 +201,31 @@ public class Result extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.releaseDate);
     }
 
-    public static final Creator<Result> CREATOR = new Creator<Result>() {
+    protected Results(Parcel in) {
+        voteCount = in.readInt();
+        id = in.readInt();
+        video = in.readByte() != 0;
+        voteAverage = in.readFloat();
+        title = in.readString();
+        popularity = in.readFloat();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        originalTitle = in.readString();
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        releaseDate = in.readString();
+    }
+
+    static final Creator<Results> CREATOR = new Creator<Results>() {
         @Override
-        public Result createFromParcel(Parcel in) {
-            return new Result(in);
+        public Results createFromParcel(Parcel in) {
+            return new Results(in);
         }
 
         @Override
-        public Result[] newArray(int size) {
-            return new Result[size];
+        public Results[] newArray(int size) {
+            return new Results[size];
         }
     };
 

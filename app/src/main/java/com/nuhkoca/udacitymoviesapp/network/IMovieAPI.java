@@ -1,6 +1,6 @@
 package com.nuhkoca.udacitymoviesapp.network;
 
-import com.nuhkoca.udacitymoviesapp.model.MovieResponse;
+import com.nuhkoca.udacitymoviesapp.model.movie.MovieResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -17,4 +17,7 @@ public interface IMovieAPI {
 
     @GET("movie/top_rated")
     Observable<MovieResponse> getTopRatedMovies(@Query("api_key") String apiKey, @Query("page") int pageId);
+
+    @GET("movie/{id}/videos")
+    Observable<MovieResponse> getTrailers(@Query("id") int movieId, @Query("api_key") String apiKey);
 }

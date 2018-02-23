@@ -1,6 +1,6 @@
 package com.nuhkoca.udacitymoviesapp.view.movie;
 
-import com.nuhkoca.udacitymoviesapp.model.Result;
+import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public interface MovieView {
-    void onLoadingCompleted(List<Result> result);
+    void onLoadingCompleted(List<Results> results);
 
     void onLoadingFailed(String message);
 

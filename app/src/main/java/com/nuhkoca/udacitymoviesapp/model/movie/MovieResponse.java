@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.model;
+package com.nuhkoca.udacitymoviesapp.model.movie;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -18,65 +18,63 @@ import java.util.List;
 public class MovieResponse extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("page")
-    private String page;
+    private byte page;
     @Expose
     @SerializedName("total_results")
-    private String totalResults;
+    private int totalResults;
     @Expose
     @SerializedName("total_pages")
-    private String totalPages;
+    private int totalPages;
     @Expose
     @SerializedName("results")
-    private List<Result> results;
+    private List<Results> results;
 
-    public MovieResponse() {
-    }
-
-    private MovieResponse(Parcel in) {
-        page = in.readString();
-        totalResults = in.readString();
-        totalPages = in.readString();
-        results = in.createTypedArrayList(Result.CREATOR);
-    }
+    public MovieResponse() {}
 
     @Bindable
-    public String getPage() {
+    public int getPage() {
         return page;
     }
 
-    public void setPage(String page) {
+    public void setPage(byte page) {
         this.page = page;
         notifyPropertyChanged(BR.page);
     }
 
     @Bindable
-    public String getTotalResults() {
+    public int getTotalResults() {
         return totalResults;
     }
 
-    public void setTotalResults(String totalResults) {
+    public void setTotalResults(int totalResults) {
         this.totalResults = totalResults;
         notifyPropertyChanged(BR.totalResults);
     }
 
     @Bindable
-    public String getTotalPages() {
+    public int getTotalPages() {
         return totalPages;
     }
 
-    public void setTotalPages(String totalPages) {
+    public void setTotalPages(int totalPages) {
         this.totalPages = totalPages;
         notifyPropertyChanged(BR.totalPages);
     }
 
-    @Bindable
-    public List<Result> getResults() {
+    public List<Results> getResults() {
         return results;
     }
 
-    public void setResults(List<Result> results) {
+    public void setResults(List<Results> results) {
         this.results = results;
         notifyPropertyChanged(BR.results);
+    }
+
+    private MovieResponse(Parcel in) {
+        page = in.readByte();
+        totalResults = in.readInt();
+        totalPages = in.readInt();
+        results = in.createTypedArrayList(Results.CREATOR);
     }
 
     public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
@@ -98,9 +96,9 @@ public class MovieResponse extends BaseObservable implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(page);
-        dest.writeString(totalResults);
-        dest.writeString(totalPages);
+        dest.writeByte(page);
+        dest.writeInt(totalResults);
+        dest.writeInt(totalPages);
         dest.writeTypedList(results);
     }
 }

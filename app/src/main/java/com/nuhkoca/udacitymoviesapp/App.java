@@ -23,6 +23,7 @@ public class App extends Application {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
         LeakCanary.install(this);
+
         app = this;
     }
 }

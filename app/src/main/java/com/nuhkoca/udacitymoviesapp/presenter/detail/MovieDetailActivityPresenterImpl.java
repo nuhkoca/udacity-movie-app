@@ -2,7 +2,7 @@ package com.nuhkoca.udacitymoviesapp.presenter.detail;
 
 import android.content.Context;
 
-import com.nuhkoca.udacitymoviesapp.model.Result;
+import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivityView;
 
@@ -24,7 +24,7 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
     public void populateDetails() {
         if (mMovieDetailActivityView != null) {
             mBarConcealer.hideStatusBarOnly();
-            mMovieDetailActivityView.onDetailsLoaded(new Result());
+            mMovieDetailActivityView.onDetailsLoaded(new Results());
         }
     }
 
