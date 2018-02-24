@@ -67,10 +67,12 @@
     </style>
 
     <style name="MovieDetailCardViewAppearance" parent="CardView">
-        <item name="android:amPmBackgroundColor">@color/colorWhite</item>
+        <item name="cardBackgroundColor">@color/colorWhite</item>
         <item name="contentPaddingBottom">@dimen/dimension_16dp</item>
-        <item name="contentPaddingLeft">@dimen/dimension_16dp</item>
         <item name="contentPaddingRight">@dimen/dimension_16dp</item>
+        <item name="contentPaddingLeft">@dimen/dimension_16dp</item>
+        <item name="android:layout_margin">@dimen/dimension_8dp</item>
+        <item name="cardCornerRadius">@dimen/dimension_4dp</item>
         <item name="cardElevation">@dimen/dimension_4dp</item>
     </style>
 

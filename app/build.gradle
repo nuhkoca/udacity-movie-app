@@ -49,6 +49,7 @@ dependencies {
     implementation("com.github.bumptech.glide:okhttp3-integration:$rootProject.ext.glideLibraryVersion") {
         exclude group: 'glide-parent'
     }
+    implementation 'com.github.florent37:glidepalette:2.1.2'
 
 
     implementation "com.flipboard:bottomsheet-core:$rootProject.ext.flipBoardBottomSheetVersion"
@@ -64,7 +65,7 @@ dependencies {
 
     implementation 'io.reactivex:rxjava:1.3.0'
     implementation 'io.reactivex:rxandroid:1.2.1'
-    implementation 'com.github.florent37:glidepalette:2.1.2'
+    implementation 'com.ms-square:expandableTextView:0.1.4'
 
 
     testImplementation 'junit:junit:4.12'

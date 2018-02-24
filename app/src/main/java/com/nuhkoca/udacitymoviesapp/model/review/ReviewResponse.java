@@ -25,7 +25,7 @@ public class ReviewResponse extends BaseObservable {
     private byte totalResults;
     @Expose
     @SerializedName("results")
-    private List<ReviewResults> results;
+    private List<ReviewResults> reviewResults;
 
     public ReviewResponse() {}
 
@@ -61,11 +61,11 @@ public class ReviewResponse extends BaseObservable {
 
     @Bindable
     public List<ReviewResults> getResults() {
-        return results;
+        return reviewResults;
     }
 
     public void setResults(List<ReviewResults> results) {
-        this.results = results;
-        notifyPropertyChanged(BR.results);
+        this.reviewResults = results;
+        notifyPropertyChanged(BR.reviewResults);
     }
 }

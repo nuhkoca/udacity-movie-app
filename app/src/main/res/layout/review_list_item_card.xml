@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:expandableTextView="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="reviewResults"
@@ -9,14 +10,6 @@
             name="reviewResponse"
             type="com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse" />
     </data>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cvMovie"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimension_8dp"
-        android:layout_marginEnd="@dimen/dimension_8dp"
-        style="@style/MovieDetailCardViewAppearance" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -54,5 +47,4 @@
                 style="@style/MovieReviewTextAppearance.ItemRow"/>
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
 </layout>

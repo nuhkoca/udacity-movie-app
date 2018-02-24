@@ -15,5 +15,5 @@ public interface MovieDetailActivityPresenter {
 
     void onScheduleStartPostponedTransition();
 
-    void loadReviews(String apiKey, int movieId);
+    void loadReviews(int movieId);
 }

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private MovieDetailActivityPresenter mMovieDetailActivityPresenter;
     private BarConcealer barConcealer;
     private Results results;
+    private ReviewAdapter mReviewAdapter;
 
     private boolean mIsFabShown = true;
     private int mMaxScrollSize;
@@ -64,7 +66,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this, this);
         mMovieDetailActivityPresenter.populateDetails();
-        mMovieDetailActivityPresenter.loadReviews(BuildConfig.APIKEY, results.getId());
+        mMovieDetailActivityPresenter.loadReviews(results.getId());
 
         mActivityMovieDetailBinding.fabMovieDetail.setOnClickListener(this);
         mActivityMovieDetailBinding.aplMovieDetail.addOnOffsetChangedListener(this);
@@ -85,7 +87,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         switch (itemThatWasClicked) {
             case android.R.id.home:
                 supportFinishAfterTransition();
-                onBackPressed();
+                Intent parentIntent = NavUtils.getParentActivityIntent(this);
+                if (parentIntent != null) {
+                    parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                }
+                startActivity(parentIntent);
+                finish();
                 return true;
 
             case R.id.menu_share:
@@ -186,7 +193,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
                 ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetailHeaderPart.vMovieDetailHeaderPart.getLayoutParams();
 
-                layoutParams.width = mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getWidth() + 100;
+                layoutParams.width = mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getWidth() + Constants.UNDERLINE_WIDTH_TO_VIEW;
 
                 mActivityMovieDetailBinding.lMovieDetailHeaderPart.vMovieDetailHeaderPart.setLayoutParams(layoutParams);
 
@@ -216,18 +223,22 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         mActivityMovieDetailBinding.rvReviews.setHasFixedSize(true);
         mActivityMovieDetailBinding.rvReviews.setNestedScrollingEnabled(false);
 
-        ReviewAdapter mReviewAdapter = new ReviewAdapter();
+        mReviewAdapter = new ReviewAdapter();
         mActivityMovieDetailBinding.rvReviews.setAdapter(mReviewAdapter);
 
         mReviewAdapter.swapData(reviewResults);
     }
 
     @Override
-    public void onAnyLoadingFailed(String message) {}
+    public void onAnyLoadingFailed(String message) {
+        mActivityMovieDetailBinding.cvMovieDetailReviewDetails.setVisibility(View.GONE);
+        mActivityMovieDetailBinding.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected void onDestroy() {
         mMovieDetailActivityPresenter.onDestroy();
+        mReviewAdapter  = null;
         super.onDestroy();
     }
 

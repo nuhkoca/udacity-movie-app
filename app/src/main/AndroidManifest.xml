@@ -23,7 +23,9 @@
         </activity>
         <activity android:name=".view.main.MovieActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".view.detail.MovieDetailActivity" />
+        <activity android:name=".view.detail.MovieDetailActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.main.MovieActivity"/>
     </application>
 
 </manifest>

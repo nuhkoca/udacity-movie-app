@@ -63,8 +63,6 @@
                 android:id="@+id/cvMovieDetailGeneralDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dimension_8dp"
-                app:cardCornerRadius="@dimen/dimension_4dp"
                 style="@style/MovieDetailCardViewAppearance" >
 
                 <include android:id="@+id/lMovieDetailHeaderPart"
@@ -72,11 +70,33 @@
 
             </android.support.v7.widget.CardView>
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/dimension_32dp"
-                android:paddingBottom="@dimen/dimension_32dp">
+                android:layout_marginStart="@dimen/dimension_8dp"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextAppearance.Header"
+                    android:text="@string/review_part_header"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tvMovieDetailNoReviewError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:text="@string/no_review_found"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cvMovieDetailReviewDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rvReviews"
@@ -85,8 +105,7 @@
                     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 </android.support.v7.widget.RecyclerView>
-
-            </FrameLayout>
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 

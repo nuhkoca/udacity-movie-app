@@ -10,6 +10,8 @@ public class Constants {
 
     public static final int PERCENTAGE_TO_ANIMATE_FAB = 90;
 
+    public static final int UNDERLINE_WIDTH_TO_VIEW = 90;
+
     private Constants(){
         throw new AssertionError();
     }

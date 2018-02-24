@@ -53,7 +53,7 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
         toast.show();
 
         if (!toast.getView().isShown()) {
-            finish();
+            toast.cancel();
         }
     }
 

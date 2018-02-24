@@ -11,7 +11,8 @@
     <!-- Headers -->
     <string name="popular_header">Popular</string>
     <string name="top_rated_header">Top Rated</string>
-    <string name="header_part_header">General Details</string>
+    <string name="header_part_header">General Overview</string>
+    <string name="review_part_header">Reviews</string>
 
     <!-- Messages -->
     <string name="popular_movies_successfully_loaded">Popular movies successfully loaded</string>
@@ -19,11 +20,13 @@
     <string name="twice_press_to_exit">Press again to exit.</string>
     <string name="api_key_null">API Key is null</string>
     <string name="movie_tag_key_null">Movie tag is null</string>
+    <string name="movie_id_key_null">Movie ID shouldn\'t be lower than 0</string>
     <string name="no_internet_connection">You are not connected to an active network connection</string>
     <string name="mail_address">nuhkocaa@gmail.com</string>
     <string name="soon">You will be adding your favorites soon :)</string>
     <string name="soon_main">You will be viewing your favorites soon :)</string>
     <string name="no_data_error">There was an error occurred. Please try again later.</string>
+    <string name="no_review_found">No review found.</string>
 
 
     <!-- ShareIntent Texts -->

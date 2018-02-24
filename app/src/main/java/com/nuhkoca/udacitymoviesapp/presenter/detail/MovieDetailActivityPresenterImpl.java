@@ -4,6 +4,7 @@ import android.accounts.NetworkErrorException;
 import android.content.Context;
 
 import com.nuhkoca.udacitymoviesapp.App;
+import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.helper.ObservableHelper;
 import com.nuhkoca.udacitymoviesapp.helper.RetrofitInterceptor;
@@ -61,13 +62,13 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
     }
 
     @Override
-    public void loadReviews(String apiKey, int movieId) {
+    public void loadReviews(int movieId) {
         final Retrofit retrofit = RetrofitInterceptor.build();
-        ObservableHelper observableHelper = new ObservableHelper(retrofit, apiKey);
+        ObservableHelper observableHelper = new ObservableHelper(retrofit, BuildConfig.APIKEY);
         Observable<ReviewResponse> getMovies;
 
-        if (apiKey == null) {
-            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.api_key_null));
+        if (movieId == 0) {
+            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null));
             return;
         }
 
@@ -104,7 +105,11 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
 
                     @Override
                     public void onNext(ReviewResponse reviewResponse) {
-                        mMovieDetailActivityView.onReviewsLoaded(reviewResponse.getResults());
+                        if (reviewResponse.getResults().size() > 0) {
+                            mMovieDetailActivityView.onReviewsLoaded(reviewResponse.getResults());
+                        } else {
+                            mMovieDetailActivityView.onAnyLoadingFailed("");
+                        }
                     }
                 });
     }
