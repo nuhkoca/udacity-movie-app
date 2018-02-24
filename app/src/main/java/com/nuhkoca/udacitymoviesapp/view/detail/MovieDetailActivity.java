@@ -5,8 +5,10 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,21 +24,28 @@ import com.flipboard.bottomsheet.commons.IntentPickerSheetView;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
+import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
-import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
+import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
 
 import java.util.Comparator;
+import java.util.List;
 
-public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener {
+public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener {
 
     private ActivityMovieDetailBinding mActivityMovieDetailBinding;
     private MovieDetailActivityPresenter mMovieDetailActivityPresenter;
     private BarConcealer barConcealer;
+    private Results results;
+
+    private boolean mIsFabShown = true;
+    private int mMaxScrollSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +60,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
+
         mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this, this);
         mMovieDetailActivityPresenter.populateDetails();
+        mMovieDetailActivityPresenter.loadReviews(BuildConfig.APIKEY, results.getId());
 
-        barConcealer = BarConcealer.create(MovieDetailActivity.this);
         mActivityMovieDetailBinding.fabMovieDetail.setOnClickListener(this);
+        mActivityMovieDetailBinding.aplMovieDetail.addOnOffsetChangedListener(this);
     }
 
     @Override
@@ -94,9 +106,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
-    public void onDetailsLoaded(Results results) {
+    public void onDetailsLoaded() {
+        barConcealer = BarConcealer.create(this);
+        barConcealer.hideStatusBarOnly();
+
+
         if (results != null) {
-            results = getIntent().getParcelableExtra(MovieFragment.MOVIE_MODEL_TAG);
+            results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
 
             GlideApp.with(this)
                     .load(BuildConfig.W500IMAGEURLPREFIX + results.getPosterPath())
@@ -116,15 +132,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                     .into(mActivityMovieDetailBinding.ivMovieDetailPoster);
 
             mActivityMovieDetailBinding.ctlMovieDetail.setTitle(results.getOriginalTitle());
-            mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartReleaseDate.
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartReleaseDate.
                     setText(results.getReleaseDate());
-            mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartVoteCount
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartVoteCount
                     .setText(String.valueOf(results.getVoteCount()));
-            mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartVoteAverage
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartVoteAverage
                     .setText(String.valueOf(results.getVoteAverage()));
-            mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartOverview
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartOverview
                     .setText(results.getOverview());
-
 
             mMovieDetailActivityPresenter.onChangeViewWidth();
         }
@@ -163,17 +178,17 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onViewWidthChanged() {
-        mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartHeader.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
 
-                mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartHeader.getViewTreeObserver().removeOnPreDrawListener(this);
+                mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.vMovieDetailHeaderPart.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetailHeaderPart.vMovieDetailHeaderPart.getLayoutParams();
 
-                layoutParams.width = mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.tvMovieDetailHeaderPartHeader.getWidth() + 100;
+                layoutParams.width = mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getWidth() + 100;
 
-                mActivityMovieDetailBinding.lMovieDetailPartHolder.lMovieDetailHolderHeader.vMovieDetailHeaderPart.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailHeaderPart.vMovieDetailHeaderPart.setLayoutParams(layoutParams);
 
                 return false;
             }
@@ -194,6 +209,23 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
+    public void onReviewsLoaded(List<ReviewResults> reviewResults) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mActivityMovieDetailBinding.rvReviews.setLayoutManager(linearLayoutManager);
+
+        mActivityMovieDetailBinding.rvReviews.setHasFixedSize(true);
+        mActivityMovieDetailBinding.rvReviews.setNestedScrollingEnabled(false);
+
+        ReviewAdapter mReviewAdapter = new ReviewAdapter();
+        mActivityMovieDetailBinding.rvReviews.setAdapter(mReviewAdapter);
+
+        mReviewAdapter.swapData(reviewResults);
+    }
+
+    @Override
+    public void onAnyLoadingFailed(String message) {}
+
+    @Override
     protected void onDestroy() {
         mMovieDetailActivityPresenter.onDestroy();
         super.onDestroy();
@@ -208,5 +240,30 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     public void onClick(View v) {
         SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, getString(R.string.soon));
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (mMaxScrollSize == 0)
+            mMaxScrollSize = appBarLayout.getTotalScrollRange();
+
+        int percentage = (Math.abs(verticalOffset)) * 100 / mMaxScrollSize;
+
+        if (percentage >= Constants.PERCENTAGE_TO_ANIMATE_FAB && mIsFabShown) {
+            mIsFabShown = false;
+
+            mActivityMovieDetailBinding.fabMovieDetail.animate()
+                    .scaleY(0).scaleX(0)
+                    .setDuration(200)
+                    .start();
+        }
+
+        if (percentage <= Constants.PERCENTAGE_TO_ANIMATE_FAB && !mIsFabShown) {
+            mIsFabShown = true;
+
+            mActivityMovieDetailBinding.fabMovieDetail.animate()
+                    .scaleY(1).scaleX(1)
+                    .start();
+        }
     }
 }

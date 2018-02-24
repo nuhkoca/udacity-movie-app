@@ -2,8 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="@dimen/dimension_4dp"
+    android:layout_marginEnd="@dimen/dimension_4dp"
+    android:layout_marginBottom="@dimen/dimension_8dp"
+    android:layout_marginTop="@dimen/dimension_12dp">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMovieDetailHeaderPartHeader"

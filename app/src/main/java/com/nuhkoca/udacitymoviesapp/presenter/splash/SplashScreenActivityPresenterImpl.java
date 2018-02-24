@@ -15,17 +15,14 @@ import com.nuhkoca.udacitymoviesapp.view.splash.SplashScreenActivityView;
 public class SplashScreenActivityPresenterImpl implements SplashScreenActivityPresenter {
 
     private SplashScreenActivityView mSplashScreenActivityView;
-    private BarConcealer mBarConcealer;
 
     public SplashScreenActivityPresenterImpl(SplashScreenActivityView mSplashScreenActivityView, Context context) {
         this.mSplashScreenActivityView = mSplashScreenActivityView;
-        mBarConcealer = BarConcealer.create(context);
     }
 
     @Override
     public void openActivity() {
         if (mSplashScreenActivityView != null) {
-            mBarConcealer.makeFullImmersive();
 
             final boolean isConnected = ConnectionSniffer.sniff();
 

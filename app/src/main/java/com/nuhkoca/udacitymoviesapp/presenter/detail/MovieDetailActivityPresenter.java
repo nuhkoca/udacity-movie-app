@@ -14,4 +14,6 @@ public interface MovieDetailActivityPresenter {
     void onChangeViewWidth();
 
     void onScheduleStartPostponedTransition();
+
+    void loadReviews(String apiKey, int movieId);
 }

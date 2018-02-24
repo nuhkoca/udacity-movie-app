@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.presenter.splash.SplashScreenActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.splash.SplashScreenActivityPresenterImpl;
+import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.view.main.MovieActivity;
 
 public class SplashScreenActivity extends AppCompatActivity implements SplashScreenActivityView {
@@ -31,6 +32,9 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
 
     @Override
     public void onActivityOpened() {
+        BarConcealer barConcealer = BarConcealer.create(this);
+        barConcealer.makeFullImmersive();
+
         int delayInSeconds = getResources().getInteger(R.integer.delay_in_seconds_to_activity);
 
         new Handler().postDelayed(new Runnable() {

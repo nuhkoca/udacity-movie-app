@@ -11,6 +11,7 @@ import com.nuhkoca.udacitymoviesapp.view.movie.MovieView;
 
 import java.util.Objects;
 
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
@@ -52,7 +53,7 @@ public class MoviePresenterImpl implements MoviePresenter {
         if (Objects.equals(movieTag, App.getInstance().getString(R.string.popular_tag))) {
             getMovies = observableHelper.getPopularMovies(1);
         } else {
-            getMovies = observableHelper.getTopRatedMovies( 1);
+            getMovies = observableHelper.getTopRatedMovies(1);
         }
 
         getMovies.subscribeOn(Schedulers.io())
@@ -66,7 +67,8 @@ public class MoviePresenterImpl implements MoviePresenter {
                 })
                 .subscribe(new Subscriber<MovieResponse>() {
                     @Override
-                    public void onCompleted() {}
+                    public void onCompleted() {
+                    }
 
                     @Override
                     public void onError(Throwable e) {
@@ -75,6 +77,11 @@ public class MoviePresenterImpl implements MoviePresenter {
                             mMovieView.onLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
                         } else if (e instanceof NullPointerException) {
                             mMovieView.onLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                        } else if (e instanceof HttpException) {
+                            mMovieView.onLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                        } else {
+                            mMovieView.onLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+
                         }
 
                         mMovieView.showProgress(true);

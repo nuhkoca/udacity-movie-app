@@ -46,12 +46,32 @@
         <item name="android:layout_marginEnd">@dimen/dimension_8dp</item>
     </style>
 
+    <style name="MovieReviewTextAppearance" parent="TextAppearance.AppCompat.Small"/>
+
+    <style name="MovieReviewTextAppearance.ItemRow">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:lineSpacingExtra">@dimen/dimension_8dp</item>
+        <item name="android:layout_marginStart">@dimen/dimension_4dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimension_4dp</item>
+        <item name="android:layout_marginBottom">@dimen/dimension_12dp</item>
+    </style>
+
     <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
     <style name="TextAppearance.Header">
         <item name="android:minHeight">20dp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">?colorAccent</item>
+    </style>
+
+    <style name="MovieDetailCardViewAppearance" parent="CardView">
+        <item name="android:amPmBackgroundColor">@color/colorWhite</item>
+        <item name="contentPaddingBottom">@dimen/dimension_16dp</item>
+        <item name="contentPaddingLeft">@dimen/dimension_16dp</item>
+        <item name="contentPaddingRight">@dimen/dimension_16dp</item>
+        <item name="cardElevation">@dimen/dimension_4dp</item>
     </style>
 
 </resources>

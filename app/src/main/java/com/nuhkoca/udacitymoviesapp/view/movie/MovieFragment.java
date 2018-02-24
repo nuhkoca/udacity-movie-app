@@ -11,15 +11,18 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.callback.IRecyclerViewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentMovieBinding;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
@@ -39,7 +42,6 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     private MoviePresenter mMoviePresenter;
     private MovieAdapter mMovieAdapter;
 
-    public static final String MOVIE_MODEL_TAG = "movie-model";
 
     public static MovieFragment getInstance(String tag) {
         MovieFragment movieFragment = new MovieFragment();
@@ -52,9 +54,7 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     }
 
     public static MovieFragment getInstance() {
-        MovieFragment movieFragment = new MovieFragment();
-
-        return movieFragment;
+        return new MovieFragment();
     }
 
     @Override
@@ -80,9 +80,8 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     @Override
     public void onLoadingCompleted(List<Results> results) {
         if (getActivity() != null) {
-            int spanCount = getActivity().getResources().getInteger(R.integer.span_count);
 
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), spanCount);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns());
             mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
 
             mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
@@ -92,7 +91,6 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
             mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
 
             mMovieAdapter.swapData(results);
-            mMovieAdapter.notifyDataSetChanged();
         }
     }
 
@@ -131,7 +129,7 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     @Override
     public void onItemTouched(Results results, ImageView imageView) {
         Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
-        detailIntent.putExtra(MOVIE_MODEL_TAG, results);
+        detailIntent.putExtra(Constants.MOVIE_MODEL_TAG, results);
 
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()),
@@ -139,5 +137,18 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
                         ViewCompat.getTransitionName(imageView));
 
         startActivity(detailIntent, activityOptionsCompat.toBundle());
+    }
+
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        if (getActivity() != null) {
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        }
+
+        int widthDivider = 500;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 2;
+        return nColumns;
     }
 }
