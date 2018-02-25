@@ -18,20 +18,20 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
-import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
 /**
  * Created by nuhkoca on 2/19/18.
  */
 
-public class ImageBindingAdapter {
+public class MoviePosterBindingAdapter {
 
     @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "genre"})
     public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView genre) {
 
-        logoUrl = BuildConfig.W500IMAGEURLPREFIX + logoUrl;
+        logoUrl = Constants.W300_IMAGE_URL_PREFIX + logoUrl;
 
         if (!TextUtils.isEmpty(logoUrl)) {
             GlideApp.with(imageView.getContext())

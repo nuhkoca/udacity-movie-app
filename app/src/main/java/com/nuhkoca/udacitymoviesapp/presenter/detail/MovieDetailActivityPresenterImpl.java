@@ -6,9 +6,11 @@ import android.content.Context;
 import com.nuhkoca.udacitymoviesapp.App;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.helper.ObservableHelper;
 import com.nuhkoca.udacitymoviesapp.helper.RetrofitInterceptor;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse;
+import com.nuhkoca.udacitymoviesapp.model.video.VideoResponse;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivityView;
 
 import retrofit2.HttpException;
@@ -105,10 +107,63 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
 
                     @Override
                     public void onNext(ReviewResponse reviewResponse) {
-                        if (reviewResponse.getResults().size() > 0) {
-                            mMovieDetailActivityView.onReviewsLoaded(reviewResponse.getResults());
+                        if (reviewResponse.getReviewResults().size() > 0) {
+                            mMovieDetailActivityView.onReviewsLoaded(reviewResponse.getReviewResults());
                         } else {
-                            mMovieDetailActivityView.onAnyLoadingFailed("");
+                            mMovieDetailActivityView.onPartLoadingFailed(Constants.TYPES.REVIEW);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void loadTrailers(int movieId) {
+        final Retrofit retrofit = RetrofitInterceptor.build();
+        ObservableHelper observableHelper = new ObservableHelper(retrofit, BuildConfig.APIKEY);
+        Observable<VideoResponse> getTrailers;
+
+        if (movieId == 0) {
+            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null));
+            return;
+        }
+
+        getTrailers = observableHelper.getTrailers(movieId);
+
+        getTrailers.subscribeOn(Schedulers.io())
+                .retry(1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext(new Func1<Throwable, Observable<? extends VideoResponse>>() {
+                    @Override
+                    public Observable<? extends VideoResponse> call(Throwable throwable) {
+                        return Observable.error(throwable);
+                    }
+                })
+                .subscribe(new Subscriber<VideoResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d(e.getMessage());
+                        if (e instanceof NetworkErrorException) {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                        } else if (e instanceof NullPointerException) {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                        } else if (e instanceof HttpException) {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                        } else {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                        }
+                    }
+
+                    @Override
+                    public void onNext(VideoResponse videoResponse) {
+                        if (videoResponse.getVideoResults().size() > 0) {
+                            mMovieDetailActivityView.onTrailersLoaded(videoResponse.getVideoResults());
+                        } else {
+                            mMovieDetailActivityView.onPartLoadingFailed(Constants.TYPES.TRAILER);
                         }
                     }
                 });

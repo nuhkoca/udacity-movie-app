@@ -60,11 +60,11 @@ public class ReviewResponse extends BaseObservable {
     }
 
     @Bindable
-    public List<ReviewResults> getResults() {
+    public List<ReviewResults> getReviewResults() {
         return reviewResults;
     }
 
-    public void setResults(List<ReviewResults> results) {
+    public void setReviewResults(List<ReviewResults> results) {
         this.reviewResults = results;
         notifyPropertyChanged(BR.reviewResults);
     }

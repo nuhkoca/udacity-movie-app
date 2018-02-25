@@ -9,8 +9,8 @@
             name="movieResponse"
             type="com.nuhkoca.udacitymoviesapp.model.movie.MovieResponse" />
         <variable
-            name="touchListener"
-            type="com.nuhkoca.udacitymoviesapp.callback.IRecyclerViewItemTouchListener" />
+            name="movieTouchListener"
+            type="com.nuhkoca.udacitymoviesapp.callback.IMovieItemTouchListener" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -20,7 +20,7 @@
         app:cardCornerRadius="0dp"
         android:shape="rectangle"
         android:layout_margin="1dp"
-        android:onClick="@{() -> touchListener.onItemTouched(results, ivMoviePoster)}">
+        android:onClick="@{() -> movieTouchListener.onMovieItemTouched(results, ivMoviePoster)}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                     android:indeterminateTint="@color/colorPrimary"
                     android:layout_centerInParent="true"/>
 
-                <android.support.v7.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/ivMoviePoster"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
@@ -54,7 +54,7 @@
                     app:genre="@{tvMovieGenre}"/>
             </RelativeLayout>
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/tvMovieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 android:layout_marginTop="@dimen/dimension_12dp"
                 style="@style/MovieListTextAppearance.ItemRow"/>
 
-            <android.support.v7.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/tvMovieGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

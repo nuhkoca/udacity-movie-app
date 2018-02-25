@@ -1,6 +1,7 @@
 package com.nuhkoca.udacitymoviesapp.view.detail;
 
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
+import com.nuhkoca.udacitymoviesapp.model.video.VideoResults;
 
 import java.util.List;
 
@@ -19,5 +20,9 @@ public interface MovieDetailActivityView {
 
     void onReviewsLoaded(List<ReviewResults> reviewResults);
 
+    void onTrailersLoaded(List<VideoResults> videoResults);
+
     void onAnyLoadingFailed(String message);
+
+    void onPartLoadingFailed(Enum types);
 }

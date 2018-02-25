@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.nuhkoca.udacitymoviesapp.BR;
 import com.nuhkoca.udacitymoviesapp.R;
-import com.nuhkoca.udacitymoviesapp.callback.IRecyclerViewItemTouchListener;
+import com.nuhkoca.udacitymoviesapp.callback.IMovieItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.MovieListItemCardBinding;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 
@@ -24,10 +24,10 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
     private List<Results> mResults;
-    private IRecyclerViewItemTouchListener mIRecyclerViewItemTouchListener;
+    private IMovieItemTouchListener mIMovieItemTouchListener;
 
-    public MovieAdapter(IRecyclerViewItemTouchListener IRecyclerViewItemTouchListener) {
-        this.mIRecyclerViewItemTouchListener = IRecyclerViewItemTouchListener;
+    public MovieAdapter(IMovieItemTouchListener IMovieItemTouchListener) {
+        this.mIMovieItemTouchListener = IMovieItemTouchListener;
         this.mResults = new ArrayList<>();
     }
 
@@ -75,7 +75,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         void bindView(Results results) {
             mMovieListItemCardBinding.setVariable(BR.results, results);
-            mMovieListItemCardBinding.setVariable(BR.touchListener, mIRecyclerViewItemTouchListener);
+            mMovieListItemCardBinding.setVariable(BR.movieTouchListener, mIMovieItemTouchListener);
 
             ViewCompat.setTransitionName(mMovieListItemCardBinding.ivMoviePoster,
                     "movie-poster" + getAdapterPosition());

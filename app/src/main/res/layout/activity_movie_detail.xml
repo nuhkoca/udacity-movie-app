@@ -28,7 +28,7 @@
             app:expandedTitleTextAppearance="@style/CollapsingTextAppearance.Inverse"
             app:contentScrim="?colorPrimary">
 
-            <android.support.v7.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/ivMovieDetailPoster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -70,42 +70,11 @@
 
             </android.support.v7.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dimension_8dp"
-                android:orientation="vertical">
+            <include android:id="@+id/lMovieDetailReviewPart"
+                layout="@layout/movie_detail_review_part" />
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/TextAppearance.Header"
-                    android:text="@string/review_part_header"/>
-
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/tvMovieDetailNoReviewError"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:textStyle="italic"
-                    android:visibility="gone"
-                    android:text="@string/no_review_found"/>
-
-            </LinearLayout>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/cvMovieDetailReviewDetails"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvReviews"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                </android.support.v7.widget.RecyclerView>
-            </android.support.v7.widget.CardView>
+            <include android:id="@+id/lMovieDetailTrailerPart"
+                layout="@layout/movie_detail_trailer_part"/>
 
         </LinearLayout>
 

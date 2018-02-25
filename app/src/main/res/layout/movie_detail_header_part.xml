@@ -3,11 +3,7 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginStart="@dimen/dimension_4dp"
-    android:layout_marginEnd="@dimen/dimension_4dp"
-    android:layout_marginBottom="@dimen/dimension_8dp"
-    android:layout_marginTop="@dimen/dimension_12dp">
+    android:orientation="vertical">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMovieDetailHeaderPartHeader"
@@ -33,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@string/release_date"
-            android:textStyle="bold"/>
+            style="@style/MovieDetailTextAppearance.LabelRow"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tvMovieDetailHeaderPartReleaseDate"
@@ -54,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@string/vote_count"
-            android:textStyle="bold"/>
+            style="@style/MovieDetailTextAppearance.LabelRow"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMovieDetailHeaderPartVoteCount"
@@ -76,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@string/vote_average"
-            android:textStyle="bold"/>
+            style="@style/MovieDetailTextAppearance.LabelRow"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMovieDetailHeaderPartVoteAverage"
@@ -98,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="@string/overview"
-            android:textStyle="bold"/>
+            style="@style/MovieDetailTextAppearance.LabelRow"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMovieDetailHeaderPartOverview"

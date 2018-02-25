@@ -3,17 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="reviewResults"
-            type="com.nuhkoca.udacitymoviesapp.model.review.ReviewResults" />
+            name="videoResults"
+            type="com.nuhkoca.udacitymoviesapp.model.video.VideoResults" />
         <variable
-            name="reviewResponse"
-            type="com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse" />
+            name="videoResponse"
+            type="com.nuhkoca.udacitymoviesapp.model.video.VideoResponse" />
+        <variable
+            name="trailerTouchListener"
+            type="com.nuhkoca.udacitymoviesapp.callback.ITrailerItemTouchListener" />
     </data>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/MovieDetailCardViewAppearance">
+        style="@style/MovieDetailCardViewAppearance"
+        android:onClick="@{() -> trailerTouchListener.onTrailerItemTouched(videoResults.key)}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,10 +25,11 @@
             android:orientation="vertical"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless">
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{() -> trailerTouchListener.onTrailerItemTouched(videoResults.key)}" >
 
             <ProgressBar
-                android:id="@+id/pbReview"
+                android:id="@+id/pbTrailer"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:indeterminate="true"
@@ -32,28 +37,34 @@
                 android:indeterminateTint="@color/colorPrimary"
                 android:layout_gravity="center" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="@dimen/dimension_16dp"
+                android:contentDescription="@string/image_place_holder"
+                app:thumbnail="@{String.valueOf(videoResults.key)}"
+                app:hideThumbnailProgress="@{pbTrailer}" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
-                app:content="@{reviewResults.content}"
-                app:hideProgressBar="@{pbReview}"
+                android:text="@{videoResults.name}"
                 android:textSize="16sp"
-                android:maxLines="8"
-                android:lines="8"
-                android:ellipsize="end"
-                style="@style/MovieReviewTextAppearance.ItemRow"/>
+                android:maxLines="1"
+                android:lines="1"
+                style="@style/MovieReviewTextAppearance.ItemRow" />
 
             <TextView
-                android:id="@+id/tvReviewContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="@{reviewResults.author}"
+                android:text="@{videoResults.type}"
                 android:layout_gravity="end"
                 android:textSize="14sp"
                 android:layout_marginTop="@dimen/dimension_8dp"
-                style="@style/MovieReviewTextAppearance.ItemRow"/>
+                style="@style/MovieReviewTextAppearance.ItemRow" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

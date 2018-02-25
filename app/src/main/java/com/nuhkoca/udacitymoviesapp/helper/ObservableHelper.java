@@ -2,6 +2,7 @@ package com.nuhkoca.udacitymoviesapp.helper;
 
 import com.nuhkoca.udacitymoviesapp.model.movie.MovieResponse;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse;
+import com.nuhkoca.udacitymoviesapp.model.video.VideoResponse;
 import com.nuhkoca.udacitymoviesapp.network.IMovieAPI;
 
 import retrofit2.Retrofit;
@@ -30,6 +31,10 @@ public class ObservableHelper {
 
     public Observable<ReviewResponse> getReviews(int movieId) {
         return iMovieAPI.getReviews(movieId, apiKey);
+    }
+
+    public Observable<VideoResponse> getTrailers(int movieId) {
+        return iMovieAPI.getTrailers(movieId, apiKey);
     }
 
     private IMovieAPI getIMovieAPI(Retrofit retrofit) {

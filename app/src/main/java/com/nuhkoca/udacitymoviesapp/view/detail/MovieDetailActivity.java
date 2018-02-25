@@ -1,8 +1,10 @@
 package com.nuhkoca.udacitymoviesapp.view.detail;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -22,29 +24,32 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.flipboard.bottomsheet.commons.IntentPickerSheetView;
-import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.ITrailerItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
+import com.nuhkoca.udacitymoviesapp.model.video.VideoResults;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
+import com.nuhkoca.udacitymoviesapp.view.detail.adapter.TrailerAdapter;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener {
+public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener {
 
     private ActivityMovieDetailBinding mActivityMovieDetailBinding;
     private MovieDetailActivityPresenter mMovieDetailActivityPresenter;
     private BarConcealer barConcealer;
     private Results results;
     private ReviewAdapter mReviewAdapter;
+    private TrailerAdapter mTrailerAdapter;
 
     private boolean mIsFabShown = true;
     private int mMaxScrollSize;
@@ -67,6 +72,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this, this);
         mMovieDetailActivityPresenter.populateDetails();
         mMovieDetailActivityPresenter.loadReviews(results.getId());
+        mMovieDetailActivityPresenter.loadTrailers(results.getId());
 
         mActivityMovieDetailBinding.fabMovieDetail.setOnClickListener(this);
         mActivityMovieDetailBinding.aplMovieDetail.addOnOffsetChangedListener(this);
@@ -122,7 +128,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
 
             GlideApp.with(this)
-                    .load(BuildConfig.W500IMAGEURLPREFIX + results.getPosterPath())
+                    .load(Constants.W500_IMAGE_URL_PREFIX + results.getPosterPath())
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -217,28 +223,58 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onReviewsLoaded(List<ReviewResults> reviewResults) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mActivityMovieDetailBinding.rvReviews.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setLayoutManager(linearLayoutManager);
 
-        mActivityMovieDetailBinding.rvReviews.setHasFixedSize(true);
-        mActivityMovieDetailBinding.rvReviews.setNestedScrollingEnabled(false);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setHasFixedSize(true);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setNestedScrollingEnabled(false);
 
         mReviewAdapter = new ReviewAdapter();
-        mActivityMovieDetailBinding.rvReviews.setAdapter(mReviewAdapter);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setAdapter(mReviewAdapter);
 
         mReviewAdapter.swapData(reviewResults);
+
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setText(String.format(getString(R.string.total_review_tag), reviewResults.size()));
+    }
+
+    @Override
+    public void onTrailersLoaded(List<VideoResults> videoResults) {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setLayoutManager(linearLayoutManager);
+
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setHasFixedSize(true);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setNestedScrollingEnabled(false);
+
+        mTrailerAdapter = new TrailerAdapter(this);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setAdapter(mTrailerAdapter);
+
+        mTrailerAdapter.swapData(videoResults);
+
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setText(String.format(getString(R.string.total_trailer_tag), videoResults.size()));
     }
 
     @Override
     public void onAnyLoadingFailed(String message) {
-        mActivityMovieDetailBinding.cvMovieDetailReviewDetails.setVisibility(View.GONE);
-        mActivityMovieDetailBinding.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onPartLoadingFailed(Enum types) {
+        if (types.equals(Constants.TYPES.REVIEW)) {
+            mActivityMovieDetailBinding.lMovieDetailReviewPart.flMovieDetailReviewPart.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
+        } else {
+            mActivityMovieDetailBinding.lMovieDetailTrailerPart.flMovieDetailTrailerPart.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     protected void onDestroy() {
         mMovieDetailActivityPresenter.onDestroy();
-        mReviewAdapter  = null;
+        mReviewAdapter = null;
+        mTrailerAdapter = null;
         super.onDestroy();
     }
 
@@ -275,6 +311,18 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mActivityMovieDetailBinding.fabMovieDetail.animate()
                     .scaleY(1).scaleX(1)
                     .start();
+        }
+    }
+
+    @Override
+    public void onTrailerItemTouched(String trailerKey) {
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailerKey));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(Constants.YOUTUBE_PREFIX + trailerKey));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
         }
     }
 }

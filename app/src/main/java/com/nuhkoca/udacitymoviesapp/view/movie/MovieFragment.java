@@ -19,7 +19,7 @@ import android.widget.ImageView;
 
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
-import com.nuhkoca.udacitymoviesapp.callback.IRecyclerViewItemTouchListener;
+import com.nuhkoca.udacitymoviesapp.callback.IMovieItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentMovieBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
@@ -35,7 +35,7 @@ import java.util.Objects;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MovieFragment extends Fragment implements MovieView, IRecyclerViewItemTouchListener {
+public class MovieFragment extends Fragment implements MovieView, IMovieItemTouchListener {
 
     private FragmentMovieBinding mFragmentMovieBinding;
     private MoviePresenter mMoviePresenter;
@@ -126,7 +126,7 @@ public class MovieFragment extends Fragment implements MovieView, IRecyclerViewI
     }
 
     @Override
-    public void onItemTouched(Results results, ImageView imageView) {
+    public void onMovieItemTouched(Results results, ImageView imageView) {
         Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
         detailIntent.putExtra(Constants.MOVIE_MODEL_TAG, results);
 

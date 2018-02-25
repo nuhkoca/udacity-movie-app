@@ -2,6 +2,7 @@ package com.nuhkoca.udacitymoviesapp.network;
 
 import com.nuhkoca.udacitymoviesapp.model.movie.MovieResponse;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse;
+import com.nuhkoca.udacitymoviesapp.model.video.VideoResponse;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -22,4 +23,7 @@ public interface IMovieAPI {
 
     @GET("movie/{id}/reviews")
     Observable<ReviewResponse> getReviews(@Path("id") int movieId, @Query("api_key") String apiKey);
+
+    @GET("movie/{id}/videos")
+    Observable<VideoResponse> getTrailers(@Path("id") int movieId, @Query("api_key") String apiKey);
 }

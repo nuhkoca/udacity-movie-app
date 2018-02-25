@@ -16,4 +16,6 @@ public interface MovieDetailActivityPresenter {
     void onScheduleStartPostponedTransition();
 
     void loadReviews(int movieId);
+
+    void loadTrailers(int movieId);
 }
