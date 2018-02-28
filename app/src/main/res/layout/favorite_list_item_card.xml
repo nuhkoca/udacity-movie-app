@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <data>
-        <variable
-            name="results"
-            type="com.nuhkoca.udacitymoviesapp.model.movie.Results" />
-        <variable
-            name="movieResponse"
-            type="com.nuhkoca.udacitymoviesapp.model.movie.MovieResponse" />
-        <variable
-            name="movieTouchListener"
-            type="com.nuhkoca.udacitymoviesapp.callback.IMovieItemTouchListener" />
-    </data>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cvMovie"
+        android:id="@+id/cvFavorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="0dp"
         android:shape="rectangle"
-        android:layout_margin="1dp"
-        android:onClick="@{() -> movieTouchListener.onMovieItemTouched(results, ivMoviePoster, tvMovieGenre.getText().toString())}">
+        android:layout_margin="1dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +20,7 @@
                 android:layout_height="wrap_content">
 
                 <ProgressBar
-                    android:id="@+id/pbMovie"
+                    android:id="@+id/pbFavorites"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:indeterminate="true"
@@ -41,39 +29,33 @@
                     android:layout_centerInParent="true"/>
 
                 <ImageView
-                    android:id="@+id/ivMoviePoster"
+                    android:id="@+id/ivFavoritePoster"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/image_place_holder"
                     android:scaleType="centerCrop"
-                    android:src="@{results.posterPath}"
-                    app:progressBar="@{pbMovie}"
-                    app:floor="@{cvMovie}"
-                    app:title="@{tvMovieTitle}"
-                    app:genre="@{tvMovieGenre}"/>
+                   />
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/tvMovieTitle"
+                android:id="@+id/tvFavoriteTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="@{results.originalTitle}"
                 android:textSize="16sp"
                 android:layout_marginTop="@dimen/dimension_12dp"
                 style="@style/MovieListTextAppearance.ItemRow"/>
 
             <TextView
-                android:id="@+id/tvMovieGenre"
+                android:id="@+id/tvFavoriteGenre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
-                app:genreValue="@{results.genreIds}"
                 android:textSize="14sp"
                 android:layout_marginBottom="@dimen/dimension_12dp"
                 style="@style/MovieListTextAppearance.ItemRow"/>
 
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </layout>

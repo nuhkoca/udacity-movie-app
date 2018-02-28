@@ -1,6 +1,7 @@
 package com.nuhkoca.udacitymoviesapp.view.detail;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
@@ -8,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +25,11 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.flipboard.bottomsheet.commons.IntentPickerSheetView;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.IReviewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.callback.ITrailerItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
+import com.nuhkoca.udacitymoviesapp.model.favorite.FavoriteMoviesContract;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 import com.nuhkoca.udacitymoviesapp.model.video.VideoResults;
@@ -35,14 +37,15 @@ import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
-import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.TrailerAdapter;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener {
+import timber.log.Timber;
+
+public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener, IReviewItemTouchListener {
 
     private ActivityMovieDetailBinding mActivityMovieDetailBinding;
     private MovieDetailActivityPresenter mMovieDetailActivityPresenter;
@@ -53,6 +56,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     private boolean mIsFabShown = true;
     private int mMaxScrollSize;
+    private String genre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +97,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         switch (itemThatWasClicked) {
             case android.R.id.home:
                 supportFinishAfterTransition();
-                Intent parentIntent = NavUtils.getParentActivityIntent(this);
-                if (parentIntent != null) {
-                    parentIntent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                }
-                startActivity(parentIntent);
-                finish();
+
+                setResult(RESULT_OK);
                 return true;
 
             case R.id.menu_share:
@@ -124,8 +124,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         barConcealer.hideStatusBarOnly();
 
 
-        if (results != null) {
+        if (results != null && getIntent() != null) {
             results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
+            genre = getIntent().getStringExtra(Constants.GENRE_TAG);
 
             GlideApp.with(this)
                     .load(Constants.W500_IMAGE_URL_PREFIX + results.getPosterPath())
@@ -153,6 +154,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                     .setText(String.valueOf(results.getVoteAverage()));
             mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartOverview
                     .setText(results.getOverview());
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartGenre
+                    .setText(genre);
 
             mMovieDetailActivityPresenter.onChangeViewWidth();
         }
@@ -229,7 +232,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setHasFixedSize(true);
         mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setNestedScrollingEnabled(false);
 
-        mReviewAdapter = new ReviewAdapter();
+        mReviewAdapter = new ReviewAdapter(this);
         mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setAdapter(mReviewAdapter);
 
         mReviewAdapter.swapData(reviewResults);
@@ -255,6 +258,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onAnyLoadingFailed(String message) {
+        // toast message
     }
 
     @Override
@@ -286,7 +290,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onClick(View v) {
-        SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, getString(R.string.soon));
+        int itemThatWasClicked = v.getId();
+
+        switch (itemThatWasClicked) {
+            case R.id.fabMovieDetail:
+                addMovie(0, null, null, null);
+                break;
+        }
     }
 
     @Override
@@ -324,5 +334,19 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         } catch (ActivityNotFoundException ex) {
             startActivity(webIntent);
         }
+    }
+
+    @Override
+    public void onReviewItemTouched(String content) {
+        Timber.d(content);
+    }
+
+    private void addMovie(long id, String name, String genre, String image) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.ID, id);
+        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_NAME, name);
+        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_GENRE, genre);
+        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_IMAGE, image);
     }
 }

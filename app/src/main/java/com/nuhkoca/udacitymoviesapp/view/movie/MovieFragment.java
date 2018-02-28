@@ -11,7 +11,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
+import com.nuhkoca.udacitymoviesapp.utils.ColumnCalculator;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.adapter.MovieAdapter;
@@ -40,7 +40,6 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     private FragmentMovieBinding mFragmentMovieBinding;
     private MoviePresenter mMoviePresenter;
     private MovieAdapter mMovieAdapter;
-
 
     public static MovieFragment getInstance(String tag) {
         MovieFragment movieFragment = new MovieFragment();
@@ -80,7 +79,7 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     public void onLoadingCompleted(List<Results> results) {
         if (getActivity() != null) {
 
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns());
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), ColumnCalculator.getOptimalNumberOfColumn(getActivity()));
             mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
 
             mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
@@ -95,7 +94,7 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onLoadingFailed(String message) {
-        SnackbarPopper.popIndefinite(mFragmentMovieBinding.flMovie, message);
+        mFragmentMovieBinding.tvMovieErrorHolder.setText(message);
     }
 
     @Override
@@ -107,6 +106,8 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
         }
 
         mFragmentMovieBinding.pbMovie.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(visible ? View.VISIBLE: View.GONE);
+
         mFragmentMovieBinding.pbMovie.animate()
                 .setDuration(duration)
                 .alpha(visible ? 1 : 0)
@@ -114,6 +115,7 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         mFragmentMovieBinding.pbMovie.setVisibility(visible ? View.VISIBLE : View.GONE);
+                        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(visible ? View.VISIBLE: View.GONE);
                     }
                 });
     }
@@ -126,28 +128,16 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     }
 
     @Override
-    public void onMovieItemTouched(Results results, ImageView imageView) {
+    public void onMovieItemTouched(Results results, ImageView imageView, String genre) {
         Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
         detailIntent.putExtra(Constants.MOVIE_MODEL_TAG, results);
+        detailIntent.putExtra(Constants.GENRE_TAG, genre);
 
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()),
                         imageView,
                         ViewCompat.getTransitionName(imageView));
 
-        startActivity(detailIntent, activityOptionsCompat.toBundle());
-    }
-
-    private int numberOfColumns() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        if (getActivity() != null) {
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        }
-
-        int widthDivider = 500;
-        int width = displayMetrics.widthPixels;
-        int nColumns = width / widthDivider;
-        if (nColumns < 2) return 2;
-        return nColumns;
+        startActivityForResult(detailIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE, activityOptionsCompat.toBundle());
     }
 }

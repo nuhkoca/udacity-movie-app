@@ -13,9 +13,13 @@ import android.widget.Toast;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieBinding;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenterImpl;
+import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
+import com.nuhkoca.udacitymoviesapp.view.about.MovieAboutActivity;
+import com.nuhkoca.udacitymoviesapp.view.favorite.FavoriteMoviesActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
 
 import java.util.Objects;
@@ -92,17 +96,21 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
 
     @Override
     public void onClick(View v) {
+        boolean isConnected = ConnectionSniffer.sniff();
+
         if (Objects.equals(fragmentTag, getString(R.string.popular_tag))) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.top_rated_tag)))
                     .commit();
 
-            if (MovieFragment.getInstance().getUserVisibleHint()) {
-                fragmentTag = getString(R.string.top_rated_tag);
-                changeTitle(getString(R.string.top_rated_header));
+            if (isConnected) {
+                if (MovieFragment.getInstance().getUserVisibleHint()) {
+                    fragmentTag = getString(R.string.top_rated_tag);
+                    changeTitle(getString(R.string.top_rated_header));
 
-                SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.top_rated_movies_successfully_loaded));
+                    SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.top_rated_movies_successfully_loaded));
+                }
             }
         } else {
             getSupportFragmentManager()
@@ -110,11 +118,13 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
                     .replace(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.popular_tag)))
                     .commit();
 
-            if (MovieFragment.getInstance().getUserVisibleHint()) {
-                fragmentTag = getString(R.string.popular_tag);
-                changeTitle(getString(R.string.popular_header));
+            if (isConnected) {
+                if (MovieFragment.getInstance().getUserVisibleHint()) {
+                    fragmentTag = getString(R.string.popular_tag);
+                    changeTitle(getString(R.string.popular_header));
 
-                SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.popular_movies_successfully_loaded));
+                    SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.popular_movies_successfully_loaded));
+                }
             }
         }
     }
@@ -140,7 +150,13 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
                 return true;
 
             case R.id.menu_favorite:
-                SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.soon_main));
+                Intent favoriteIntent = new Intent(MovieActivity.this, FavoriteMoviesActivity.class);
+                startActivityForResult(favoriteIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
+                return true;
+
+            case R.id.menu_about:
+                Intent aboutIntent = new Intent(MovieActivity.this, MovieAboutActivity.class);
+                startActivityForResult(aboutIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
                 return true;
 
             default:

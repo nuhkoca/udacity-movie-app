@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.nuhkoca.udacitymoviesapp.App;
 import com.nuhkoca.udacitymoviesapp.R;
-import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
 import com.nuhkoca.udacitymoviesapp.view.splash.SplashScreenActivityView;
 

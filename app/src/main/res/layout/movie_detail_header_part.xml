@@ -16,8 +16,7 @@
         android:id="@+id/vMovieDetailHeaderPart"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/colorAccent"
-        android:layout_marginBottom="@dimen/dimension_16dp"/>
+        style="@style/ViewAppearance"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,7 +60,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,7 +81,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,17 +90,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="@string/overview"
+            android:text="@string/genre"
             style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tvMovieDetailHeaderPartGenre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/MovieDetailTextAppearance.ItemRow"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/dimension_32dp"
+        style="@style/ViewAppearance"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/tvMovieDetailHeaderPartOverview"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         style="@style/MovieDetailTextAppearance.ItemRow"/>
 
     </LinearLayout>
 
-</LinearLayout>
 </layout>

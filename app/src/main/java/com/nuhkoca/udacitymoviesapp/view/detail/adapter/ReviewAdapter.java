@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.nuhkoca.udacitymoviesapp.BR;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.IReviewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ReviewListItemCardBinding;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 
@@ -22,8 +23,10 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
     private List<ReviewResults> mReviewResults;
+    private IReviewItemTouchListener mIReviewItemTouchListener;
 
-    public ReviewAdapter() {
+    public ReviewAdapter(IReviewItemTouchListener iReviewItemTouchListener) {
+        this.mIReviewItemTouchListener = iReviewItemTouchListener;
         mReviewResults = new ArrayList<>();
     }
 
@@ -48,7 +51,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         holder.bindView(reviewResults);
     }
 
-    public void swapData(List<ReviewResults> reviewResults){
+    public void swapData(List<ReviewResults> reviewResults) {
         this.mReviewResults = reviewResults;
 
         notifyDataSetChanged();
@@ -69,8 +72,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             mReviewListItemCardBinding = DataBindingUtil.bind(itemView);
         }
 
-        private void bindView(ReviewResults reviewResults){
+        private void bindView(ReviewResults reviewResults) {
             mReviewListItemCardBinding.setVariable(BR.reviewResults, reviewResults);
+            mReviewListItemCardBinding.setVariable(BR.reviewTouchListener, mIReviewItemTouchListener);
 
             mReviewListItemCardBinding.executePendingBindings();
         }

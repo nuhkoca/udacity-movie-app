@@ -9,5 +9,5 @@ import com.nuhkoca.udacitymoviesapp.model.movie.Results;
  */
 
 public interface IMovieItemTouchListener {
-    void onMovieItemTouched(Results results, ImageView imageView);
+    void onMovieItemTouched(Results results, ImageView imageView, String genre);
 }

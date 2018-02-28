@@ -1,6 +1,5 @@
 package com.nuhkoca.udacitymoviesapp.view.splash;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,11 +22,6 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
 
         mSplashScreenActivityPresenter = new SplashScreenActivityPresenterImpl(this, this);
         mSplashScreenActivityPresenter.openActivity();
-
-        ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            actionBar.hide();
-        }
     }
 
     @Override
