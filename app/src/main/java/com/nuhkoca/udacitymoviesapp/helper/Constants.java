@@ -19,7 +19,7 @@ public class Constants {
 
     public static final int UNDERLINE_WIDTH_TO_VIEW = 50;
 
-    public static final byte MAX_REVIEW_LINE = 6;
+    public static final byte MAX_REVIEW_LINE = 7;
 
     public static final String YOUTUBE_PREFIX = "http://www.youtube.com/watch?v=";
 
@@ -31,11 +31,20 @@ public class Constants {
 
     public static final int CHILD_ACTIVITY_REQUEST_CODE = 123;
 
-    static final String DATABASE_NAME = "movies.db";
+    public static final String DATABASE_NAME = "movies.db";
 
-    static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
 
-    private Constants(){
+    public static final int MOVIE = 100;
+
+    public static final int MOVIE_WITH_ID = 101;
+
+    public static final int MOVIE_LOADER_ID = 1005;
+
+    public static final int VIEW_HOLDER_TAG_1 = 1236784534;
+    public static final int VIEW_HOLDER_TAG_2 = 1136783424;
+
+    private Constants() {
         throw new AssertionError();
     }
 }

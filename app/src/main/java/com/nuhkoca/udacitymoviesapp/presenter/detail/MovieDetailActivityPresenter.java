@@ -18,4 +18,6 @@ public interface MovieDetailActivityPresenter {
     void loadReviews(int movieId);
 
     void loadTrailers(int movieId);
+
+    void addMovieToDatabase();
 }

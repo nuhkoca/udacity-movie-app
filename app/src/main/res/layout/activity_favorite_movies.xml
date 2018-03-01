@@ -19,14 +19,6 @@
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <ProgressBar
-        android:id="@+id/pbFavorites"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center_horizontal"
-        android:indeterminateTint="@color/colorPrimary"
-        android:visibility="visible"/>
-
     <TextView
         android:id="@+id/tvFavoriteMoviesErrorHolder"
         android:layout_width="match_parent"

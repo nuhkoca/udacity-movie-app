@@ -38,6 +38,10 @@
             android:name=".view.favorite.FavoriteMoviesActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.main.MovieActivity" />
+        <provider
+            android:authorities="com.nuhkoca.udacitymoviesapp"
+            android:name=".helper.database.MovieContentProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

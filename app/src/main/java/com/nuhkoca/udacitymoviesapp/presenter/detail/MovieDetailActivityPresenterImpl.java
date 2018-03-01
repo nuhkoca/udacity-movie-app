@@ -168,4 +168,9 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
                     }
                 });
     }
+
+    @Override
+    public void addMovieToDatabase() {
+        mMovieDetailActivityView.onMovieAddedToDatabase();
+    }
 }

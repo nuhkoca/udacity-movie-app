@@ -52,8 +52,17 @@
     <string name="no_data_error">There was an error occurred. Please try again later.</string>
     <string name="no_review_found">No review found.</string>
     <string name="no_trailer_found">No trailer found.</string>
-    <string name="no_date_in_database">No movie found. Please add some movies first!</string>
+    <string name="no_data_in_database">No movie found. Please add some movies first!</string>
+    <string name="movie_already_exists">You already added this movie to your favorites.</string>
+    <string name="movie_added_to_database">You added %s to your favorites successfully.</string>
 
+
+    <!-- Alert Dialog Texts -->
+    <string name="dialog_title">Are you sure you want to remove %s from your favorites?</string>
+    <string name="dialog_message">If you remove, you will have to re-add the movie again.</string>
+    <string name="dialog_positive_button">Yes</string>
+    <string name="dialog_negative_button">No</string>
+    <string name="dialog_action_message">%s has been deleted!</string>
 
     <!-- ShareIntent Texts -->
     <string name="send_to">Send with…</string>

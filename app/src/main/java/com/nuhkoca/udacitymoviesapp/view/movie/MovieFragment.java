@@ -25,7 +25,6 @@ import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.ColumnCalculator;
-import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.adapter.MovieAdapter;
 

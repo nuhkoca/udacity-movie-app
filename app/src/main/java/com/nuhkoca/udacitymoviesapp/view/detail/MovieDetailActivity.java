@@ -4,6 +4,8 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -29,7 +32,7 @@ import com.nuhkoca.udacitymoviesapp.callback.IReviewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.callback.ITrailerItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
-import com.nuhkoca.udacitymoviesapp.model.favorite.FavoriteMoviesContract;
+import com.nuhkoca.udacitymoviesapp.model.favorite.MovieContract;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 import com.nuhkoca.udacitymoviesapp.model.video.VideoResults;
@@ -37,9 +40,11 @@ import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
+import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.TrailerAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Comparator;
 import java.util.List;
 
@@ -122,7 +127,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     public void onDetailsLoaded() {
         barConcealer = BarConcealer.create(this);
         barConcealer.hideStatusBarOnly();
-
 
         if (results != null && getIntent() != null) {
             results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
@@ -258,7 +262,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onAnyLoadingFailed(String message) {
-        // toast message
+        SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, message);
     }
 
     @Override
@@ -271,6 +275,24 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.flMovieDetailTrailerPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onMovieAddedToDatabase() {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, results.getOriginalTitle());
+        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_GENRE, genre);
+
+        //byte[] poster = getImageToSaveToDatabase(mActivityMovieDetailBinding.ivMovieDetailPoster);
+
+        contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, Constants.W300_IMAGE_URL_PREFIX + results.getPosterPath());
+
+        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+
+        if (uri != null) {
+            SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, String.format(getString(R.string.movie_added_to_database), results.getOriginalTitle()));
         }
     }
 
@@ -294,7 +316,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         switch (itemThatWasClicked) {
             case R.id.fabMovieDetail:
-                addMovie(0, null, null, null);
+                mMovieDetailActivityPresenter.addMovieToDatabase();
+                break;
+
+            default:
                 break;
         }
     }
@@ -341,12 +366,13 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         Timber.d(content);
     }
 
-    private void addMovie(long id, String name, String genre, String image) {
-        ContentValues contentValues = new ContentValues();
+    private byte[] getByteFromImage(ImageView imageView) {
+        Bitmap poster = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 
-        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.ID, id);
-        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_NAME, name);
-        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_GENRE, genre);
-        contentValues.put(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_IMAGE, image);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        poster.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+
+        return byteArrayOutputStream.toByteArray();
     }
 }

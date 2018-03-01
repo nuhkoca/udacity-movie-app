@@ -25,4 +25,6 @@ public interface MovieDetailActivityView {
     void onAnyLoadingFailed(String message);
 
     void onPartLoadingFailed(Enum types);
+
+    void onMovieAddedToDatabase();
 }

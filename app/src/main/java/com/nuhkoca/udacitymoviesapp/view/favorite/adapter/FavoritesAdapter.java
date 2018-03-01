@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.FavoriteListItemCardBinding;
-import com.nuhkoca.udacitymoviesapp.model.favorite.FavoriteMoviesContract;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
+import com.nuhkoca.udacitymoviesapp.model.favorite.MovieContract;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
 /**
@@ -21,9 +22,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     private Cursor mCursor;
 
-    public FavoritesAdapter(Cursor cursor) {
-        this.mCursor = cursor;
-    }
+    public FavoritesAdapter(){}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,15 +43,34 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
         if (!mCursor.moveToPosition(position))
             return;
 
-        String movieName = mCursor.getString(mCursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_NAME));
-        String movieGenre = mCursor.getString(mCursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_MOVIE_GENRE));
-        String movieImage = mCursor.getString(mCursor.getColumnIndex(FavoriteMoviesContract.FavoriteMoviesEntry.COLUMN_IMAGE));
+        int idIndex = mCursor.getInt(mCursor.getColumnIndex(MovieContract.MovieEntry._ID));
+        String movieName = mCursor.getString(mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_NAME));
+        String movieGenre = mCursor.getString(mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_GENRE));
+        String movieImage = mCursor.getString(mCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_IMAGE));
 
+
+        holder.itemView.setTag(Constants.VIEW_HOLDER_TAG_1, idIndex);
+        holder.itemView.setTag(Constants.VIEW_HOLDER_TAG_2, movieName);
         holder.bindView(movieName, movieGenre, movieImage);
+    }
+
+    public void swapCursor(Cursor newCursor) {
+        if (mCursor == newCursor) {
+            return;
+        }
+
+        this.mCursor = newCursor;
+
+        if (newCursor != null) {
+            this.notifyDataSetChanged();
+        }
     }
 
     @Override
     public int getItemCount() {
+        if (mCursor == null) {
+            return 0;
+        }
         return mCursor.getCount();
     }
 
