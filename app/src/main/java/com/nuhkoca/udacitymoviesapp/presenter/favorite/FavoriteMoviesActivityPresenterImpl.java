@@ -1,5 +1,10 @@
 package com.nuhkoca.udacitymoviesapp.presenter.favorite;
 
+import android.database.Cursor;
+
+import com.nuhkoca.udacitymoviesapp.App;
+import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.model.favorite.MovieContract;
 import com.nuhkoca.udacitymoviesapp.view.favorite.FavoriteMoviesActivityView;
 
 /**
@@ -16,8 +21,18 @@ public class FavoriteMoviesActivityPresenterImpl implements FavoriteMoviesActivi
 
     @Override
     public void fetchMoviesFromDatabase() {
-        mFavoriteMoviesActivityView.onMoviesFetchedFromDatabase();
-        mFavoriteMoviesActivityView.showWarningText(false);
+        if (movieCount().getCount() > 0) {
+            mFavoriteMoviesActivityView.onMoviesFetchedFromDatabase();
+            mFavoriteMoviesActivityView.showWarningText(false);
+        } else {
+            mFavoriteMoviesActivityView.onMoviesFetchingFailed(App.getInstance().getString(R.string.no_data_in_database));
+            mFavoriteMoviesActivityView.showWarningText(true);
+        }
+    }
+
+    @Override
+    public void deleteAllMovies() {
+        mFavoriteMoviesActivityView.onAllMoviesDeleted();
     }
 
     @Override
@@ -25,5 +40,20 @@ public class FavoriteMoviesActivityPresenterImpl implements FavoriteMoviesActivi
         if (mFavoriteMoviesActivityView != null) {
             mFavoriteMoviesActivityView = null;
         }
+    }
+
+    private Cursor movieCount() {
+        Cursor cursor = App.getInstance().getContentResolver().query(
+                MovieContract.MovieEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return cursor;
     }
 }

@@ -6,6 +6,5 @@ package com.nuhkoca.udacitymoviesapp.view.main;
 
 public interface MovieActivityView {
     void onFragmentLoadingCompleted();
-
     void onUIBeautified();
 }

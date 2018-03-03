@@ -7,5 +7,7 @@ package com.nuhkoca.udacitymoviesapp.presenter.favorite;
 public interface FavoriteMoviesActivityPresenter {
     void fetchMoviesFromDatabase();
 
+    void deleteAllMovies();
+
     void onDestroy();
 }

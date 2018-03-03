@@ -19,19 +19,15 @@ import com.bumptech.glide.request.target.Target;
 import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
 import com.nuhkoca.udacitymoviesapp.R;
-import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
 /**
- * Created by nuhkoca on 2/19/18.
+ * Created by nuhkoca on 3/2/18.
  */
 
-public class MoviePosterBindingAdapter {
-
-    @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "genre"})
-    public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView genre) {
-
-        logoUrl = Constants.W300_IMAGE_URL_PREFIX + logoUrl;
+public class FavoriteMoviePosterBindingAdapter {
+    @BindingAdapter(value = {"android:src", "progressBarFavorite", "floorFavorite", "titleFavorite", "genreFavorite"})
+    public static void beautifyFavorites(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView genre) {
 
         if (!TextUtils.isEmpty(logoUrl)) {
             GlideApp.with(imageView.getContext())
@@ -48,7 +44,7 @@ public class MoviePosterBindingAdapter {
                                         title.setTextColor(palette.getMutedSwatch().getBodyTextColor());
                                         genre.setBackgroundColor(palette.getMutedSwatch().getRgb());
                                         genre.setTextColor(palette.getMutedSwatch().getBodyTextColor());
-                                    } else {
+                                    }else {
                                         floor.setCardBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
                                         title.setBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
                                         title.setTextColor(ContextCompat.getColor(imageView.getContext(), R.color.colorWhite));

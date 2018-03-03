@@ -1,15 +1,21 @@
 <resources>
-    <string name="app_name">Moveis!</string>
+    <string name="app_name" translatable="false">Moveis!</string>
 
 
     <!-- Place Holders -->
     <string name="image_place_holder" translatable="false">There is nothing to do</string>
+    <string name="rating_place_holder" translatable="false">(%.1f/10)</string>
+    <string name="popularity_place_holder" translatable="false">%.1f/1000</string>
+    <string name="times_place_holder" translatable="false">%s times</string>
+    <string name="dollar_place_holder" translatable="false">%s $</string>
+    <string name="tagline_place_holder" translatable="false">\"%s\"</string>
+    <string name="thumbnail_place_holder" translatable="false">%s%s/hqdefault.jpg</string>
 
 
     <!-- About Texts -->
     <string name="copy_right" translatable="false">Copyrights © %1$d</string>
-    <string name="about_description">This app is a task that Udacity Google Android Developer Track Nanodegree Program applies to all its fellows. You are able to switch between Popular and Top Rated movies, read reviews and watch trailers.</string>
-    <string name="version">Version: %s</string>
+    <string name="about_description">This app is a task that Udacity Google Android Developer Track Nanodegree Program applies to all its fellows. You are able to switch between Popular and Top Rated movies, read reviews and watch trailers. You can also add movies you like in your favorites list to access them anytime.</string>
+    <string name="version" translatable="false">Version: %s</string>
     <string name="connect_with_us">Connect with us</string>
     <string name="email" translatable="false">nuhkocaa@gmail.com</string>
     <string name="udacity_website" translatable="false">https://www.udacity.com/</string>
@@ -33,9 +39,10 @@
     <!-- Headers -->
     <string name="popular_header">Popular</string>
     <string name="top_rated_header">Top Rated</string>
-    <string name="header_part_header">Overview</string>
+    <string name="other_details_part_header">Overview</string>
     <string name="review_part_header">Reviews</string>
     <string name="trailer_part_header">Trailers</string>
+    <string name="favorite_warning_header">Swipe the card left or right to delete.</string>
 
 
     <!-- Messages -->
@@ -47,27 +54,33 @@
     <string name="movie_id_key_null">Movie ID shouldn\'t be lower than 0</string>
     <string name="no_internet_connection">You are not connected to an active network connection</string>
     <string name="mail_address">nuhkocaa@gmail.com</string>
-    <string name="soon">You will be adding your favorites soon :)</string>
-    <string name="soon_main">You will be viewing your favorites soon :)</string>
     <string name="no_data_error">There was an error occurred. Please try again later.</string>
     <string name="no_review_found">No review found.</string>
+    <string name="no_detail_found">No detail found.</string>
     <string name="no_trailer_found">No trailer found.</string>
     <string name="no_data_in_database">No movie found. Please add some movies first!</string>
     <string name="movie_already_exists">You already added this movie to your favorites.</string>
     <string name="movie_added_to_database">You added %s to your favorites successfully.</string>
+    <string name="favorites_all_deleted">Your favorites list is now empty!</string>
+    <string name="no_data_already">There is already no favorite movie.</string>
 
 
     <!-- Alert Dialog Texts -->
-    <string name="dialog_title">Are you sure you want to remove %s from your favorites?</string>
+    <string name="dialog_title">Are you sure you want to remove %s from your favorites list?</string>
+    <string name="dialog_title_all">Are you sure you want to remove all movies from your favorites list?</string>
     <string name="dialog_message">If you remove, you will have to re-add the movie again.</string>
+    <string name="dialog_message_all">You will lose all your favorite movies.</string>
     <string name="dialog_positive_button">Yes</string>
     <string name="dialog_negative_button">No</string>
-    <string name="dialog_action_message">%s has been deleted!</string>
+    <string name="dialog_action_message">%s has been deleted from your favorites list!</string>
+    <string name="dialog_action_message_all">All movies has been deleted from your favorites list!</string>
 
     <!-- ShareIntent Texts -->
     <string name="send_to">Send with…</string>
     <string name="share_to">Share %s with others</string>
+    <string name="share_to_full_review">Share %s\'s full review with others</string>
     <string name="share_extra_text">Hey! I am now watching %s on Moveis! You can now download the app and watch any movie you want, too! Here is the link: https://github.com/nuhkoca/udacity-movie-app</string>
+    <string name="share_extra_text_full_review">To see %s\'s full review about %s, now download Moveis! for free!</string>
 
 
     <!-- Menu Texts -->
@@ -75,14 +88,22 @@
     <string name="my_favorites">Favorites</string>
     <string name="share">Share</string>
     <string name="about">About</string>
+    <string name="full_review">Full Review</string>
+    <string name="delete_all">Delete all</string>
 
 
     <!-- Movie Details Labels -->
-    <string name="release_date">Release Date: </string>
-    <string name="vote_count">Vote Count: </string>
-    <string name="vote_average">Vote Average: </string>
-    <string name="overview">Overview: </string>
-    <string name="genre">Genre(s): </string>
+    <string name="release_date">Release Date</string>
+    <string name="vote_count">Vote Count</string>
+    <string name="vote_average">Vote Average</string>
+    <string name="popularity">Popularity</string>
+    <string name="budget">Budget</string>
+    <string name="homepage">Homepage</string>
+    <string name="revenue">Revenue</string>
+    <string name="runtime">Runtime</string>
+    <string name="prod_companies">Production Companies</string>
+    <string name="prod_countries">Production Countries</string>
+    <string name="spoken_languages">Spoken Languages</string>
 
 
     <!-- Review Details Labels -->

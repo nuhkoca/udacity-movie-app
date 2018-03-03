@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="detailsResponse"
+            type="com.nuhkoca.udacitymoviesapp.model.details.DetailsResponse" />
+        <variable
+            name="formattedBudget"
+            type="String" />
+        <variable
+            name="formattedRevenue"
+            type="String" />
+        <variable
+            name="formattedRuntime"
+            type="String" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvOtherDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/MovieDetailCardViewAppearance">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsReleaseLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/release_date"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsReleaseDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/vote_count"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsVoteCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/vote_average"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RatingBar
+                            android:id="@+id/rbOtherDetailsRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:numStars="10"
+                            android:stepSize="0.1"
+                            android:progressTint="@color/colorPrimary"
+                            android:layout_marginStart="@dimen/dimension_4dp"
+                            android:layout_marginEnd="@dimen/dimension_8dp"
+                            style="@style/Widget.AppCompat.RatingBar.Small"/>
+
+                        <TextView
+                            android:id="@+id/tvOtherDetailsVoteAverage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="0dp"
+                            android:layout_toEndOf="@+id/rbOtherDetailsRating"
+                            style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/popularity"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ProgressBar
+                            android:id="@+id/pbOtherDetailsPopularity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scaleY="4"
+                            android:max="1000"
+                            android:progressTint="@color/colorPrimary"
+                            android:layout_centerInParent="true"
+                            android:layout_marginStart="@dimen/dimension_4dp"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+                        <TextView
+                            android:id="@+id/tvOtherDetailsPopularity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="13sp"
+                            android:minHeight="0dp"
+                            android:layout_centerInParent="true"
+                            style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/budget"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsBudget"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@{formattedBudget}"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/homepage"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsHomepage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:textColorLink="@color/textLinkColor"
+                        android:text="@{detailsResponse.homepage}"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/revenue"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails7"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                        <TextView
+                            android:id="@+id/tvOtherDetailsRevenue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{formattedRevenue}"
+                            style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/runtime"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails8"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsRuntime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{formattedRuntime}"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/prod_companies"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails9"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsProdCompanies"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/prod_countries"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails10"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsProdCountries"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/spoken_languages"
+                        style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    <View
+                        android:id="@+id/vOtherDetails11"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        style="@style/ViewAppearance"/>
+
+                    <TextView
+                        android:id="@+id/tvOtherDetailsSpokenLanguages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/MovieDetailTextAppearance.ItemRow" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>

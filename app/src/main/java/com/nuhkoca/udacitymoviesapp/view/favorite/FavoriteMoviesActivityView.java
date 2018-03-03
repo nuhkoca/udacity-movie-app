@@ -7,5 +7,9 @@ package com.nuhkoca.udacitymoviesapp.view.favorite;
 public interface FavoriteMoviesActivityView {
     void onMoviesFetchedFromDatabase();
 
+    void onMoviesFetchingFailed(String message);
+
+    void onAllMoviesDeleted();
+
     void showWarningText(boolean visible);
 }

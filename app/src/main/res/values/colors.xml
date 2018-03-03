@@ -6,4 +6,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="detailTint">#AAEF9A9A</color>
+    <color name="textBackground">#9E9E9E</color>
+    <color name="textLinkColor">#3F51B5</color>
 </resources>

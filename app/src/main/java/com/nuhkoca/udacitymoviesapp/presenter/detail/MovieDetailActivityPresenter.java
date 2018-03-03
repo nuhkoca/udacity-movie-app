@@ -19,5 +19,7 @@ public interface MovieDetailActivityPresenter {
 
     void loadTrailers(int movieId);
 
+    void loadOtherDetails(int movieId);
+
     void addMovieToDatabase();
 }

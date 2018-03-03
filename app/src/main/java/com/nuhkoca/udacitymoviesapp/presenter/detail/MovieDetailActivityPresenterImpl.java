@@ -9,9 +9,12 @@ import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.helper.ObservableHelper;
 import com.nuhkoca.udacitymoviesapp.helper.RetrofitInterceptor;
+import com.nuhkoca.udacitymoviesapp.model.details.DetailsResponse;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse;
 import com.nuhkoca.udacitymoviesapp.model.video.VideoResponse;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivityView;
+
+import java.util.ArrayList;
 
 import retrofit2.HttpException;
 import retrofit2.Retrofit;
@@ -164,6 +167,75 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
                             mMovieDetailActivityView.onTrailersLoaded(videoResponse.getVideoResults());
                         } else {
                             mMovieDetailActivityView.onPartLoadingFailed(Constants.TYPES.TRAILER);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void loadOtherDetails(int movieId) {
+        final Retrofit retrofit = RetrofitInterceptor.build();
+        ObservableHelper observableHelper = new ObservableHelper(retrofit, BuildConfig.APIKEY);
+        Observable<DetailsResponse> getOtherDetails;
+
+        if (movieId == 0) {
+            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null));
+            return;
+        }
+
+        getOtherDetails = observableHelper.getOtherDetails(movieId);
+
+        getOtherDetails.subscribeOn(Schedulers.io())
+                .retry(1)
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext(new Func1<Throwable, Observable<? extends DetailsResponse>>() {
+                    @Override
+                    public Observable<? extends DetailsResponse> call(Throwable throwable) {
+                        return Observable.error(throwable);
+                    }
+                })
+                .subscribe(new Subscriber<DetailsResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.d(e.getMessage());
+                        if (e instanceof NetworkErrorException) {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                        } else if (e instanceof NullPointerException) {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                        } else if (e instanceof HttpException) {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                        } else {
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                        }
+                    }
+
+                    @Override
+                    public void onNext(DetailsResponse detailsResponse) {
+                        if (detailsResponse.toString().length() > 0) {
+                            ArrayList<String> companies = new ArrayList<>();
+                            ArrayList<String> countries = new ArrayList<>();
+                            ArrayList<String> languages = new ArrayList<>();
+
+                            for (int i = 0; i < detailsResponse.getProductionCompaniesResponses().size(); i++) {
+                                companies.add(detailsResponse.getProductionCompaniesResponses().get(i).getName());
+                            }
+
+                            for (int i = 0; i < detailsResponse.getProductionCountriesResponses().size(); i++) {
+                                countries.add(detailsResponse.getProductionCountriesResponses().get(i).getName());
+                            }
+
+                            for (int i = 0; i < detailsResponse.getSpokenLanguagesResponses().size(); i++) {
+                                languages.add(detailsResponse.getSpokenLanguagesResponses().get(i).getName());
+                            }
+
+                            mMovieDetailActivityView.onOtherDetailsLoaded(detailsResponse, companies, countries, languages);
+                        } else {
+                            mMovieDetailActivityView.onPartLoadingFailed(Constants.TYPES.DETAILS);
                         }
                     }
                 });

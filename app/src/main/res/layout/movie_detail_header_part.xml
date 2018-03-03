@@ -1,118 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvMovieDetailHeaderPartHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/header_part_header"
-        style="@style/TextAppearance.Header" />
-
-    <View
-        android:id="@+id/vMovieDetailHeaderPart"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        style="@style/ViewAppearance"/>
+    <data>
+        <variable
+            name="formattedTagline"
+            type="String" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/release_date"
-            style="@style/MovieDetailTextAppearance.LabelRow"/>
+            android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tvMovieDetailHeaderPartReleaseDate"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tvOtherDetailsTagline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{formattedTagline}"
+                android:textStyle="italic"
+                android:layout_marginTop="@dimen/dimension_32dp"
+                style="@style/MovieDetailTextAppearance.ItemRow" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            style="@style/ViewAppearance"/>
+
+        <TextView
+            android:id="@+id/tvMovieDetailHeaderPartOverview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            style="@style/MovieDetailTextAppearance.ItemRow" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/vote_count"
-            style="@style/MovieDetailTextAppearance.LabelRow"/>
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvMovieDetailHeaderPartVoteCount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="@style/MovieDetailTextAppearance.ItemRow" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/vote_average"
-            style="@style/MovieDetailTextAppearance.LabelRow"/>
-
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvMovieDetailHeaderPartVoteAverage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        style="@style/MovieDetailTextAppearance.ItemRow"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="@string/genre"
-            style="@style/MovieDetailTextAppearance.LabelRow"/>
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tvMovieDetailHeaderPartGenre"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:textSize="16sp"
+            android:layout_marginBottom="50dp"
             style="@style/MovieDetailTextAppearance.ItemRow"/>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/dimension_32dp"
-        style="@style/ViewAppearance"/>
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tgMovieDetailHeaderPartGenre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/TagGroupAppearance"/>
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tvMovieDetailHeaderPartOverview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/MovieDetailTextAppearance.ItemRow"/>
+        </LinearLayout>
 
     </LinearLayout>
 

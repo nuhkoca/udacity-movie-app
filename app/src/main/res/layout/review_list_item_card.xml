@@ -14,6 +14,7 @@
     </data>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cvReview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/MovieDetailCardViewAppearance">
@@ -46,6 +47,8 @@
                 android:maxLines="7"
                 android:lines="7"
                 android:ellipsize="end"
+                android:autoLink="web"
+                android:textColorLink="@color/textLinkColor"
                 style="@style/MovieReviewTextAppearance.ItemRow"/>
 
 
@@ -62,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:text="@string/click_to_see_full_review"
-                android:onClick="@{() -> reviewTouchListener.onReviewItemTouched(reviewResults.content) }"
+                android:onClick="@{() -> reviewTouchListener.onReviewItemTouched(reviewResults.content, reviewResults.author) }"
                 android:gravity="start"
                 android:textSize="12sp"
                 style="@style/MovieReviewTextAppearance.ItemRow"/>

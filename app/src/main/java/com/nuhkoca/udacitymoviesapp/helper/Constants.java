@@ -8,7 +8,8 @@ public class Constants {
 
     public enum TYPES {
         REVIEW,
-        TRAILER
+        TRAILER,
+        DETAILS
     }
 
     public static final String MOVIE_MODEL_TAG = "movie-model";
@@ -17,7 +18,7 @@ public class Constants {
 
     public static final int PERCENTAGE_TO_ANIMATE_FAB = 90;
 
-    public static final int UNDERLINE_WIDTH_TO_VIEW = 50;
+    public static final int UNDERLINE_WIDTH_TO_VIEW = 60;
 
     public static final byte MAX_REVIEW_LINE = 7;
 
@@ -42,7 +43,18 @@ public class Constants {
     public static final int MOVIE_LOADER_ID = 1005;
 
     public static final int VIEW_HOLDER_TAG_1 = 1236784534;
+
     public static final int VIEW_HOLDER_TAG_2 = 1136783424;
+
+    public static final String REVIEW_CONTENT_EXTRA = "content";
+
+    public static final String REVIEW_AUTHOR_EXTRA = "author";
+
+    public static final String REVIEW_MOVIE_EXTRA = "movie";
+
+    public static final String INTENT_CONDITION = "com.android";
+
+    public static final String NUMBER_FORMAT = "#,###,###";
 
     private Constants() {
         throw new AssertionError();

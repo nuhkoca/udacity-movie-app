@@ -1,8 +1,10 @@
 package com.nuhkoca.udacitymoviesapp.view.detail.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +53,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
         holder.bindView(videoResults);
     }
 
-    public void swapData(List<VideoResults> videoResults){
+    public void swapData(List<VideoResults> videoResults) {
         this.mVideoResults = videoResults;
 
         notifyDataSetChanged();
@@ -76,7 +78,24 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
             mTrailerListItemCardBinding.setVariable(BR.videoResults, videoResults);
             mTrailerListItemCardBinding.setVariable(BR.trailerTouchListener, mITrailerItemTouchListener);
 
+            setCustomCardViewWidth();
+
             mTrailerListItemCardBinding.executePendingBindings();
+        }
+
+        void setCustomCardViewWidth() {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            ((Activity) mTrailerListItemCardBinding.getRoot().getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+            ViewGroup.LayoutParams layoutParams = mTrailerListItemCardBinding.cvTrailer.getLayoutParams();
+
+            if (getItemCount() == 1) {
+                return;
+            }
+
+            layoutParams.width = (int) (displayMetrics.widthPixels / (1.2));
+
+            mTrailerListItemCardBinding.cvTrailer.setLayoutParams(layoutParams);
         }
     }
 }

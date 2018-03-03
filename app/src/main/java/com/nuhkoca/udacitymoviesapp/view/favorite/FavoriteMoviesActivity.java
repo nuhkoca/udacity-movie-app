@@ -3,7 +3,6 @@ package com.nuhkoca.udacitymoviesapp.view.favorite;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -14,14 +13,20 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityFavoriteMoviesBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
@@ -31,6 +36,8 @@ import com.nuhkoca.udacitymoviesapp.presenter.favorite.FavoriteMoviesActivityPre
 import com.nuhkoca.udacitymoviesapp.utils.ColumnCalculator;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.favorite.adapter.FavoritesAdapter;
+
+import timber.log.Timber;
 
 public class FavoriteMoviesActivity extends AppCompatActivity implements FavoriteMoviesActivityView, LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -54,12 +61,12 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
         mFavoriteMoviesActivityPresenter = new FavoriteMoviesActivityPresenterImpl(this);
         mFavoriteMoviesActivityPresenter.fetchMoviesFromDatabase();
-
-        getSupportLoaderManager().initLoader(Constants.MOVIE_LOADER_ID, null, this);
     }
 
     @Override
     public void onMoviesFetchedFromDatabase() {
+        getSupportLoaderManager().initLoader(Constants.MOVIE_LOADER_ID, null, this);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, ColumnCalculator.getOptimalNumberOfColumn(this));
         mActivityFavoriteMoviesBinding.rvFavorites.setLayoutManager(gridLayoutManager);
 
@@ -70,6 +77,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
         mActivityFavoriteMoviesBinding.rvFavorites.setAdapter(mFavoritesAdapter);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -77,12 +85,15 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-                new AlertDialog.Builder(FavoriteMoviesActivity.this)
-                        .setTitle(String.format(getString(R.string.dialog_title), viewHolder.itemView.getTag(Constants.VIEW_HOLDER_TAG_2)))
-                        .setMessage(getString(R.string.dialog_message))
-                        .setPositiveButton(getString(R.string.dialog_positive_button), new DialogInterface.OnClickListener() {
+                new MaterialDialog.Builder(FavoriteMoviesActivity.this)
+                        .title(String.format(getString(R.string.dialog_title), viewHolder.itemView.getTag(Constants.VIEW_HOLDER_TAG_2)))
+                        .theme(Theme.LIGHT)
+                        .content(getString(R.string.dialog_message))
+                        .positiveText(getString(R.string.dialog_positive_button))
+                        .negativeText(getString(R.string.dialog_negative_button))
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 String id = Integer.toString((Integer) viewHolder.itemView.getTag(Constants.VIEW_HOLDER_TAG_1));
 
                                 Uri uri = MovieContract.MovieEntry.CONTENT_URI;
@@ -90,20 +101,63 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
                                 getContentResolver().delete(uri, null, null);
                                 getSupportLoaderManager().restartLoader(Constants.MOVIE_LOADER_ID, null, FavoriteMoviesActivity.this);
-                                SnackbarPopper.pop(mActivityFavoriteMoviesBinding.llFavoriteMovies, String.format(getString(R.string.dialog_action_message), viewHolder.itemView.getTag(Constants.VIEW_HOLDER_TAG_2)));
 
-                                mFavoritesAdapter.notifyDataSetChanged();
+                                SnackbarPopper.pop(mActivityFavoriteMoviesBinding.rlFavoriteMovies, String.format(getString(R.string.dialog_action_message), viewHolder.itemView.getTag(Constants.VIEW_HOLDER_TAG_2)));
+
+                                if (mFavoritesAdapter.getItemCount()==1) {
+                                    mActivityFavoriteMoviesBinding.rvFavorites.setVisibility(View.GONE);
+                                    mActivityFavoriteMoviesBinding.tvFavoriteMoviesHeader.setText(getString(R.string.favorites_all_deleted));
+                                }
                             }
                         })
-                        .setNegativeButton(getString(R.string.dialog_negative_button), new DialogInterface.OnClickListener() {
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 mFavoritesAdapter.notifyDataSetChanged();
                             }
                         })
                         .show();
             }
         }).attachToRecyclerView(mActivityFavoriteMoviesBinding.rvFavorites);
+    }
+
+    @Override
+    public void onMoviesFetchingFailed(String message) {
+        mActivityFavoriteMoviesBinding.tvFavoriteMoviesErrorHolder.setText(message);
+        mActivityFavoriteMoviesBinding.tvFavoriteMoviesHeader.setVisibility(View.GONE);
+        mActivityFavoriteMoviesBinding.rvFavorites.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onAllMoviesDeleted() {
+        new MaterialDialog.Builder(FavoriteMoviesActivity.this)
+                .title(getString(R.string.dialog_title_all))
+                .theme(Theme.LIGHT)
+                .content(getString(R.string.dialog_message_all))
+                .positiveText(getString(R.string.dialog_positive_button))
+                .negativeText(getString(R.string.dialog_negative_button))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Uri uri = MovieContract.MovieEntry.CONTENT_URI;
+
+                        getContentResolver().delete(uri, null, null);
+                        getSupportLoaderManager().restartLoader(Constants.MOVIE_LOADER_ID, null, FavoriteMoviesActivity.this);
+
+                        SnackbarPopper.pop(mActivityFavoriteMoviesBinding.rlFavoriteMovies, getString(R.string.dialog_action_message_all));
+
+                        mActivityFavoriteMoviesBinding.rvFavorites.setVisibility(View.GONE);
+                        mActivityFavoriteMoviesBinding.tvFavoriteMoviesHeader.setText(getString(R.string.favorites_all_deleted));
+
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mFavoritesAdapter.notifyDataSetChanged();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -125,6 +179,14 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.favorite_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClicked = item.getItemId();
 
@@ -133,6 +195,14 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
                 supportFinishAfterTransition();
 
                 setResult(RESULT_OK);
+                return true;
+
+            case R.id.delete_all:
+                if (mActivityFavoriteMoviesBinding.rvFavorites.isShown()) {
+                    mFavoriteMoviesActivityPresenter.deleteAllMovies();
+                } else {
+                    SnackbarPopper.pop(mActivityFavoriteMoviesBinding.rlFavoriteMovies, getString(R.string.no_data_already));
+                }
                 return true;
 
             default:
@@ -167,9 +237,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (data.getCount() == 0) {
-            mActivityFavoriteMoviesBinding.tvFavoriteMoviesErrorHolder.setVisibility(View.VISIBLE);
-            mActivityFavoriteMoviesBinding.tvFavoriteMoviesErrorHolder.setText(getString(R.string.no_data_in_database));
+        if (mFavoritesAdapter == null) {
             return;
         }
 
@@ -178,6 +246,10 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        if (mFavoritesAdapter == null) {
+            return;
+        }
+
         mFavoritesAdapter.swapCursor(null);
     }
 

@@ -2,6 +2,20 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="movieTitle"
+            type="String" />
+
+        <variable
+            name="movieGenre"
+            type="String" />
+
+        <variable
+            name="movieImage"
+            type="String" />
+    </data>
+
     <android.support.v7.widget.CardView
         android:id="@+id/cvFavorites"
         android:layout_width="match_parent"
@@ -34,6 +48,11 @@
                     android:layout_height="300dp"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/image_place_holder"
+                    android:src="@{movieImage}"
+                    app:progressBarFavorite="@{pbFavorites}"
+                    app:floorFavorite="@{cvFavorites}"
+                    app:titleFavorite="@{tvFavoriteTitle}"
+                    app:genreFavorite="@{tvFavoriteGenre}"
                     android:scaleType="centerCrop" />
 
             </RelativeLayout>
@@ -45,6 +64,7 @@
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginTop="@dimen/dimension_12dp"
+                android:text="@{movieTitle}"
                 style="@style/MovieListTextAppearance.ItemRow"/>
 
             <TextView
@@ -54,6 +74,7 @@
                 android:textStyle="normal"
                 android:textSize="14sp"
                 android:layout_marginBottom="@dimen/dimension_12dp"
+                android:text="@{movieGenre}"
                 style="@style/MovieListTextAppearance.ItemRow"/>
 
         </LinearLayout>

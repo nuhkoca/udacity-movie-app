@@ -1,5 +1,6 @@
 package com.nuhkoca.udacitymoviesapp.view.detail;
 
+import com.nuhkoca.udacitymoviesapp.model.details.DetailsResponse;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 import com.nuhkoca.udacitymoviesapp.model.video.VideoResults;
 
@@ -21,6 +22,8 @@ public interface MovieDetailActivityView {
     void onReviewsLoaded(List<ReviewResults> reviewResults);
 
     void onTrailersLoaded(List<VideoResults> videoResults);
+
+    void onOtherDetailsLoaded(DetailsResponse detailsResponse, List<String> prodCompanies, List<String> prodCountries, List<String> spokenLanguages);
 
     void onAnyLoadingFailed(String message);
 

@@ -16,6 +16,8 @@ import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.favorite.MovieContract;
 
+import timber.log.Timber;
+
 /**
  * Created by nuhkoca on 2/28/18.
  */
@@ -121,25 +123,33 @@ public class MovieContentProvider extends ContentProvider {
 
         int match = sUriMatcher.match(uri);
 
-        int tasksDeleted;
+        int moviesDeleted;
 
         switch (match) {
             case Constants.MOVIE_WITH_ID:
                 String id = uri.getPathSegments().get(1);
 
-                tasksDeleted = sqLiteDatabase.delete(MovieContract.MovieEntry.TABLE_NAME, "_id=?", new String[]{id});
+                moviesDeleted = sqLiteDatabase.delete(MovieContract.MovieEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
+            case Constants.MOVIE:
+                moviesDeleted = sqLiteDatabase.delete(MovieContract.MovieEntry.TABLE_NAME, null, null);
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if (tasksDeleted != 0) {
+        if (moviesDeleted != 0) {
             if (getContext() != null) {
                 getContext().getContentResolver().notifyChange(uri, null);
             }
+        } else {
+            if (getContext() != null) {
+                Toast.makeText(getContext(), getContext().getString(R.string.no_data_in_database), Toast.LENGTH_SHORT).show();
+            }
         }
 
-        return tasksDeleted;
+        return moviesDeleted;
     }
 
     @Override

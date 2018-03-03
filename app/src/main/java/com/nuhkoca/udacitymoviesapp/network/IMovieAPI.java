@@ -1,5 +1,6 @@
 package com.nuhkoca.udacitymoviesapp.network;
 
+import com.nuhkoca.udacitymoviesapp.model.details.DetailsResponse;
 import com.nuhkoca.udacitymoviesapp.model.movie.MovieResponse;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResponse;
 import com.nuhkoca.udacitymoviesapp.model.video.VideoResponse;
@@ -26,4 +27,7 @@ public interface IMovieAPI {
 
     @GET("movie/{id}/videos")
     Observable<VideoResponse> getTrailers(@Path("id") int movieId, @Query("api_key") String apiKey);
+
+    @GET("movie/{id}")
+    Observable<DetailsResponse> getOtherDetails(@Path("id") int movieId, @Query("api_key") String apiKey);
 }

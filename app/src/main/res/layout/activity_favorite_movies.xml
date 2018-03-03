@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <LinearLayout
-    android:id="@+id/llFavoriteMovies"
+    android:id="@+id/rlFavoriteMovies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,18 +12,32 @@
 
     <include android:id="@+id/lFavoriteMoviesToolbar" layout="@layout/toolbar" />
 
+    <TextView
+        android:id="@+id/tvFavoriteMoviesErrorHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/ErrorTextAppearance" />
+
+    <TextView
+        android:id="@+id/tvFavoriteMoviesHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_warning_header"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:background="@color/textBackground"
+        android:textColor="@color/colorWhite"
+        android:padding="@dimen/dimension_4dp"
+        android:textStyle="normal"
+        android:visibility="visible"
+        android:gravity="center"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvFavorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <TextView
-        android:id="@+id/tvFavoriteMoviesErrorHolder"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/ErrorTextAppearance" />
 
 </LinearLayout>
 </layout>

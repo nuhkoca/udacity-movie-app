@@ -12,6 +12,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.nuhkoca.udacitymoviesapp.App;
+import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
@@ -20,15 +22,15 @@ import com.nuhkoca.udacitymoviesapp.module.GlideApp;
  */
 
 public class TrailerThumbnailBindingAdapter {
-    @BindingAdapter(value = {"thumbnail", "hideThumbnailProgress"})
-    public static void loadTrailerThumbnails(ImageView thumbnail, String thumbnailUrl, ProgressBar progressBar) {
+    @BindingAdapter(value = {"thumbnail", "hideThumbnailProgress", "showPlayButton"})
+    public static void loadTrailerThumbnails(ImageView thumbnail, String thumbnailUrl, ProgressBar progressBar, ImageView playButton) {
 
-        thumbnailUrl = Constants.THUMBNAIL_URL_PREFIX + thumbnailUrl + "/0.jpg";
+        thumbnailUrl = String.format(App.getInstance().getString(R.string.thumbnail_place_holder), Constants.THUMBNAIL_URL_PREFIX, thumbnailUrl);
 
         if (!TextUtils.isEmpty(thumbnailUrl)) {
             GlideApp.with(thumbnail.getContext())
                     .load(thumbnailUrl)
-                    .listener(new MyRequestListener(progressBar))
+                    .listener(new MyRequestListener(progressBar, playButton))
                     .into(thumbnail);
         }
 
@@ -37,20 +39,24 @@ public class TrailerThumbnailBindingAdapter {
     private static class MyRequestListener implements RequestListener<Drawable> {
 
         private ProgressBar progressBar;
+        private ImageView imageView;
 
-        MyRequestListener(ProgressBar progressBar) {
+        MyRequestListener(ProgressBar progressBar, ImageView imageView) {
             this.progressBar = progressBar;
+            this.imageView = imageView;
         }
 
         @Override
         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
             this.progressBar.setVisibility(View.GONE);
+            this.imageView.setVisibility(View.GONE);
             return false;
         }
 
         @Override
         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
             this.progressBar.setVisibility(View.GONE);
+            this.imageView.setVisibility(View.VISIBLE);
             return false;
         }
     }

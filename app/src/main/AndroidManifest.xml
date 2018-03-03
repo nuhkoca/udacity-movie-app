@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.nuhkoca.udacitymoviesapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +13,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
         <activity
             android:name=".view.splash.SplashScreenActivity"
             android:theme="@style/AppTheme.Launcher">
@@ -38,10 +40,15 @@
             android:name=".view.favorite.FavoriteMoviesActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.main.MovieActivity" />
+
         <provider
-            android:authorities="com.nuhkoca.udacitymoviesapp"
             android:name=".helper.database.MovieContentProvider"
+            android:authorities="com.nuhkoca.udacitymoviesapp"
             android:exported="false" />
+
+        <activity android:name=".view.review.FullReviewActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.detail.MovieDetailActivity"/>
     </application>
 
 </manifest>

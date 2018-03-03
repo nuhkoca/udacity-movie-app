@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.flipboard.bottomsheet.BottomSheetLayout
+        android:id="@+id/bslBottomSheetFullReview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <include android:id="@+id/lFullReviewToolbar"
+        layout="@layout/toolbar" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/dimension_16dp"
+        tools:context="com.nuhkoca.udacitymoviesapp.view.review.FullReviewActivity">
+
+        <TextView
+            android:id="@+id/tvFullReviewContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:autoLink="web"
+            android:textColorLink="@color/textLinkColor"
+            style="@style/MovieReviewTextAppearance.ItemRow"/>
+
+        <TextView
+            android:id="@+id/tvFullReviewAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/dimension_8dp"
+            style="@style/MovieReviewTextAppearance.ItemRow" />
+
+    </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+    </com.flipboard.bottomsheet.BottomSheetLayout>
+</layout>

@@ -4,8 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,24 +12,25 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.flipboard.bottomsheet.commons.IntentPickerSheetView;
+import com.nuhkoca.udacitymoviesapp.BR;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.callback.IReviewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.callback.ITrailerItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieDetailBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
+import com.nuhkoca.udacitymoviesapp.model.details.DetailsResponse;
 import com.nuhkoca.udacitymoviesapp.model.favorite.MovieContract;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
@@ -40,15 +39,14 @@ import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
+import com.nuhkoca.udacitymoviesapp.utils.BottomSheetBuilder;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.TrailerAdapter;
+import com.nuhkoca.udacitymoviesapp.view.review.FullReviewActivity;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Comparator;
+import java.text.DecimalFormat;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener, IReviewItemTouchListener {
 
@@ -58,6 +56,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private Results results;
     private ReviewAdapter mReviewAdapter;
     private TrailerAdapter mTrailerAdapter;
+    private DecimalFormat mDecimalFormat;
 
     private boolean mIsFabShown = true;
     private int mMaxScrollSize;
@@ -80,8 +79,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this, this);
         mMovieDetailActivityPresenter.populateDetails();
-        mMovieDetailActivityPresenter.loadReviews(results.getId());
-        mMovieDetailActivityPresenter.loadTrailers(results.getId());
 
         mActivityMovieDetailBinding.fabMovieDetail.setOnClickListener(this);
         mActivityMovieDetailBinding.aplMovieDetail.addOnOffsetChangedListener(this);
@@ -128,6 +125,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         barConcealer = BarConcealer.create(this);
         barConcealer.hideStatusBarOnly();
 
+        mDecimalFormat = new DecimalFormat(Constants.NUMBER_FORMAT);
+
         if (results != null && getIntent() != null) {
             results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
             genre = getIntent().getStringExtra(Constants.GENRE_TAG);
@@ -150,16 +149,27 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                     .into(mActivityMovieDetailBinding.ivMovieDetailPoster);
 
             mActivityMovieDetailBinding.ctlMovieDetail.setTitle(results.getOriginalTitle());
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartReleaseDate.
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsReleaseDate.
                     setText(results.getReleaseDate());
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartVoteCount
-                    .setText(String.valueOf(results.getVoteCount()));
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartVoteAverage
-                    .setText(String.valueOf(results.getVoteAverage()));
+
+            String formattedVoteCount = mDecimalFormat.format(results.getVoteCount());
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsVoteCount.setText(String.format(getString(R.string.times_place_holder), formattedVoteCount));
+
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.rbOtherDetailsRating.setRating(results.getVoteAverage());
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsVoteAverage.setText(String.format(getString(R.string.rating_place_holder), results.getVoteAverage()));
+
             mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartOverview
                     .setText(results.getOverview());
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartGenre
-                    .setText(genre);
+
+            String[] genres = genre.split(",");
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tgMovieDetailHeaderPartGenre.setTags(genres);
+
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.pbOtherDetailsPopularity.setProgress((int) results.getPopularity());
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsPopularity.setText(String.format(getString(R.string.popularity_place_holder), results.getPopularity()));
+
+            mMovieDetailActivityPresenter.loadTrailers(results.getId());
+            mMovieDetailActivityPresenter.loadOtherDetails(results.getId());
+            mMovieDetailActivityPresenter.loadReviews(results.getId());
 
             mMovieDetailActivityPresenter.onChangeViewWidth();
         }
@@ -167,48 +177,35 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onBottomSheetCreated() {
-        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.share_extra_text), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()));
-        shareIntent.setType("text/plain");
-
-        final IntentPickerSheetView intentPickerSheet = new IntentPickerSheetView(MovieDetailActivity.this, shareIntent, String.format(getString(R.string.share_to), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()), new IntentPickerSheetView.OnIntentPickedListener() {
-            @Override
-            public void onIntentPicked(IntentPickerSheetView.ActivityInfo activityInfo) {
-                mActivityMovieDetailBinding.bslBottomSheetItemHolder.dismissSheet();
-                startActivity(activityInfo.getConcreteIntent(shareIntent));
-            }
-        });
-
-        intentPickerSheet.setFilter(new IntentPickerSheetView.Filter() {
-            @Override
-            public boolean include(IntentPickerSheetView.ActivityInfo info) {
-                return !info.componentName.getPackageName().startsWith("com.android");
-            }
-        });
-
-        intentPickerSheet.setSortMethod(new Comparator<IntentPickerSheetView.ActivityInfo>() {
-            @Override
-            public int compare(IntentPickerSheetView.ActivityInfo lhs, IntentPickerSheetView.ActivityInfo rhs) {
-                return rhs.label.compareTo(lhs.label);
-            }
-        });
-
-        mActivityMovieDetailBinding.bslBottomSheetItemHolder.showWithSheetView(intentPickerSheet);
+        BottomSheetBuilder.create(this,
+                mActivityMovieDetailBinding.bslBottomSheetItemHolder,
+                String.format(getString(R.string.share_extra_text), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()),
+                String.format(getString(R.string.share_to), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()));
     }
 
     @Override
     public void onViewWidthChanged() {
-        mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsReleaseLabel.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
 
-                mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getViewTreeObserver().removeOnPreDrawListener(this);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsReleaseLabel.getViewTreeObserver().removeOnPreDrawListener(this);
 
-                ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetailHeaderPart.vMovieDetailHeaderPart.getLayoutParams();
+                ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails1.getLayoutParams();
 
-                layoutParams.width = mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartHeader.getWidth() + Constants.UNDERLINE_WIDTH_TO_VIEW;
+                layoutParams.width = Constants.UNDERLINE_WIDTH_TO_VIEW;
 
-                mActivityMovieDetailBinding.lMovieDetailHeaderPart.vMovieDetailHeaderPart.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails1.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails2.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails3.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails4.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails5.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails6.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails7.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails8.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails9.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails10.setLayoutParams(layoutParams);
+                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails11.setLayoutParams(layoutParams);
 
                 return false;
             }
@@ -261,6 +258,41 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
+    public void onOtherDetailsLoaded(DetailsResponse detailsResponse, List<String> prodCompanies, List<String> prodCountries, List<String> spokenLanguages) {
+        String formattedBudget = String.format(getString(R.string.dollar_place_holder),
+                mDecimalFormat.format(detailsResponse.getBudget()));
+
+        String formattedRevenue = String.format(getString(R.string.dollar_place_holder),
+                mDecimalFormat.format(detailsResponse.getRevenue()));
+
+        String formattedRuntime = String.format(getString(R.string.times_place_holder),
+                mDecimalFormat.format(detailsResponse.getRuntime()));
+
+        String formattedTagline = String.format(getString(R.string.tagline_place_holder), detailsResponse.getTagline());
+
+
+        String companies = TextUtils.join(", " , prodCompanies);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsProdCompanies.setText(companies);
+
+
+        String countries = TextUtils.join(", ", prodCountries);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsProdCountries.setText(countries);
+
+
+        String languages = TextUtils.join(", ", spokenLanguages);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsSpokenLanguages.setText(languages);
+
+
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.detailsResponse, detailsResponse);
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.formattedTagline, formattedTagline);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedBudget, formattedBudget);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRevenue, formattedRevenue);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRuntime, formattedRuntime);
+
+        mActivityMovieDetailBinding.executePendingBindings();
+    }
+
+    @Override
     public void onAnyLoadingFailed(String message) {
         SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, message);
     }
@@ -271,10 +303,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mActivityMovieDetailBinding.lMovieDetailReviewPart.flMovieDetailReviewPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
-        } else {
+        } else if (types.equals(Constants.TYPES.TRAILER)){
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.flMovieDetailTrailerPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(View.VISIBLE);
+        }else {
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.cvOtherDetails.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.tvOtherDetailsNoDetailError.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.tvOtherDetailsNoDetailError.setVisibility(View.VISIBLE);
         }
     }
 
@@ -362,17 +398,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     }
 
     @Override
-    public void onReviewItemTouched(String content) {
-        Timber.d(content);
-    }
+    public void onReviewItemTouched(String content, String author) {
+        Intent reviewIntent = new Intent(MovieDetailActivity.this, FullReviewActivity.class);
+        reviewIntent.putExtra(Constants.REVIEW_CONTENT_EXTRA, content);
+        reviewIntent.putExtra(Constants.REVIEW_AUTHOR_EXTRA, author);
+        reviewIntent.putExtra(Constants.REVIEW_MOVIE_EXTRA, results.getOriginalTitle());
 
-    private byte[] getByteFromImage(ImageView imageView) {
-        Bitmap poster = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        poster.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-
-        return byteArrayOutputStream.toByteArray();
+        startActivityForResult(reviewIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
     }
 }
