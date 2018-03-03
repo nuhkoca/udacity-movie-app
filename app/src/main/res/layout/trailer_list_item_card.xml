@@ -59,7 +59,7 @@
                  android:layout_width="60dp"
                  android:layout_height="60dp"
                  android:layout_centerInParent="true"
-                 app:srcCompat="@drawable/ic_play_button"
+                 app:srcCompat="@drawable/ic_splash_screen_icon"
                  android:scaleType="centerCrop"
                  android:visibility="visible"
                  android:contentDescription="@string/image_place_holder" />

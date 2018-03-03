@@ -47,6 +47,7 @@ import com.nuhkoca.udacitymoviesapp.view.review.FullReviewActivity;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Objects;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener, IReviewItemTouchListener {
 
@@ -270,8 +271,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         String formattedTagline = String.format(getString(R.string.tagline_place_holder), detailsResponse.getTagline());
 
+        if (Objects.equals(detailsResponse.getTagline(), "")) {
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvOtherDetailsTagline.setVisibility(View.GONE);
+        }
 
-        String companies = TextUtils.join(", " , prodCompanies);
+
+        String companies = TextUtils.join(", ", prodCompanies);
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsProdCompanies.setText(companies);
 
 
