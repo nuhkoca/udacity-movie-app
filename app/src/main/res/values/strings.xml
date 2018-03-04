@@ -10,6 +10,13 @@
     <string name="dollar_place_holder" translatable="false">%s $</string>
     <string name="tagline_place_holder" translatable="false">\"%s\"</string>
     <string name="thumbnail_place_holder" translatable="false">%s%s/hqdefault.jpg</string>
+    <string name="no_company_found" translatable="false">No company info found.</string>
+    <string name="no_country_found" translatable="false">No country info found.</string>
+    <string name="no_language_found" translatable="false">No language info found.</string>
+    <string name="no_budget_found" translatable="false">No budget info found.</string>
+    <string name="no_revenue_found" translatable="false">No revenue info found.</string>
+    <string name="no_runtime_found" translatable="false">No runtime info found.</string>
+    <string name="no_homepage_found" translatable="false">No homepage info found.</string>
 
 
     <!-- About Texts -->
@@ -63,6 +70,7 @@
     <string name="movie_added_to_database">You added %s to your favorites successfully.</string>
     <string name="favorites_all_deleted">Your favorites list is now empty!</string>
     <string name="no_data_already">There is already no favorite movie.</string>
+    <string name="favorite_is_opening">No connection detected. Favorite page is opening…</string>
 
 
     <!-- Alert Dialog Texts -->

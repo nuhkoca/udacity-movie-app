@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.presenter.splash.SplashScreenActivityPresenter;
@@ -45,6 +46,8 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
     public void onConnectivityError(String message) {
         BarConcealer barConcealer = BarConcealer.create(this);
         barConcealer.makeFullImmersive();
+
+        Toast.makeText(this, getString(R.string.favorite_is_opening), Toast.LENGTH_SHORT).show();
 
         int delayInSeconds = getResources().getInteger(R.integer.delay_in_seconds_to_activity);
 

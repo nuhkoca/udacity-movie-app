@@ -73,7 +73,7 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
         Observable<ReviewResponse> getMovies;
 
         if (movieId == 0) {
-            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null));
+            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null), Constants.TYPES.REVIEW);
             return;
         }
 
@@ -98,13 +98,13 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
                     public void onError(Throwable e) {
                         Timber.d(e.getMessage());
                         if (e instanceof NetworkErrorException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection), Constants.TYPES.REVIEW);
                         } else if (e instanceof NullPointerException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error), Constants.TYPES.REVIEW);
                         } else if (e instanceof HttpException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection), Constants.TYPES.REVIEW);
                         } else {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error), Constants.TYPES.REVIEW);
                         }
                     }
 
@@ -126,7 +126,7 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
         Observable<VideoResponse> getTrailers;
 
         if (movieId == 0) {
-            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null));
+            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null), Constants.TYPES.TRAILER);
             return;
         }
 
@@ -151,13 +151,13 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
                     public void onError(Throwable e) {
                         Timber.d(e.getMessage());
                         if (e instanceof NetworkErrorException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection), Constants.TYPES.TRAILER);
                         } else if (e instanceof NullPointerException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error), Constants.TYPES.TRAILER);
                         } else if (e instanceof HttpException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection), Constants.TYPES.TRAILER);
                         } else {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error), Constants.TYPES.TRAILER);
                         }
                     }
 
@@ -179,7 +179,7 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
         Observable<DetailsResponse> getOtherDetails;
 
         if (movieId == 0) {
-            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null));
+            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.movie_id_key_null), Constants.TYPES.DETAILS);
             return;
         }
 
@@ -204,13 +204,13 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
                     public void onError(Throwable e) {
                         Timber.d(e.getMessage());
                         if (e instanceof NetworkErrorException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection), Constants.TYPES.DETAILS);
                         } else if (e instanceof NullPointerException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error), Constants.TYPES.DETAILS);
                         } else if (e instanceof HttpException) {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_internet_connection), Constants.TYPES.DETAILS);
                         } else {
-                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error));
+                            mMovieDetailActivityView.onAnyLoadingFailed(App.getInstance().getString(R.string.no_data_error), Constants.TYPES.DETAILS);
                         }
                     }
 

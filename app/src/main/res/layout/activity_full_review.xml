@@ -42,7 +42,7 @@
             android:layout_gravity="end"
             android:gravity="end"
             android:textSize="14sp"
-            android:layout_marginTop="@dimen/dimension_8dp"
+            android:layout_marginTop="@dimen/dimension_20dp"
             style="@style/MovieReviewTextAppearance.ItemRow" />
 
     </LinearLayout>

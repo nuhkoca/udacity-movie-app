@@ -47,7 +47,6 @@ import com.nuhkoca.udacitymoviesapp.view.review.FullReviewActivity;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Objects;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener, IReviewItemTouchListener {
 
@@ -260,46 +259,71 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onOtherDetailsLoaded(DetailsResponse detailsResponse, List<String> prodCompanies, List<String> prodCountries, List<String> spokenLanguages) {
-        String formattedBudget = String.format(getString(R.string.dollar_place_holder),
-                mDecimalFormat.format(detailsResponse.getBudget()));
+        String formattedBudget = detailsResponse.getBudget() == 0 ? getString(R.string.no_budget_found) :
+                String.format(getString(R.string.dollar_place_holder), mDecimalFormat.format(detailsResponse.getBudget()));
 
-        String formattedRevenue = String.format(getString(R.string.dollar_place_holder),
-                mDecimalFormat.format(detailsResponse.getRevenue()));
+        String formattedRevenue = detailsResponse.getRevenue() == 0 ? getString(R.string.no_revenue_found) :
+                String.format(getString(R.string.dollar_place_holder), mDecimalFormat.format(detailsResponse.getRevenue()));
 
-        String formattedRuntime = String.format(getString(R.string.times_place_holder),
-                mDecimalFormat.format(detailsResponse.getRuntime()));
+        String formattedRuntime = detailsResponse.getRuntime() == 0 ? getString(R.string.no_runtime_found) :
+                String.format(getString(R.string.times_place_holder), mDecimalFormat.format(detailsResponse.getRuntime()));
+
+        String formattedHomepage = detailsResponse.getHomepage().equals("") ? getString(R.string.no_homepage_found) : detailsResponse.getHomepage();
 
         String formattedTagline = String.format(getString(R.string.tagline_place_holder), detailsResponse.getTagline());
-
-        if (Objects.equals(detailsResponse.getTagline(), "")) {
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvOtherDetailsTagline.setVisibility(View.GONE);
-        }
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvOtherDetailsTagline.setVisibility(detailsResponse.getTagline().equals("") ? View.GONE : View.VISIBLE);
 
 
-        String companies = TextUtils.join(", ", prodCompanies);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsProdCompanies.setText(companies);
+        String companies = prodCompanies.size() == 0 ? getString(R.string.no_company_found) : TextUtils.join(", ", prodCompanies);
 
+        String countries = prodCountries.size() == 0 ? getString(R.string.no_country_found) : TextUtils.join(", ", prodCountries);
 
-        String countries = TextUtils.join(", ", prodCountries);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsProdCountries.setText(countries);
+        String languages = spokenLanguages.size() == 0 ? getString(R.string.no_language_found) : TextUtils.join(", ", spokenLanguages);
 
-
-        String languages = TextUtils.join(", ", spokenLanguages);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsSpokenLanguages.setText(languages);
-
-
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.detailsResponse, detailsResponse);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedHomepage, formattedHomepage);
         mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.formattedTagline, formattedTagline);
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedBudget, formattedBudget);
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRevenue, formattedRevenue);
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRuntime, formattedRuntime);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.companies, companies);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.countries, countries);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.languages, languages);
 
         mActivityMovieDetailBinding.executePendingBindings();
     }
 
     @Override
-    public void onAnyLoadingFailed(String message) {
+    public void onAnyLoadingFailed(String message, Enum types) {
         SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, message);
+
+        if (types.equals(Constants.TYPES.REVIEW)) {
+            mActivityMovieDetailBinding.lMovieDetailReviewPart.flMovieDetailReviewPart.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
+        } else if (types.equals(Constants.TYPES.TRAILER)) {
+            mActivityMovieDetailBinding.lMovieDetailTrailerPart.flMovieDetailTrailerPart.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setVisibility(View.GONE);
+            mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(View.VISIBLE);
+        } else {
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedHomepage,
+                    getString(R.string.no_homepage_found));
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedBudget,
+                    getString(R.string.no_budget_found));
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRevenue,
+                    getString(R.string.no_revenue_found));
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRuntime,
+                    getString(R.string.no_runtime_found));
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.companies,
+                    getString(R.string.no_company_found));
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.countries,
+                    getString(R.string.no_country_found));
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.languages,
+                    getString(R.string.no_language_found));
+
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvOtherDetailsTagline.setVisibility(View.GONE);
+
+            mActivityMovieDetailBinding.executePendingBindings();
+        }
     }
 
     @Override
@@ -308,11 +332,11 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mActivityMovieDetailBinding.lMovieDetailReviewPart.flMovieDetailReviewPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
-        } else if (types.equals(Constants.TYPES.TRAILER)){
+        } else if (types.equals(Constants.TYPES.TRAILER)) {
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.flMovieDetailTrailerPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.cvOtherDetails.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.tvOtherDetailsNoDetailError.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.tvOtherDetailsNoDetailError.setVisibility(View.VISIBLE);

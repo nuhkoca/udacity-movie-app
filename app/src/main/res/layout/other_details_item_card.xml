@@ -2,8 +2,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="detailsResponse"
-            type="com.nuhkoca.udacitymoviesapp.model.details.DetailsResponse" />
+            name="formattedHomepage"
+            type="String" />
         <variable
             name="formattedBudget"
             type="String" />
@@ -13,6 +13,16 @@
         <variable
             name="formattedRuntime"
             type="String" />
+        <variable
+            name="companies"
+            type="String" />
+        <variable
+            name="countries"
+            type="String" />
+        <variable
+        name="languages"
+        type="String" />
+
     </data>
 
     <android.support.v7.widget.CardView
@@ -225,7 +235,7 @@
                         android:layout_height="wrap_content"
                         android:autoLink="web"
                         android:textColorLink="@color/textLinkColor"
-                        android:text="@{detailsResponse.homepage}"
+                        android:text="@{formattedHomepage}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
                 </LinearLayout>
@@ -306,6 +316,7 @@
                         android:id="@+id/tvOtherDetailsProdCompanies"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{companies}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
                 </LinearLayout>
@@ -332,6 +343,7 @@
                         android:id="@+id/tvOtherDetailsProdCountries"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{countries}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
                 </LinearLayout>
@@ -358,6 +370,7 @@
                         android:id="@+id/tvOtherDetailsSpokenLanguages"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="@{languages}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
                 </LinearLayout>

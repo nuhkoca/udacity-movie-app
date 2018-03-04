@@ -220,6 +220,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
     @Override
     protected void onDestroy() {
         mFavoriteMoviesActivityPresenter.onDestroy();
+        mFavoritesAdapter = null;
         super.onDestroy();
     }
 

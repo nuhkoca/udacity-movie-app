@@ -25,7 +25,7 @@ public interface MovieDetailActivityView {
 
     void onOtherDetailsLoaded(DetailsResponse detailsResponse, List<String> prodCompanies, List<String> prodCountries, List<String> spokenLanguages);
 
-    void onAnyLoadingFailed(String message);
+    void onAnyLoadingFailed(String message, Enum types);
 
     void onPartLoadingFailed(Enum types);
 
