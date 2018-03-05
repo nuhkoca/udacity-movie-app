@@ -273,11 +273,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         String formattedTagline = String.format(getString(R.string.tagline_place_holder), detailsResponse.getTagline());
         mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvOtherDetailsTagline.setVisibility(detailsResponse.getTagline().equals("") ? View.GONE : View.VISIBLE);
 
-
         String companies = prodCompanies.size() == 0 ? getString(R.string.no_company_found) : TextUtils.join(", ", prodCompanies);
-
         String countries = prodCountries.size() == 0 ? getString(R.string.no_country_found) : TextUtils.join(", ", prodCountries);
-
         String languages = spokenLanguages.size() == 0 ? getString(R.string.no_language_found) : TextUtils.join(", ", spokenLanguages);
 
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedHomepage, formattedHomepage);

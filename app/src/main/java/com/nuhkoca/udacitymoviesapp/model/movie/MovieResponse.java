@@ -31,6 +31,25 @@ public class MovieResponse extends BaseObservable implements Parcelable {
 
     public MovieResponse() {}
 
+    protected MovieResponse(Parcel in) {
+        page = in.readByte();
+        totalResults = in.readInt();
+        totalPages = in.readInt();
+        results = in.createTypedArrayList(Results.CREATOR);
+    }
+
+    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
+        @Override
+        public MovieResponse createFromParcel(Parcel in) {
+            return new MovieResponse(in);
+        }
+
+        @Override
+        public MovieResponse[] newArray(int size) {
+            return new MovieResponse[size];
+        }
+    };
+
     @Bindable
     public int getPage() {
         return page;
@@ -69,25 +88,6 @@ public class MovieResponse extends BaseObservable implements Parcelable {
         this.results = results;
         notifyPropertyChanged(BR.results);
     }
-
-    private MovieResponse(Parcel in) {
-        page = in.readByte();
-        totalResults = in.readInt();
-        totalPages = in.readInt();
-        results = in.createTypedArrayList(Results.CREATOR);
-    }
-
-    public static final Creator<MovieResponse> CREATOR = new Creator<MovieResponse>() {
-        @Override
-        public MovieResponse createFromParcel(Parcel in) {
-            return new MovieResponse(in);
-        }
-
-        @Override
-        public MovieResponse[] newArray(int size) {
-            return new MovieResponse[size];
-        }
-    };
 
     @Override
     public int describeContents() {

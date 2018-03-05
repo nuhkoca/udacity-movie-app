@@ -61,6 +61,34 @@ public class Results extends BaseObservable implements Parcelable {
 
     public Results(){}
 
+    protected Results(Parcel in) {
+        voteCount = in.readInt();
+        id = in.readInt();
+        video = in.readByte() != 0;
+        voteAverage = in.readFloat();
+        title = in.readString();
+        popularity = in.readFloat();
+        posterPath = in.readString();
+        originalLanguage = in.readString();
+        originalTitle = in.readString();
+        backdropPath = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        releaseDate = in.readString();
+    }
+
+    public static final Creator<Results> CREATOR = new Creator<Results>() {
+        @Override
+        public Results createFromParcel(Parcel in) {
+            return new Results(in);
+        }
+
+        @Override
+        public Results[] newArray(int size) {
+            return new Results[size];
+        }
+    };
+
     @Bindable
     public int getVoteCount() {
         return voteCount;
@@ -200,34 +228,6 @@ public class Results extends BaseObservable implements Parcelable {
         this.releaseDate = releaseDate;
         notifyPropertyChanged(BR.releaseDate);
     }
-
-    protected Results(Parcel in) {
-        voteCount = in.readInt();
-        id = in.readInt();
-        video = in.readByte() != 0;
-        voteAverage = in.readFloat();
-        title = in.readString();
-        popularity = in.readFloat();
-        posterPath = in.readString();
-        originalLanguage = in.readString();
-        originalTitle = in.readString();
-        backdropPath = in.readString();
-        adult = in.readByte() != 0;
-        overview = in.readString();
-        releaseDate = in.readString();
-    }
-
-    static final Creator<Results> CREATOR = new Creator<Results>() {
-        @Override
-        public Results createFromParcel(Parcel in) {
-            return new Results(in);
-        }
-
-        @Override
-        public Results[] newArray(int size) {
-            return new Results[size];
-        }
-    };
 
     @Override
     public int describeContents() {

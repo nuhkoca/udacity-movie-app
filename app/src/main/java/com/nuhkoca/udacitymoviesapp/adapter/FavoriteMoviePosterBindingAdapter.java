@@ -34,16 +34,16 @@ public class FavoriteMoviePosterBindingAdapter {
                     .load(logoUrl)
                     .listener(new MyRequestListener(progressBar))
                     .listener(GlidePalette.with(logoUrl)
-                            .use(GlidePalette.Profile.MUTED)
+                            .use(GlidePalette.Profile.VIBRANT)
                             .intoCallBack(new BitmapPalette.CallBack() {
                                 @Override
                                 public void onPaletteLoaded(@Nullable Palette palette) {
-                                    if (palette != null && palette.getMutedSwatch() != null) {
-                                        floor.setCardBackgroundColor(palette.getMutedSwatch().getRgb());
-                                        title.setBackgroundColor(palette.getMutedSwatch().getRgb());
-                                        title.setTextColor(palette.getMutedSwatch().getBodyTextColor());
-                                        genre.setBackgroundColor(palette.getMutedSwatch().getRgb());
-                                        genre.setTextColor(palette.getMutedSwatch().getBodyTextColor());
+                                    if (palette != null && palette.getDominantSwatch() != null) {
+                                        floor.setCardBackgroundColor(palette.getDominantSwatch().getRgb());
+                                        title.setBackgroundColor(palette.getDominantSwatch().getRgb());
+                                        title.setTextColor(palette.getDominantSwatch().getBodyTextColor());
+                                        genre.setBackgroundColor(palette.getDominantSwatch().getRgb());
+                                        genre.setTextColor(palette.getDominantSwatch().getBodyTextColor());
                                     }else {
                                         floor.setCardBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));
                                         title.setBackgroundColor(ContextCompat.getColor(imageView.getContext(), R.color.colorPrimary));

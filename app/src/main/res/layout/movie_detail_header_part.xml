@@ -47,6 +47,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <View
+                android:layout_width="50dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="@dimen/dimension_16dp"
+                android:layout_gravity="center"
+                style="@style/ViewAppearance"/>
+
             <me.gujun.android.taggroup.TagGroup
                 android:id="@+id/tgMovieDetailHeaderPartGenre"
                 android:layout_width="match_parent"

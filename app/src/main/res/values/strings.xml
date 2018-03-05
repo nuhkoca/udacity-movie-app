@@ -17,6 +17,7 @@
     <string name="no_revenue_found" translatable="false">No revenue info found.</string>
     <string name="no_runtime_found" translatable="false">No runtime info found.</string>
     <string name="no_homepage_found" translatable="false">No homepage info found.</string>
+    <string name="more" translatable="false">More</string>
 
 
     <!-- About Texts -->
@@ -98,6 +99,7 @@
     <string name="about">About</string>
     <string name="full_review">Full Review</string>
     <string name="delete_all">Delete all</string>
+    <string name="license">License</string>
 
 
     <!-- Movie Details Labels -->

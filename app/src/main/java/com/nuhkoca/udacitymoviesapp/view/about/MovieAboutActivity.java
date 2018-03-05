@@ -9,9 +9,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieAboutBinding;
@@ -97,7 +101,7 @@ public class MovieAboutActivity extends AppCompatActivity implements MovieAboutA
         return copyRightsElement;
     }
 
-    private void simulateDayNight(int currentSetting) {
+    private void simulateDayNight(@SuppressWarnings("SameParameterValue") int currentSetting) {
         final int DAY = 0;
         final int NIGHT = 1;
         final int FOLLOW_SYSTEM = 3;
@@ -117,6 +121,14 @@ public class MovieAboutActivity extends AppCompatActivity implements MovieAboutA
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.about_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClicked = item.getItemId();
 
@@ -125,6 +137,13 @@ public class MovieAboutActivity extends AppCompatActivity implements MovieAboutA
                 supportFinishAfterTransition();
 
                 setResult(RESULT_OK);
+                return true;
+
+            case R.id.license:
+                new LibsBuilder()
+                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                        .withActivityTitle(getString(R.string.license))
+                        .start(this);
                 return true;
 
             default:

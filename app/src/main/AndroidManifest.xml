@@ -46,9 +46,11 @@
             android:authorities="com.nuhkoca.udacitymoviesapp"
             android:exported="false" />
 
-        <activity android:name=".view.review.FullReviewActivity"
+        <activity
+            android:name=".view.review.FullReviewActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".view.detail.MovieDetailActivity"/>
+            android:parentActivityName=".view.detail.MovieDetailActivity" />
+        <activity android:name=".view.license.LicenseActivity"></activity>
     </application>
 
 </manifest>

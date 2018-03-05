@@ -184,6 +184,7 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -195,6 +196,7 @@
                         android:layout_weight="1"
                         android:text="@string/budget"
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
+
 
                     <View
                         android:id="@+id/vOtherDetails5"
@@ -212,6 +214,7 @@
 
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -219,7 +222,8 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:text="@string/homepage"
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
