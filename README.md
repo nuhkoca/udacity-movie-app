@@ -14,6 +14,7 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 * Glidev4
 * GlideModule
 * Timber
+* Okhttp
 
 
 # ToDo List
@@ -21,9 +22,10 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 - [x] Popular movies are listed.
 - [x] Top rated movies are listed.
 - [x] Movie Details are shown.
-- [ ] Add movies to database when favorite button is clicked.
-- [ ] Show favorite movies in case no internet.
-- [ ] Improve movie details layout.
+- [x] Add movies to database when favorite button is clicked.
+- [x] Show favorite movies in case no internet.
+- [x] Delete a movie from the favorites list.
+- [x] Improve movie details layout.
 
 
 # License
