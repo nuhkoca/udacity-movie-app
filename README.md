@@ -29,6 +29,7 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 - [ ] Internal Youtube Player.
 - [ ] Push Notification implementation.
 - [ ] More movies, reviews and trailers as long as scrolling.
+- [ ] Two pane support for tablets.
 
 
 # License
