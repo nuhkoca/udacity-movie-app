@@ -5,5 +5,6 @@
     <dimen name="dimension_12dp">12dp</dimen>
     <dimen name="dimension_16dp">16dp</dimen>
     <dimen name="dimension_20dp">20dp</dimen>
+    <dimen name="dimension_24dp">24dp</dimen>
     <dimen name="dimension_32dp">32dp</dimen>
 </resources>

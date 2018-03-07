@@ -3,21 +3,22 @@
 
 
     <!-- Place Holders -->
-    <string name="image_place_holder" translatable="false">There is nothing to do</string>
-    <string name="rating_place_holder" translatable="false">(%.1f/10)</string>
-    <string name="popularity_place_holder" translatable="false">%.1f/1000</string>
-    <string name="times_place_holder" translatable="false">%s times</string>
-    <string name="dollar_place_holder" translatable="false">%s $</string>
-    <string name="tagline_place_holder" translatable="false">\"%s\"</string>
-    <string name="thumbnail_place_holder" translatable="false">%s%s/hqdefault.jpg</string>
-    <string name="no_company_found" translatable="false">No company info found.</string>
-    <string name="no_country_found" translatable="false">No country info found.</string>
-    <string name="no_language_found" translatable="false">No language info found.</string>
-    <string name="no_budget_found" translatable="false">No budget info found.</string>
-    <string name="no_revenue_found" translatable="false">No revenue info found.</string>
-    <string name="no_runtime_found" translatable="false">No runtime info found.</string>
-    <string name="no_homepage_found" translatable="false">No homepage info found.</string>
-    <string name="more" translatable="false">More</string>
+    <string name="image_place_holder">There is nothing to do</string>
+    <string name="rating_place_holder">(%.1f/10)</string>
+    <string name="popularity_place_holder">%.1f/1000</string>
+    <string name="times_place_holder">%s times</string>
+    <string name="dollar_place_holder">%s $</string>
+    <string name="tagline_place_holder">\"%s\"</string>
+    <string name="thumbnail_place_holder">%s%s/hqdefault.jpg</string>
+    <string name="no_company_found">No company info found.</string>
+    <string name="no_country_found">No country info found.</string>
+    <string name="no_language_found">No language info found.</string>
+    <string name="no_budget_found">No budget info found.</string>
+    <string name="no_revenue_found">No revenue info found.</string>
+    <string name="no_runtime_found">No runtime info found.</string>
+    <string name="no_homepage_found">No homepage info found.</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
 
 
     <!-- About Texts -->
@@ -33,7 +34,7 @@
     <string name="udacity_play_store" translatable="false">com.udacity.android</string>
     <string name="udacity_instagram" translatable="false">udacity</string>
     <string name="github" translatable="false">nuhkoca</string>
-    <string name="scholarship_element" translatable="false">Scholarship with Udacity</string>
+    <string name="scholarship_element" translatable="false">Scholarships at Udacity</string>
     <string name="scholarship_link" translatable="false">https://www.udacity.com/scholarships</string>
     <string name="chooser_title" translatable="false">Open with...</string>
 
@@ -56,7 +57,7 @@
     <!-- Messages -->
     <string name="popular_movies_successfully_loaded">Popular movies successfully loaded</string>
     <string name="top_rated_movies_successfully_loaded">Top Rated movies successfully loaded</string>
-    <string name="twice_press_to_exit">Press again to exit.</string>
+    <string name="twice_press_to_exit">Press once again to exit.</string>
     <string name="api_key_null">API Key is null</string>
     <string name="movie_tag_key_null">Movie tag is null</string>
     <string name="movie_id_key_null">Movie ID shouldn\'t be lower than 0</string>
@@ -141,6 +142,28 @@
         <item name="53">Thriller</item>
         <item name="10752">War</item>
         <item name="37">Western</item>
+    </string-array>
+
+
+    <!-- Libraries Included -->
+    <string-array name="libraries_included">
+        <item name="timber">timber</item>
+        <item name="glide">glide</item>
+        <item name="okhttp">okhttp</item>
+        <item name="glidepalette">glidepalette</item>
+        <item name="bottomsheet">bottomsheet</item>
+        <item name="retrofit">retrofit</item>
+        <item name="leakcanary">leakcanary</item>
+        <item name="rxjava">rxjava</item>
+        <item name="android-about-page">android-about-page</item>
+        <item name="taggroup">taggroup</item>
+        <item name="material-dialogs">material-dialogs</item>
+    </string-array>
+
+    <!-- Libraries Excluded -->
+    <string-array name="libraries_excluded">
+        <item name="fastadapter">fastadapter</item>
+        <item name="Android-Iconics">Android-Iconics</item>
     </string-array>
 
 </resources>

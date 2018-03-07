@@ -1,5 +1,7 @@
 package com.nuhkoca.udacitymoviesapp.view.detail;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -287,6 +289,8 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.languages, languages);
 
         mActivityMovieDetailBinding.executePendingBindings();
+
+        mMovieDetailActivityPresenter.expandOrCollapseOtherDetails();
     }
 
     @Override
@@ -356,6 +360,46 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         if (uri != null) {
             SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, String.format(getString(R.string.movie_added_to_database), results.getOriginalTitle()));
         }
+    }
+
+    @Override
+    public void onOtherDetailsExpandedOrCollapsed() {
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsMoreLess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int duration = getResources().getInteger(android.R.integer.config_longAnimTime);
+
+                if (mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsMoreLess.getText().equals(getString(R.string.more))) {
+                    mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.llOtherDetails.animate()
+                            .setDuration(duration)
+                            .alpha(1)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.
+                                            lOtherDetails.llOtherDetails.setVisibility(View.VISIBLE);
+
+                                    mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.
+                                            tvOtherDetailsMoreLess.setText(getString(R.string.less));
+                                }
+                            });
+                } else {
+                    mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.llOtherDetails.animate()
+                            .setDuration(duration)
+                            .alpha(0)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.
+                                            lOtherDetails.llOtherDetails.setVisibility(View.GONE);
+
+                                    mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.
+                                            tvOtherDetailsMoreLess.setText(getString(R.string.more));
+                                }
+                            });
+                }
+            }
+        });
     }
 
     @Override

@@ -57,23 +57,23 @@ public class MovieAboutActivity extends AppCompatActivity implements MovieAboutA
 
         Element adsElement = new Element();
         adsElement.setTitle(getString(R.string.scholarship_element))
-        .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent webIntent = new Intent(Intent.ACTION_VIEW);
-                webIntent.setData(Uri.parse(getString(R.string.scholarship_link)));
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+                        webIntent.setData(Uri.parse(getString(R.string.scholarship_link)));
 
-                String title = getString(R.string.chooser_title);
-                Intent chooser = Intent.createChooser(webIntent, title);
-                startActivity(chooser);
-            }
-        });
+                        String title = getString(R.string.chooser_title);
+                        Intent chooser = Intent.createChooser(webIntent, title);
+                        startActivity(chooser);
+                    }
+                });
 
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
                 .setDescription(getString(R.string.about_description))
                 .setImage(R.drawable.ic_about_page_icon)
-                .addItem(new Element().setTitle(String.valueOf(String.format(getString(R.string.version),BuildConfig.VERSION_NAME))))
+                .addItem(new Element().setTitle(String.valueOf(String.format(getString(R.string.version), BuildConfig.VERSION_NAME))))
                 .addItem(adsElement)
                 .addGroup(getString(R.string.connect_with_us))
                 .addEmail(getString(R.string.email))
@@ -142,7 +142,9 @@ public class MovieAboutActivity extends AppCompatActivity implements MovieAboutA
             case R.id.license:
                 new LibsBuilder()
                         .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                        .withActivityTitle(getString(R.string.license))
+                        .withAutoDetect(true)
+                        .withLibraries(getResources().getStringArray(R.array.libraries_included))
+                        .withExcludedLibraries(getResources().getStringArray(R.array.libraries_excluded))
                         .start(this);
                 return true;
 

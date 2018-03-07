@@ -30,4 +30,6 @@ public interface MovieDetailActivityView {
     void onPartLoadingFailed(Enum types);
 
     void onMovieAddedToDatabase();
+
+    void onOtherDetailsExpandedOrCollapsed();
 }

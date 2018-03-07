@@ -31,6 +31,7 @@
             android:layout_width="50dp"
             android:layout_height="1dp"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="@dimen/dimension_16dp"
             android:layout_gravity="center"
             style="@style/ViewAppearance"/>
 
@@ -39,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="100dp"
             style="@style/MovieDetailTextAppearance.ItemRow"/>
 
         <LinearLayout
@@ -50,15 +51,15 @@
             <View
                 android:layout_width="50dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="50dp"
                 android:layout_marginBottom="@dimen/dimension_16dp"
                 android:layout_gravity="center"
                 style="@style/ViewAppearance"/>
 
             <me.gujun.android.taggroup.TagGroup
                 android:id="@+id/tgMovieDetailHeaderPartGenre"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 style="@style/TagGroupAppearance"/>
 
         </LinearLayout>

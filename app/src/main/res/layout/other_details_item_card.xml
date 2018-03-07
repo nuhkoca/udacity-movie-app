@@ -190,12 +190,34 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/budget"
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                        <TextView
+                            android:id="@+id/tvOtherDetailsMoreLess"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.3"
+                            android:text="@string/more"
+                            android:gravity="end"
+                            android:textAllCaps="true"
+                            android:textSize="14sp"
+                            android:textColor="@color/colorBlack"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            style="@style/MovieDetailTextAppearance.LabelRow"/>
+
+                    </LinearLayout>
 
 
                     <View
@@ -214,6 +236,12 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/llOtherDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -377,6 +405,7 @@
                         android:text="@{languages}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
+                </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>

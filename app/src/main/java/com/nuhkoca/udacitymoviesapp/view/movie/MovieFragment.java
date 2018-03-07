@@ -101,11 +101,11 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
         int duration = 0;
 
         if (getActivity() != null) {
-            duration = getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime);
+            duration = getActivity().getResources().getInteger(android.R.integer.config_longAnimTime);
         }
 
         mFragmentMovieBinding.pbMovie.setVisibility(visible ? View.VISIBLE : View.GONE);
-        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(visible ? View.VISIBLE: View.GONE);
+        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(visible ? View.VISIBLE : View.GONE);
 
         mFragmentMovieBinding.pbMovie.animate()
                 .setDuration(duration)
@@ -113,8 +113,11 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        mFragmentMovieBinding.pbMovie.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(visible ? View.VISIBLE: View.GONE);
+                        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(visible ? View.VISIBLE : View.GONE);
+
+                        if (mFragmentMovieBinding.tvMovieErrorHolder.getVisibility() == View.VISIBLE) {
+                            mFragmentMovieBinding.pbMovie.setVisibility(View.GONE);
+                        }
                     }
                 });
     }

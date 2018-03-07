@@ -245,4 +245,9 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
     public void addMovieToDatabase() {
         mMovieDetailActivityView.onMovieAddedToDatabase();
     }
+
+    @Override
+    public void expandOrCollapseOtherDetails() {
+        mMovieDetailActivityView.onOtherDetailsExpandedOrCollapsed();
+    }
 }

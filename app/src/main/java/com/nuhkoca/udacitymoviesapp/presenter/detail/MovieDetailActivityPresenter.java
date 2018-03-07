@@ -22,4 +22,6 @@ public interface MovieDetailActivityPresenter {
     void loadOtherDetails(int movieId);
 
     void addMovieToDatabase();
+
+    void expandOrCollapseOtherDetails();
 }

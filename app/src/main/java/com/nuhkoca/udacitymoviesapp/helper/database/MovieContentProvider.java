@@ -16,8 +16,6 @@ import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.model.favorite.MovieContract;
 
-import timber.log.Timber;
-
 /**
  * Created by nuhkoca on 2/28/18.
  */
