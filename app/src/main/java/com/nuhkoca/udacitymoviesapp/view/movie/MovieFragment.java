@@ -45,8 +45,6 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     private static final String MOVIE_STATE_KEY = "movie-model";
     private List<Results> results = new ArrayList<>();
 
-    private boolean isRotated = false;
-
     public static MovieFragment getInstance(String tag) {
         MovieFragment movieFragment = new MovieFragment();
 
@@ -73,11 +71,19 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            mMoviePresenter = new MoviePresenterImpl(this);
 
-            String tag = getArguments().getString("tag");
-            mMoviePresenter.loadMovies(BuildConfig.APIKEY, tag);
+        if (savedInstanceState != null) {
+            this.results = savedInstanceState.getParcelableArrayList(MOVIE_STATE_KEY);
+
+            loadDuringRotation(this.results);
+
+        } else {
+            if (getArguments() != null) {
+                mMoviePresenter = new MoviePresenterImpl(this);
+
+                String tag = getArguments().getString("tag");
+                mMoviePresenter.loadMovies(BuildConfig.APIKEY, tag);
+            }
         }
     }
 
@@ -94,6 +100,8 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
             mMovieAdapter = new MovieAdapter(results, this);
             mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
             mMovieAdapter.swapData(results);
+
+            this.results = results;
         }
     }
 
@@ -130,8 +138,10 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onDestroy() {
-        //mMoviePresenter.onDestroy();
-        //mMovieAdapter = null;
+        if (mMoviePresenter != null) {
+            mMoviePresenter.onDestroy();
+        }
+        mMovieAdapter = null;
         super.onDestroy();
     }
 
@@ -147,5 +157,29 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
                         ViewCompat.getTransitionName(imageView));
 
         startActivityForResult(detailIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE, activityOptionsCompat.toBundle());
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelableArrayList(MOVIE_STATE_KEY, (ArrayList<? extends Parcelable>) this.results);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    private void loadDuringRotation(List<Results> instanceResult) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
+                ColumnCalculator.getOptimalNumberOfColumn(getActivity()));
+
+        mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
+
+        mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
+        mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
+
+        mMovieAdapter = new MovieAdapter(instanceResult, this);
+        mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
+        mMovieAdapter.swapData(instanceResult);
+
+        mFragmentMovieBinding.pbMovie.setVisibility(View.GONE);
+        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(View.GONE);
     }
 }

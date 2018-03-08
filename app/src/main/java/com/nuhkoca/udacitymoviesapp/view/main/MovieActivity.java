@@ -92,7 +92,9 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
 
     @Override
     protected void onDestroy() {
-        //mMovieActivityPresenter.onDestroy();
+        if (mMovieActivityPresenter != null) {
+            mMovieActivityPresenter.onDestroy();
+        }
         super.onDestroy();
     }
 

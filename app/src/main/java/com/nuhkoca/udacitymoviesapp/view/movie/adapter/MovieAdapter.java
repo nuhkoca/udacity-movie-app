@@ -15,7 +15,6 @@ import com.nuhkoca.udacitymoviesapp.callback.IMovieItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.MovieListItemCardBinding;
 import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,11 +25,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     private List<Results> mResults;
     private IMovieItemTouchListener mIMovieItemTouchListener;
-
-    public MovieAdapter(IMovieItemTouchListener IMovieItemTouchListener) {
-        this.mIMovieItemTouchListener = IMovieItemTouchListener;
-        this.mResults = new ArrayList<>();
-    }
 
     public MovieAdapter(List<Results> mResults, IMovieItemTouchListener mIMovieItemTouchListener) {
         this.mResults = mResults;
