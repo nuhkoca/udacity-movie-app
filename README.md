@@ -26,6 +26,10 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 - [x] Show favorite movies in case no internet.
 - [x] Delete a movie from the favorites list.
 - [x] Improve movie details layout.
+- [ ] Internal Youtube Player.
+- [ ] Push Notification implementation.
+- [ ] More movies, reviews and trailers as long as scrolling.
+- [ ] Two pane support for tablets.
 
 
 # License
