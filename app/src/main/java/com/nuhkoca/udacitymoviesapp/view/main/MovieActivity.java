@@ -37,9 +37,11 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         super.onCreate(savedInstanceState);
         mActivityMovieBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
 
-        mMovieActivityPresenter = new MovieActivityPresenterImpl(this);
-        mMovieActivityPresenter.beautifyUI();
-        mMovieActivityPresenter.loadFragments();
+        if (savedInstanceState == null) {
+            mMovieActivityPresenter = new MovieActivityPresenterImpl(this);
+            mMovieActivityPresenter.beautifyUI();
+            mMovieActivityPresenter.loadFragments();
+        }
 
         mActivityMovieBinding.lMovieToolbar.ibSort.setOnClickListener(this);
     }
@@ -90,7 +92,7 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
 
     @Override
     protected void onDestroy() {
-        mMovieActivityPresenter.onDestroy();
+        //mMovieActivityPresenter.onDestroy();
         super.onDestroy();
     }
 

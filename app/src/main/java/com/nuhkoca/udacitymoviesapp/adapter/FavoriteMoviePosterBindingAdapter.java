@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.Target;
 import com.github.florent37.glidepalette.BitmapPalette;
 import com.github.florent37.glidepalette.GlidePalette;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
 /**
@@ -55,6 +56,10 @@ public class FavoriteMoviePosterBindingAdapter {
                             })
                     )
                     .into(imageView);
+        }
+
+        if (logoUrl.contains(Constants.NULL_CHECK)) {
+            progressBar.setVisibility(View.GONE);
         }
     }
 

@@ -2,6 +2,7 @@ package com.nuhkoca.udacitymoviesapp.view.movie.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,8 +32,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.mResults = new ArrayList<>();
     }
 
+    public MovieAdapter(List<Results> mResults, IMovieItemTouchListener mIMovieItemTouchListener) {
+        this.mResults = mResults;
+        this.mIMovieItemTouchListener = mIMovieItemTouchListener;
+    }
+
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -46,7 +53,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Results results = mResults.get(position);
 
         holder.bindView(results);

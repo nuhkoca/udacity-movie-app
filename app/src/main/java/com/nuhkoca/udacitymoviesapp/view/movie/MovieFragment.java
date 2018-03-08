@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -28,6 +29,7 @@ import com.nuhkoca.udacitymoviesapp.utils.ColumnCalculator;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.adapter.MovieAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +41,11 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     private FragmentMovieBinding mFragmentMovieBinding;
     private MoviePresenter mMoviePresenter;
     private MovieAdapter mMovieAdapter;
+
+    private static final String MOVIE_STATE_KEY = "movie-model";
+    private List<Results> results = new ArrayList<>();
+
+    private boolean isRotated = false;
 
     public static MovieFragment getInstance(String tag) {
         MovieFragment movieFragment = new MovieFragment();
@@ -66,9 +73,9 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mMoviePresenter = new MoviePresenterImpl(this);
-
         if (getArguments() != null) {
+            mMoviePresenter = new MoviePresenterImpl(this);
+
             String tag = getArguments().getString("tag");
             mMoviePresenter.loadMovies(BuildConfig.APIKEY, tag);
         }
@@ -84,9 +91,8 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
             mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
             mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
 
-            mMovieAdapter = new MovieAdapter(this);
+            mMovieAdapter = new MovieAdapter(results, this);
             mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
-
             mMovieAdapter.swapData(results);
         }
     }
@@ -124,8 +130,8 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onDestroy() {
-        mMoviePresenter.onDestroy();
-        mMovieAdapter = null;
+        //mMoviePresenter.onDestroy();
+        //mMovieAdapter = null;
         super.onDestroy();
     }
 

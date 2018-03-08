@@ -3,6 +3,7 @@ package com.nuhkoca.udacitymoviesapp.view.favorite.adapter;
 import android.content.Context;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     public FavoritesAdapter() {
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -40,7 +42,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (!mCursor.moveToPosition(position))
             return;
 

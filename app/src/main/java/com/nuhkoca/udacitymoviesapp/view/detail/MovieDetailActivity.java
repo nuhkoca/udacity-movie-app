@@ -79,7 +79,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
 
-        mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this, this);
+        mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this);
         mMovieDetailActivityPresenter.populateDetails();
 
         mActivityMovieDetailBinding.fabMovieDetail.setOnClickListener(this);
@@ -350,9 +350,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, results.getOriginalTitle());
         contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_GENRE, genre);
-
-        //byte[] poster = getImageToSaveToDatabase(mActivityMovieDetailBinding.ivMovieDetailPoster);
-
         contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, Constants.W300_IMAGE_URL_PREFIX + results.getPosterPath());
 
         Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);

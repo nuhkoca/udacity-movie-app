@@ -17,12 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,13 +35,13 @@ import com.nuhkoca.udacitymoviesapp.utils.ColumnCalculator;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
 import com.nuhkoca.udacitymoviesapp.view.favorite.adapter.FavoritesAdapter;
 
-import timber.log.Timber;
-
 public class FavoriteMoviesActivity extends AppCompatActivity implements FavoriteMoviesActivityView, LoaderManager.LoaderCallbacks<Cursor> {
 
     private ActivityFavoriteMoviesBinding mActivityFavoriteMoviesBinding;
     private FavoriteMoviesActivityPresenter mFavoriteMoviesActivityPresenter;
     private FavoritesAdapter mFavoritesAdapter;
+
+    private static int cursorCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +102,9 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
                                 SnackbarPopper.pop(mActivityFavoriteMoviesBinding.rlFavoriteMovies, String.format(getString(R.string.dialog_action_message), viewHolder.itemView.getTag(Constants.VIEW_HOLDER_TAG_2)));
 
-                                if (mFavoritesAdapter.getItemCount()==1) {
+                               cursorCount = cursorCount - 1;
+
+                                if (cursorCount == 0) {
                                     mActivityFavoriteMoviesBinding.rvFavorites.setVisibility(View.GONE);
                                     mActivityFavoriteMoviesBinding.tvFavoriteMoviesHeader.setText(getString(R.string.favorites_all_deleted));
                                 }
@@ -231,22 +231,24 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
         getSupportLoaderManager().restartLoader(Constants.MOVIE_LOADER_ID, null, this);
     }
 
+    @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new DatabaseFetcher(this);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         if (mFavoritesAdapter == null) {
             return;
         }
 
+        cursorCount = data.getCount();
         mFavoritesAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         if (mFavoritesAdapter == null) {
             return;
         }
@@ -287,6 +289,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
         public void deliverResult(Cursor data) {
             mTaskData = data;
+            cursorCount = data.getCount();
             super.deliverResult(data);
         }
     }

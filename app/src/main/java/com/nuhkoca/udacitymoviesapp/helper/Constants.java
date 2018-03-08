@@ -12,6 +12,8 @@ public class Constants {
         DETAILS
     }
 
+    public static final String NULL_CHECK = "null";
+
     public static final String MOVIE_MODEL_TAG = "movie-model";
 
     public static final String GENRE_TAG = "genre";
@@ -24,9 +26,9 @@ public class Constants {
 
     public static final String YOUTUBE_PREFIX = "http://www.youtube.com/watch?v=";
 
-    public static final String W500_IMAGE_URL_PREFIX = "http://image.tmdb.org/t/p/w500/";
+    public static final String W500_IMAGE_URL_PREFIX = "http://image.tmdb.org/t/p/w500";
 
-    public static final String W300_IMAGE_URL_PREFIX = "http://image.tmdb.org/t/p/w300/";
+    public static final String W300_IMAGE_URL_PREFIX = "http://image.tmdb.org/t/p/w300";
 
     public static final String THUMBNAIL_URL_PREFIX = "https://img.youtube.com/vi/";
 

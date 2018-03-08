@@ -22,6 +22,8 @@ import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.module.GlideApp;
 
+import timber.log.Timber;
+
 /**
  * Created by nuhkoca on 2/19/18.
  */
@@ -32,6 +34,8 @@ public class MoviePosterBindingAdapter {
     public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView genre) {
 
         logoUrl = Constants.W300_IMAGE_URL_PREFIX + logoUrl;
+
+        Timber.d(logoUrl);
 
         if (!TextUtils.isEmpty(logoUrl)) {
             GlideApp.with(imageView.getContext())
@@ -60,6 +64,10 @@ public class MoviePosterBindingAdapter {
                     )
                     .into(imageView);
         }
+
+        if (logoUrl.contains(Constants.NULL_CHECK)) {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private static class MyRequestListener implements RequestListener<Drawable> {
@@ -70,15 +78,18 @@ public class MoviePosterBindingAdapter {
             this.progressBar = progressBar;
         }
 
+
         @Override
         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
             this.progressBar.setVisibility(View.GONE);
+
             return false;
         }
 
         @Override
         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
             this.progressBar.setVisibility(View.GONE);
+
             return false;
         }
     }

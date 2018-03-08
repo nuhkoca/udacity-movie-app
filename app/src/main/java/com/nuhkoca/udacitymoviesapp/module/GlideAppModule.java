@@ -61,8 +61,8 @@ public class GlideAppModule extends AppGlideModule {
                 .centerCrop()
                 .encodeFormat(Bitmap.CompressFormat.PNG)
                 .encodeQuality(100)
-                .fallback(ContextCompat.getDrawable(context, R.drawable.ic_splash_screen_icon))
-                .error(ContextCompat.getDrawable(context, R.drawable.ic_splash_screen_icon))
+                .fallback(ContextCompat.getDrawable(context, R.drawable.ic_not_found))
+                .error(ContextCompat.getDrawable(context, R.drawable.ic_not_found))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .format(PREFER_ARGB_8888)
                 .skipMemoryCache(false);
