@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "676362500061",
+    "firebase_url": "https://udacity-movies-app.firebaseio.com",
+    "project_id": "udacity-movies-app",
+    "storage_bucket": "udacity-movies-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676362500061:android:e075a7d014842327",
+        "android_client_info": {
+          "package_name": "com.nuhkoca.udacitymoviesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "676362500061-6aiel003iltt138io9edbvsi4pvcbqip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nuhkoca.udacitymoviesapp",
+            "certificate_hash": "09e0f682a64f1048235f3e77e422def5c48dca67"
+          }
+        },
+        {
+          "client_id": "676362500061-l030abfqheo36gf2viqujd5ea5npt6gm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNktHJxd2k3bBu05QPbkWg0tM_yuUfZqY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676362500061-l030abfqheo36gf2viqujd5ea5npt6gm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
