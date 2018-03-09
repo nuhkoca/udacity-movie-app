@@ -22,8 +22,8 @@ public class MovieActivityPresenterImpl implements MovieActivityPresenter {
     }
 
     @Override
-    public void beautifyUI() {
-        mMovieActivityView.onUIBeautified();
+    public void beautifyUI(String title) {
+        mMovieActivityView.onUIBeautified(title);
     }
 
     @Override

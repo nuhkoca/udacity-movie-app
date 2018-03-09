@@ -30,17 +30,20 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
     private MovieActivityPresenter mMovieActivityPresenter;
 
     private long backPressed;
-    private String fragmentTag;
+    private static String fragmentTag;
+    private static String fragmentTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityMovieBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
+        mMovieActivityPresenter = new MovieActivityPresenterImpl(this);
 
         if (savedInstanceState == null) {
-            mMovieActivityPresenter = new MovieActivityPresenterImpl(this);
-            mMovieActivityPresenter.beautifyUI();
+            mMovieActivityPresenter.beautifyUI(getString(R.string.app_name));
             mMovieActivityPresenter.loadFragments();
+        } else {
+            mMovieActivityPresenter.beautifyUI(fragmentTitle);
         }
 
         mActivityMovieBinding.lMovieToolbar.ibSort.setOnClickListener(this);
@@ -62,11 +65,11 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
     }
 
     @Override
-    public void onUIBeautified() {
+    public void onUIBeautified(String title) {
         setSupportActionBar(mActivityMovieBinding.lMovieToolbar.toolbar);
         setTitle("");
 
-        mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(getString(R.string.app_name));
+        mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(title);
     }
 
     @Override
@@ -172,5 +175,25 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
 
     private void changeTitle(final String title) {
         mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(title);
+
+        fragmentTitle = title;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(Constants.FRAGMENT_TITLE, fragmentTitle);
+        outState.putString(Constants.FRAGMENT_TAG, fragmentTag);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            fragmentTitle = savedInstanceState.getString(Constants.FRAGMENT_TITLE);
+            fragmentTag = savedInstanceState.getString(Constants.FRAGMENT_TAG);
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.ActionBar;
@@ -22,6 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -43,6 +47,7 @@ import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresente
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.utils.BottomSheetBuilder;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
+import com.nuhkoca.udacitymoviesapp.view.YoutubeActivity;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.TrailerAdapter;
 import com.nuhkoca.udacitymoviesapp.view.review.FullReviewActivity;
@@ -454,14 +459,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onTrailerItemTouched(String trailerKey) {
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailerKey));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(Constants.YOUTUBE_PREFIX + trailerKey));
-        try {
-            startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            startActivity(webIntent);
-        }
+        openYoutubeAppOrWatchInternally(trailerKey);
     }
 
     @Override
@@ -472,5 +470,36 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         reviewIntent.putExtra(Constants.REVIEW_MOVIE_EXTRA, results.getOriginalTitle());
 
         startActivityForResult(reviewIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
+    }
+
+    private void openYoutubeAppOrWatchInternally(final String videoKey) {
+        new MaterialDialog.Builder(this)
+                .title(getString(R.string.dialog_title_youtube))
+                .theme(Theme.LIGHT)
+                .content(getString(R.string.dialog_message_youtube))
+                .positiveText(getString(R.string.dialog_positive_button_youtube))
+                .negativeText(getString(R.string.dialog_negative_button_youtube))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent youtubeIntent = new Intent(MovieDetailActivity.this, YoutubeActivity.class);
+                        youtubeIntent.putExtra(Constants.YOUTUBE_VIDEO_ID, videoKey);
+                        startActivityForResult(youtubeIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoKey));
+                        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(Constants.YOUTUBE_PREFIX + videoKey));
+                        try {
+                            startActivity(appIntent);
+                        } catch (ActivityNotFoundException ex) {
+                            startActivity(webIntent);
+                        }
+                    }
+                })
+                .show();
     }
 }

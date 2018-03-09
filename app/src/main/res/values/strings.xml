@@ -78,10 +78,14 @@
     <!-- Alert Dialog Texts -->
     <string name="dialog_title">Are you sure you want to remove %s from your favorites list?</string>
     <string name="dialog_title_all">Are you sure you want to remove all movies from your favorites list?</string>
+    <string name="dialog_title_youtube">Where do you want to watch this video?</string>
     <string name="dialog_message">If you remove, you will have to re-add the movie again.</string>
     <string name="dialog_message_all">You will lose all your favorite movies.</string>
+    <string name="dialog_message_youtube">Please select a platform where you want to watch.</string>
     <string name="dialog_positive_button">Yes</string>
+    <string name="dialog_positive_button_youtube">This app</string>
     <string name="dialog_negative_button">No</string>
+    <string name="dialog_negative_button_youtube">Youtube app</string>
     <string name="dialog_action_message">%s has been deleted from your favorites list!</string>
     <string name="dialog_action_message_all">All movies has been deleted from your favorites list!</string>
 

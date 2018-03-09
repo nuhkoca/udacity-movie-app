@@ -24,11 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.main.MovieActivity" />
+        <activity android:name=".view.main.MovieActivity" />
         <activity
             android:name=".view.detail.MovieDetailActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:parentActivityName=".view.main.MovieActivity" />
         <activity
@@ -49,6 +47,9 @@
             android:name=".view.review.FullReviewActivity"
             android:launchMode="singleTop"
             android:parentActivityName=".view.detail.MovieDetailActivity" />
+        <activity
+            android:name=".view.YoutubeActivity"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

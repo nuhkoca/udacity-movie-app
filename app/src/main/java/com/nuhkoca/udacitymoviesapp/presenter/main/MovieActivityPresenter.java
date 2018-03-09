@@ -7,7 +7,7 @@ package com.nuhkoca.udacitymoviesapp.presenter.main;
 public interface MovieActivityPresenter {
     void loadFragments();
 
-    void beautifyUI();
+    void beautifyUI(String title);
 
     void onDestroy();
 }

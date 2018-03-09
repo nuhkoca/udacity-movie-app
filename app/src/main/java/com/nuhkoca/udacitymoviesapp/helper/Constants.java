@@ -58,6 +58,12 @@ public class Constants {
 
     public static final String NUMBER_FORMAT = "#,###,###";
 
+    public static final String FRAGMENT_TITLE = "fragment-title";
+
+    public static final String FRAGMENT_TAG = "fragment-tag";
+
+    public static final String YOUTUBE_VIDEO_ID = "youtube-video-id";
+
     private Constants() {
         throw new AssertionError();
     }

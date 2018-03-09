@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nuhkoca.udacitymoviesapp.view.YoutubeActivity">
+
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/ypvVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlack">
+
+    </com.google.android.youtube.player.YouTubePlayerView>
+
+</FrameLayout>
+</layout>

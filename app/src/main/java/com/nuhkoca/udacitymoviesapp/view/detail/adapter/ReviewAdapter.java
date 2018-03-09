@@ -18,6 +18,8 @@ import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Created by nuhkoca on 2/24/18.
  */
@@ -93,7 +95,13 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                 return;
             }
 
-            layoutParams.width = (int) (displayMetrics.widthPixels / (1.2));
+            Timber.d(String.valueOf(displayMetrics.widthPixels));
+
+            if (layoutParams.width <= 1440) {
+                layoutParams.width = (int) (displayMetrics.widthPixels / (1.2));
+            } else if (layoutParams.width >= 1441) {
+                layoutParams.width = (int) (displayMetrics.widthPixels / (1.5));
+            }
 
             mReviewListItemCardBinding.cvReview.setLayoutParams(layoutParams);
         }
