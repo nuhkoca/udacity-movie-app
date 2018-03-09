@@ -49,7 +49,9 @@
             android:parentActivityName=".view.detail.MovieDetailActivity" />
         <activity
             android:name=".view.YoutubeActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:launchMode="singleTop"
+            android:parentActivityName=".view.detail.MovieDetailActivity"/>
     </application>
 
 </manifest>
