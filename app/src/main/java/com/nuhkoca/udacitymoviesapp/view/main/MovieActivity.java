@@ -29,7 +29,7 @@ import com.nuhkoca.udacitymoviesapp.view.about.MovieAboutActivity;
 import com.nuhkoca.udacitymoviesapp.view.favorite.FavoriteMoviesActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
 
-public class MovieActivity extends AppCompatActivity implements MovieActivityView, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MovieActivity extends AppCompatActivity implements MovieActivityView, BottomNavigationView.OnNavigationItemSelectedListener, IHidingViewsListener {
 
     private ActivityMovieBinding mActivityMovieBinding;
     private MovieActivityPresenter mMovieActivityPresenter;
@@ -94,14 +94,7 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         int timeDelay = getResources().getInteger(R.integer.delay_in_seconds_to_close);
 
         if (mBackPressed + timeDelay > System.currentTimeMillis()) {
-
-            int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
-
-            if (backStackCount > 0) {
-                super.onBackPressed();
-            }
             super.onBackPressed();
-
         } else {
             Toast.makeText(getBaseContext(), getString(R.string.twice_press_to_exit),
                     Toast.LENGTH_SHORT).show();
@@ -184,7 +177,25 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         return false;
     }
 
-    public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter implements IHidingViewsListener {
+    @Override
+    public void onHideViews() {
+        //mActivityMovieBinding.lMovieActivity.aplMain.animate().translationY(
+                //-mActivityMovieBinding.lMovieActivity.aplMain.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+
+        mActivityMovieBinding.bnvMovieActivity.animate().translationY(
+                mActivityMovieBinding.bnvMovieActivity.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+    }
+
+    @Override
+    public void onShowViews() {
+        //mActivityMovieBinding.lMovieActivity.aplMain.animate().translationY(0)
+                //.setInterpolator(new DecelerateInterpolator(2));
+
+        mActivityMovieBinding.bnvMovieActivity.animate().translationY(0)
+                .setInterpolator(new DecelerateInterpolator(2)).start();
+    }
+
+    public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter {
         ViewPagerAdapter(FragmentManager manager) {
             super(manager);
         }
@@ -193,16 +204,16 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return MovieFragment.getInstance(getString(R.string.popular_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.popular_tag));
 
                 case 1:
-                    return MovieFragment.getInstance(getString(R.string.top_rated_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.top_rated_tag));
 
                 case 2:
-                    return MovieFragment.getInstance(getString(R.string.upcoming_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.upcoming_tag));
 
                 case 3:
-                    return MovieFragment.getInstance(getString(R.string.now_playing_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.now_playing_tag));
 
                 default:
                     return null;
@@ -222,16 +233,16 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         public Fragment getRegisteredFragment(int position) {
             switch (position) {
                 case 0:
-                    return MovieFragment.getInstance(getString(R.string.popular_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.popular_tag));
 
                 case 1:
-                    return MovieFragment.getInstance(getString(R.string.top_rated_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.top_rated_tag));
 
                 case 2:
-                    return MovieFragment.getInstance(getString(R.string.upcoming_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.upcoming_tag));
 
                 case 3:
-                    return MovieFragment.getInstance(getString(R.string.now_playing_tag), this);
+                    return MovieFragment.getInstance(getString(R.string.now_playing_tag));
 
                 default:
                     return null;
@@ -241,24 +252,6 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         @Override
         public int getCount() {
             return Constants.VIEW_PAGER_SIZE;
-        }
-
-        @Override
-        public void onHideViews() {
-            mActivityMovieBinding.lMovieActivity.aplMain.animate().translationY(
-                    -mActivityMovieBinding.lMovieActivity.aplMain.getHeight()).setInterpolator(new AccelerateInterpolator(2));
-
-            mActivityMovieBinding.bnvMovieActivity.animate().translationY(
-                    mActivityMovieBinding.bnvMovieActivity.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
-        }
-
-        @Override
-        public void onShowViews() {
-            mActivityMovieBinding.lMovieActivity.aplMain.animate().translationY(0)
-                    .setInterpolator(new DecelerateInterpolator(2));
-
-            mActivityMovieBinding.bnvMovieActivity.animate().translationY(0)
-                    .setInterpolator(new DecelerateInterpolator(2)).start();
         }
     }
 }

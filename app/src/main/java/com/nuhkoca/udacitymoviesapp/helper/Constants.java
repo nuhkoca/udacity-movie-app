@@ -59,6 +59,10 @@ public class Constants {
     public static final String TRAILER_COUNT_STATE = "trailer-count-state";
     public static final int VIEW_PAGER_SIZE = 4;
     public static final int HIDE_THRESHOLD = 20;
+    public static final String MOVIE_STATE_KEY = "movie-model";
+    public static final String TEXT_VISIBILITY_KEY = "text-visibility";
+    public static final String ERROR_TEXT_KEY = "error-text";
+    public static final String MOVIE_TAG_KEY = "movie-tag";
 
     private Constants() {
         throw new AssertionError();

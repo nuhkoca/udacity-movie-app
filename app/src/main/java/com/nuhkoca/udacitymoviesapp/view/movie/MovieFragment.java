@@ -2,6 +2,7 @@ package com.nuhkoca.udacitymoviesapp.view.movie;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -44,18 +45,17 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     private MoviePresenter mMoviePresenter;
     private MovieAdapter mMovieAdapter;
 
-    private static IHidingViewsListener mIHidingViewsListener;
+    private IHidingViewsListener mIHidingViewsListener;
 
-    private static final String MOVIE_STATE_KEY = "movie-model";
     private List<Results> mResults = new ArrayList<>();
+    private static int mTextVisibility;
+    private static String mErrorText;
 
-    public static MovieFragment getInstance(String tag, IHidingViewsListener iHidingViewsListener) {
+    public static MovieFragment getInstance(String tag) {
         MovieFragment movieFragment = new MovieFragment();
 
-        mIHidingViewsListener = iHidingViewsListener;
-
         Bundle arg = new Bundle();
-        arg.putString("tag", tag);
+        arg.putString(Constants.MOVIE_TAG_KEY, tag);
         movieFragment.setArguments(arg);
 
         return movieFragment;
@@ -74,9 +74,11 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mMoviePresenter = new MoviePresenterImpl(this);
+        mIHidingViewsListener = (IHidingViewsListener) getActivity();
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
-                ColumnCalculator.getOptimalNumberOfColumn(getActivity()),GridLayoutManager.VERTICAL, false);
+                ColumnCalculator.getOptimalNumberOfColumn(getActivity()), GridLayoutManager.VERTICAL, false);
+
         mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
         mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
         mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
@@ -94,12 +96,12 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
         });
 
         if (savedInstanceState != null) {
-            this.mResults = savedInstanceState.getParcelableArrayList(MOVIE_STATE_KEY);
+            mResults = savedInstanceState.getParcelableArrayList(Constants.MOVIE_STATE_KEY);
             mMoviePresenter.handleScreenRotation();
 
         } else {
             if (getArguments() != null) {
-                String tag = getArguments().getString("tag");
+                String tag = getArguments().getString(Constants.MOVIE_TAG_KEY);
                 mMoviePresenter.loadMovies(BuildConfig.APIKEY, tag);
             }
         }
@@ -119,11 +121,13 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     @Override
     public void onLoadingFailed(String message) {
         mFragmentMovieBinding.tvMovieErrorHolder.setText(message);
+        mTextVisibility = mFragmentMovieBinding.tvMovieErrorHolder.getVisibility();
+        mErrorText = message;
     }
 
     @Override
     public void onAfterScreenRotated() {
-        loadDuringRotation(mResults);
+        loadDuringRotation(this.mResults);
     }
 
     @Override
@@ -178,15 +182,33 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onDetach() {
-        mIHidingViewsListener = null;
         super.onDetach();
+        mIHidingViewsListener = null;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mIHidingViewsListener = (IHidingViewsListener) getActivity();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList(MOVIE_STATE_KEY, (ArrayList<? extends Parcelable>) this.mResults);
+        outState.putParcelableArrayList(Constants.MOVIE_STATE_KEY, (ArrayList<? extends Parcelable>) this.mResults);
+        outState.putInt(Constants.TEXT_VISIBILITY_KEY, mTextVisibility);
+        outState.putString(Constants.ERROR_TEXT_KEY, mErrorText);
 
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mTextVisibility = savedInstanceState.getInt(Constants.TEXT_VISIBILITY_KEY);
+            mErrorText = savedInstanceState.getString(Constants.ERROR_TEXT_KEY);
+        }
     }
 
     private void loadDuringRotation(List<Results> instanceResult) {
@@ -196,5 +218,8 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
         mFragmentMovieBinding.pbMovie.setVisibility(View.GONE);
         mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(View.GONE);
+
+        mFragmentMovieBinding.tvMovieErrorHolder.setVisibility(mTextVisibility == 0 ? View.VISIBLE : View.GONE);
+        mFragmentMovieBinding.tvMovieErrorHolder.setText(mErrorText);
     }
 }

@@ -6,14 +6,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include android:id="@+id/lMovieActivity"
+                layout="@layout/toolbar" />
+
         <android.support.v4.view.ViewPager
             android:id="@+id/vpMovieActivity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="wrap_content" />
 
-        <include android:id="@+id/lMovieActivity"
-            layout="@layout/toolbar" />
+        </LinearLayout>
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bnvMovieActivity"
@@ -25,5 +31,6 @@
             app:itemTextColor="@color/colorWhite"
             app:itemIconTint="@color/colorWhite"
             app:menu="@menu/nav_menu"/>
+
         </FrameLayout>
 </layout>

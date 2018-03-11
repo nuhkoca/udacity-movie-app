@@ -94,7 +94,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
                 return;
             }
 
-            layoutParams.width = (int) (displayMetrics.widthPixels / (1.2));
+            if (displayMetrics.widthPixels <= 1440) {
+                layoutParams.width = (int) (displayMetrics.widthPixels / (1.2));
+            } else {
+                layoutParams.width = (int) (displayMetrics.widthPixels / (1.5));
+            }
 
             mTrailerListItemCardBinding.cvTrailer.setLayoutParams(layoutParams);
         }
