@@ -36,7 +36,8 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
             @Override
             public void run() {
                 Intent movieIntent = new Intent(SplashScreenActivity.this, MovieActivity.class);
-                movieIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                movieIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                movieIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(movieIntent);
             }
         }, delayInSeconds);
@@ -47,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
         BarConcealer barConcealer = BarConcealer.create(this);
         barConcealer.makeFullImmersive();
 
-        Toast.makeText(this, getString(R.string.favorite_is_opening), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         int delayInSeconds = getResources().getInteger(R.integer.delay_in_seconds_to_activity);
 
@@ -55,7 +56,8 @@ public class SplashScreenActivity extends AppCompatActivity implements SplashScr
             @Override
             public void run() {
                 Intent favoriteIntent = new Intent(SplashScreenActivity.this, FavoriteMoviesActivity.class);
-                favoriteIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                favoriteIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                favoriteIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(favoriteIntent);
             }
         }, delayInSeconds);

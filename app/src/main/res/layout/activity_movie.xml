@@ -2,20 +2,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <include android:id="@+id/lMovieToolbar"
-            layout="@layout/toolbar" />
-
-        <FrameLayout
-            android:id="@+id/flMovieActivity"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vpMovieActivity"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    </LinearLayout>
+        <include android:id="@+id/lMovieActivity"
+            layout="@layout/toolbar" />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bnvMovieActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemBackground="@color/colorPrimary"
+            app:itemTextColor="@color/colorWhite"
+            app:itemIconTint="@color/colorWhite"
+            app:menu="@menu/nav_menu"/>
+        </FrameLayout>
 </layout>

@@ -1,6 +1,13 @@
 package com.nuhkoca.udacitymoviesapp.presenter.main;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
 import com.nuhkoca.udacitymoviesapp.view.main.MovieActivityView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nuhkoca on 2/17/18.
@@ -14,11 +21,10 @@ public class MovieActivityPresenterImpl implements MovieActivityPresenter {
         this.mMovieActivityView = mMovieActivityView;
     }
 
+
     @Override
-    public void loadFragments() {
-        if (mMovieActivityView != null) {
-            mMovieActivityView.onFragmentLoadingCompleted();
-        }
+    public void prepareViewPager() {
+        mMovieActivityView.onViewPagerReady();
     }
 
     @Override

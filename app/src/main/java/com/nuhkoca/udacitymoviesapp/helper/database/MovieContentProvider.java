@@ -97,10 +97,6 @@ public class MovieContentProvider extends ContentProvider {
 
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
-                } else {
-                    if (getContext() != null) {
-                        Toast.makeText(getContext(), getContext().getString(R.string.movie_already_exists), Toast.LENGTH_SHORT).show();
-                    }
                 }
                 break;
 

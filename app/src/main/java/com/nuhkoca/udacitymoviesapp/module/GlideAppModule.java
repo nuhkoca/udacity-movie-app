@@ -63,7 +63,7 @@ public class GlideAppModule extends AppGlideModule {
                 .encodeQuality(100)
                 .fallback(ContextCompat.getDrawable(context, R.drawable.ic_not_found))
                 .error(ContextCompat.getDrawable(context, R.drawable.ic_not_found))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .format(PREFER_ARGB_8888)
                 .skipMemoryCache(false);
     }

@@ -28,7 +28,7 @@ public class SplashScreenActivityPresenterImpl implements SplashScreenActivityPr
             if (isConnected) {
                 mSplashScreenActivityView.onActivityOpened();
             } else {
-                mSplashScreenActivityView.onConnectivityError(App.getInstance().getString(R.string.no_internet_connection));
+                mSplashScreenActivityView.onConnectivityError(App.getInstance().getString(R.string.favorite_is_opening));
             }
         }
     }

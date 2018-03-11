@@ -56,11 +56,6 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
     }
 
     @Override
-    public void onChangeViewWidth() {
-        mMovieDetailActivityView.onViewWidthChanged();
-    }
-
-    @Override
     public void onScheduleStartPostponedTransition() {
         mMovieDetailActivityView.onScheduledStartPostponedTransition();
     }
@@ -254,6 +249,11 @@ public class MovieDetailActivityPresenterImpl implements MovieDetailActivityPres
     @Override
     public void addMovieToDatabase() {
         mMovieDetailActivityView.onMovieAddedToDatabase();
+    }
+
+    @Override
+    public void handleScreenOrientation() {
+        mMovieDetailActivityView.onAfterScreenRotated();
     }
 
     @Override

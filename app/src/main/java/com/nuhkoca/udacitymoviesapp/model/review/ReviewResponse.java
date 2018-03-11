@@ -2,6 +2,8 @@ package com.nuhkoca.udacitymoviesapp.model.review;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +15,7 @@ import java.util.List;
  * Created by nuhkoca on 2/24/18.
  */
 
-public class ReviewResponse extends BaseObservable {
+public class ReviewResponse extends BaseObservable implements Parcelable {
     @Expose
     @SerializedName("pages")
     private byte pages;
@@ -28,6 +30,24 @@ public class ReviewResponse extends BaseObservable {
     private List<ReviewResults> reviewResults;
 
     public ReviewResponse() {}
+
+    protected ReviewResponse(Parcel in) {
+        pages = in.readByte();
+        totalPages = in.readByte();
+        totalResults = in.readByte();
+    }
+
+    public static final Creator<ReviewResponse> CREATOR = new Creator<ReviewResponse>() {
+        @Override
+        public ReviewResponse createFromParcel(Parcel in) {
+            return new ReviewResponse(in);
+        }
+
+        @Override
+        public ReviewResponse[] newArray(int size) {
+            return new ReviewResponse[size];
+        }
+    };
 
     @Bindable
     public byte getPages() {
@@ -67,5 +87,17 @@ public class ReviewResponse extends BaseObservable {
     public void setReviewResults(List<ReviewResults> results) {
         this.reviewResults = results;
         notifyPropertyChanged(BR.reviewResults);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(pages);
+        dest.writeByte(totalPages);
+        dest.writeByte(totalResults);
     }
 }

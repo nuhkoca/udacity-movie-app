@@ -1,4 +1,4 @@
-package com.nuhkoca.udacitymoviesapp.view;
+package com.nuhkoca.udacitymoviesapp.view.youtube;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import timber.log.Timber;
 
 public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener, YouTubePlayer.PlayerStateChangeListener {
 
+    private YouTubePlayer mYoutubePlayer;
     private Bundle extras;
 
     @Override
@@ -30,15 +31,18 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
-        youTubePlayer.setFullscreen(true);
-        youTubePlayer.setPlayerStateChangeListener(this);
+
+        mYoutubePlayer = youTubePlayer;
+
+        mYoutubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
+        mYoutubePlayer.setFullscreen(true);
+        mYoutubePlayer.setPlayerStateChangeListener(this);
 
         if (!b) {
             if (extras != null) {
                 String videoId = extras.getString(Constants.YOUTUBE_VIDEO_ID);
 
-                youTubePlayer.cueVideo(videoId);
+                mYoutubePlayer.cueVideo(videoId);
             }
         }
     }
@@ -79,6 +83,13 @@ public class YoutubeActivity extends YouTubeBaseActivity implements YouTubePlaye
     @Override
     public void onError(YouTubePlayer.ErrorReason errorReason) {
         Timber.d("onError%s ", errorReason.name());
+    }
+
+    @Override
+    protected void onDestroy() {
+        mYoutubePlayer.release();
+        mYoutubePlayer = null;
+        super.onDestroy();
     }
 
     @Override

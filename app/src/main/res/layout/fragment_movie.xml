@@ -20,6 +20,7 @@
         android:id="@+id/pbMovie"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_gravity="center_horizontal"
         android:indeterminateTint="@color/colorPrimary"
         android:visibility="visible"/>

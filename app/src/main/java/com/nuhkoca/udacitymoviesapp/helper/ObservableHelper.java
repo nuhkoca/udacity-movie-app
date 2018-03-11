@@ -30,6 +30,16 @@ public class ObservableHelper {
         return iMovieAPI.getTopRatedMovies(apiKey, pageId);
     }
 
+    public Observable<MovieResponse> getUpcomingMovies(int pageId) {
+        return iMovieAPI.getUpcomingMovies(apiKey, pageId);
+    }
+
+
+    public Observable<MovieResponse> getNowPlayingMovies(int pageId) {
+        return iMovieAPI.getNowPlayingMovies(apiKey, pageId);
+    }
+
+
     public Observable<ReviewResponse> getReviews(int movieId) {
         return iMovieAPI.getReviews(movieId, apiKey);
     }

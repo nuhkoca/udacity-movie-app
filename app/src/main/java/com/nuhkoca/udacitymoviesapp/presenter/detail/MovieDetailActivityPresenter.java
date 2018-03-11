@@ -11,8 +11,6 @@ public interface MovieDetailActivityPresenter {
 
     void onCreateBottomSheet();
 
-    void onChangeViewWidth();
-
     void onScheduleStartPostponedTransition();
 
     void loadReviews(int movieId);
@@ -22,6 +20,8 @@ public interface MovieDetailActivityPresenter {
     void loadOtherDetails(int movieId);
 
     void addMovieToDatabase();
+
+    void handleScreenOrientation();
 
     void expandOrCollapseOtherDetails();
 }

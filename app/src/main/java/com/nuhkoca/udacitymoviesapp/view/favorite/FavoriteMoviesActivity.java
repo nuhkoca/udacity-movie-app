@@ -49,7 +49,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
         mActivityFavoriteMoviesBinding = DataBindingUtil.setContentView(this, R.layout.activity_favorite_movies);
         setSupportActionBar(mActivityFavoriteMoviesBinding.lFavoriteMoviesToolbar.toolbar);
         setTitle("");
-        mActivityFavoriteMoviesBinding.lFavoriteMoviesToolbar.ibSort.setVisibility(View.GONE);
+
         mActivityFavoriteMoviesBinding.lFavoriteMoviesToolbar.tvToolbarHeader.setText(getString(R.string.my_favorites));
 
         ActionBar actionBar = getSupportActionBar();

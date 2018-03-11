@@ -13,5 +13,7 @@ public interface MovieView {
 
     void onLoadingFailed(String message);
 
+    void onAfterScreenRotated();
+
     void showProgress(boolean visible);
 }

@@ -46,7 +46,6 @@ public class MovieAboutActivity extends AppCompatActivity implements MovieAboutA
         setSupportActionBar(mMovieAboutBinding.lMovieAboutToolbar.toolbar);
         setTitle("");
         mMovieAboutBinding.lMovieAboutToolbar.tvToolbarHeader.setText(getString(R.string.about));
-        mMovieAboutBinding.lMovieAboutToolbar.ibSort.setVisibility(View.GONE);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

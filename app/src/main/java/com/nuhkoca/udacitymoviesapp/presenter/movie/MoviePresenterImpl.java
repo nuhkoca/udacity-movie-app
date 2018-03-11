@@ -52,8 +52,14 @@ public class MoviePresenterImpl implements MoviePresenter {
 
         if (Objects.equals(movieTag, App.getInstance().getString(R.string.popular_tag))) {
             getMovies = observableHelper.getPopularMovies(1);
-        } else {
+        } else if (Objects.equals(movieTag, App.getInstance().getString(R.string.top_rated_tag))) {
             getMovies = observableHelper.getTopRatedMovies(1);
+        } else if (Objects.equals(movieTag, App.getInstance().getString(R.string.upcoming_tag))) {
+            getMovies = observableHelper.getUpcomingMovies(1);
+        } else if (Objects.equals(movieTag, App.getInstance().getString(R.string.now_playing_tag))) {
+            getMovies = observableHelper.getNowPlayingMovies(1);
+        } else {
+            return;
         }
 
         getMovies.subscribeOn(Schedulers.io())
@@ -93,6 +99,11 @@ public class MoviePresenterImpl implements MoviePresenter {
                         mMovieView.showProgress(false);
                     }
                 });
+    }
+
+    @Override
+    public void handleScreenRotation() {
+        mMovieView.onAfterScreenRotated();
     }
 
     @Override

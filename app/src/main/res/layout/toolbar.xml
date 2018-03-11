@@ -6,15 +6,14 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/aplMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <android.support.design.widget.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
@@ -27,24 +26,14 @@
                     android:background="@color/colorPrimary"
                     app:layout_scrollFlags="scroll|enterAlways">
 
-                    <ImageButton
-                        android:id="@+id/ibSort"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_sort_movie"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:contentDescription="@string/image_place_holder" />
-
                     <TextView
                         android:id="@+id/tvToolbarHeader"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
                         android:textColor="@color/colorWhite"
-                        android:paddingStart="@dimen/dimension_16dp"
-                        android:paddingEnd="@dimen/dimension_16dp"
+                        android:paddingStart="@dimen/dimension_8dp"
+                        android:paddingEnd="@dimen/dimension_8dp"
                         android:textSize="20sp"/>
 
                 </android.support.v7.widget.Toolbar>

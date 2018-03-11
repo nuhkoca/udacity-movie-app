@@ -14,14 +14,32 @@
             name="formattedRuntime"
             type="String" />
         <variable
+            name="formattedCount"
+            type="String" />
+        <variable
             name="companies"
             type="String" />
         <variable
             name="countries"
             type="String" />
         <variable
-        name="languages"
-        type="String" />
+            name="languages"
+            type="String" />
+        <variable
+            name="releaseDate"
+            type="String" />
+        <variable
+            name="rating"
+            type="Float" />
+        <variable
+            name="ratingText"
+            type="String" />
+        <variable
+            name="popularity"
+            type="Integer" />
+        <variable
+            name="popularityText"
+            type="String" />
 
     </data>
 
@@ -50,8 +68,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails1"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -60,6 +77,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:text="@{releaseDate}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
                 </LinearLayout>
@@ -77,8 +95,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails2"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -87,6 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:text="@{formattedCount}"
                         style="@style/MovieDetailTextAppearance.ItemRow" />
 
                 </LinearLayout>
@@ -104,8 +122,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails3"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -122,6 +139,7 @@
                             android:progressTint="@color/colorPrimary"
                             android:layout_marginStart="@dimen/dimension_4dp"
                             android:layout_marginEnd="@dimen/dimension_8dp"
+                            android:rating="@{rating}"
                             style="@style/Widget.AppCompat.RatingBar.Small"/>
 
                         <TextView
@@ -129,6 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:minHeight="0dp"
+                            android:text="@{ratingText}"
                             android:layout_toEndOf="@+id/rbOtherDetailsRating"
                             style="@style/MovieDetailTextAppearance.ItemRow" />
 
@@ -149,8 +168,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails4"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -167,6 +185,7 @@
                             android:progressTint="@color/colorPrimary"
                             android:layout_centerInParent="true"
                             android:layout_marginStart="@dimen/dimension_4dp"
+                            android:progress="@{popularity}"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
                         <TextView
@@ -177,6 +196,7 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="13sp"
                             android:minHeight="0dp"
+                            android:text="@{popularityText}"
                             android:layout_centerInParent="true"
                             style="@style/MovieDetailTextAppearance.ItemRow" />
 
@@ -221,8 +241,7 @@
 
 
                     <View
-                        android:id="@+id/vOtherDetails5"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -256,8 +275,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails6"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -285,8 +303,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails7"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -312,8 +329,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails8"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -339,8 +355,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails9"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -366,8 +381,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails10"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 
@@ -393,8 +407,7 @@
                         style="@style/MovieDetailTextAppearance.LabelRow"/>
 
                     <View
-                        android:id="@+id/vOtherDetails11"
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/dimension_32dp"
                         android:layout_height="1dp"
                         style="@style/ViewAppearance"/>
 

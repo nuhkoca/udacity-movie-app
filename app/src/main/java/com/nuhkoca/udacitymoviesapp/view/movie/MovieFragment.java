@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.IHidingViewsListener;
 import com.nuhkoca.udacitymoviesapp.callback.IMovieItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.FragmentMovieBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
@@ -26,6 +27,7 @@ import com.nuhkoca.udacitymoviesapp.model.movie.Results;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.movie.MoviePresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.ColumnCalculator;
+import com.nuhkoca.udacitymoviesapp.utils.HidingScrollListener;
 import com.nuhkoca.udacitymoviesapp.view.detail.MovieDetailActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.adapter.MovieAdapter;
 
@@ -42,21 +44,21 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     private MoviePresenter mMoviePresenter;
     private MovieAdapter mMovieAdapter;
 
-    private static final String MOVIE_STATE_KEY = "movie-model";
-    private List<Results> results = new ArrayList<>();
+    private static IHidingViewsListener mIHidingViewsListener;
 
-    public static MovieFragment getInstance(String tag) {
+    private static final String MOVIE_STATE_KEY = "movie-model";
+    private List<Results> mResults = new ArrayList<>();
+
+    public static MovieFragment getInstance(String tag, IHidingViewsListener iHidingViewsListener) {
         MovieFragment movieFragment = new MovieFragment();
+
+        mIHidingViewsListener = iHidingViewsListener;
 
         Bundle arg = new Bundle();
         arg.putString("tag", tag);
         movieFragment.setArguments(arg);
 
         return movieFragment;
-    }
-
-    public static MovieFragment getInstance() {
-        return new MovieFragment();
     }
 
     @Override
@@ -71,16 +73,32 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        mMoviePresenter = new MoviePresenterImpl(this);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
+                ColumnCalculator.getOptimalNumberOfColumn(getActivity()),GridLayoutManager.VERTICAL, false);
+        mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
+        mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
+        mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
+
+        mFragmentMovieBinding.rvMovie.addOnScrollListener(new HidingScrollListener() {
+            @Override
+            public void onHide() {
+                mIHidingViewsListener.onHideViews();
+            }
+
+            @Override
+            public void onShow() {
+                mIHidingViewsListener.onShowViews();
+            }
+        });
 
         if (savedInstanceState != null) {
-            this.results = savedInstanceState.getParcelableArrayList(MOVIE_STATE_KEY);
-
-            loadDuringRotation(this.results);
+            this.mResults = savedInstanceState.getParcelableArrayList(MOVIE_STATE_KEY);
+            mMoviePresenter.handleScreenRotation();
 
         } else {
             if (getArguments() != null) {
-                mMoviePresenter = new MoviePresenterImpl(this);
-
                 String tag = getArguments().getString("tag");
                 mMoviePresenter.loadMovies(BuildConfig.APIKEY, tag);
             }
@@ -90,24 +108,22 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     @Override
     public void onLoadingCompleted(List<Results> results) {
         if (getActivity() != null) {
-
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), ColumnCalculator.getOptimalNumberOfColumn(getActivity()));
-            mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
-
-            mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
-            mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
-
             mMovieAdapter = new MovieAdapter(results, this);
             mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
             mMovieAdapter.swapData(results);
 
-            this.results = results;
+            this.mResults = results;
         }
     }
 
     @Override
     public void onLoadingFailed(String message) {
         mFragmentMovieBinding.tvMovieErrorHolder.setText(message);
+    }
+
+    @Override
+    public void onAfterScreenRotated() {
+        loadDuringRotation(mResults);
     }
 
     @Override
@@ -150,6 +166,7 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
         Intent detailIntent = new Intent(getActivity(), MovieDetailActivity.class);
         detailIntent.putExtra(Constants.MOVIE_MODEL_TAG, results);
         detailIntent.putExtra(Constants.GENRE_TAG, genre);
+        detailIntent.putExtra(Constants.TRANSITION_TAG, ViewCompat.getTransitionName(imageView));
 
         ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(Objects.requireNonNull(getActivity()),
@@ -160,21 +177,19 @@ public class MovieFragment extends Fragment implements MovieView, IMovieItemTouc
     }
 
     @Override
+    public void onDetach() {
+        mIHidingViewsListener = null;
+        super.onDetach();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList(MOVIE_STATE_KEY, (ArrayList<? extends Parcelable>) this.results);
+        outState.putParcelableArrayList(MOVIE_STATE_KEY, (ArrayList<? extends Parcelable>) this.mResults);
 
         super.onSaveInstanceState(outState);
     }
 
     private void loadDuringRotation(List<Results> instanceResult) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),
-                ColumnCalculator.getOptimalNumberOfColumn(getActivity()));
-
-        mFragmentMovieBinding.rvMovie.setLayoutManager(gridLayoutManager);
-
-        mFragmentMovieBinding.rvMovie.setHasFixedSize(true);
-        mFragmentMovieBinding.rvMovie.setNestedScrollingEnabled(false);
-
         mMovieAdapter = new MovieAdapter(instanceResult, this);
         mFragmentMovieBinding.rvMovie.setAdapter(mMovieAdapter);
         mMovieAdapter.swapData(instanceResult);

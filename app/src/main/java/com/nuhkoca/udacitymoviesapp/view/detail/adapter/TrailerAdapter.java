@@ -3,6 +3,7 @@ package com.nuhkoca.udacitymoviesapp.view.detail.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import com.nuhkoca.udacitymoviesapp.callback.ITrailerItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.TrailerListItemCardBinding;
 import com.nuhkoca.udacitymoviesapp.model.video.VideoResults;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,13 +27,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     private List<VideoResults> mVideoResults;
     private ITrailerItemTouchListener mITrailerItemTouchListener;
 
-    public TrailerAdapter(ITrailerItemTouchListener iTrailerItemTouchListener) {
-        this.mITrailerItemTouchListener = iTrailerItemTouchListener;
-        mVideoResults = new ArrayList<>();
+    public TrailerAdapter(List<VideoResults> mVideoResults, ITrailerItemTouchListener mITrailerItemTouchListener) {
+        this.mVideoResults = mVideoResults;
+        this.mITrailerItemTouchListener = mITrailerItemTouchListener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -47,7 +48,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         VideoResults videoResults = mVideoResults.get(position);
 
         holder.bindView(videoResults);

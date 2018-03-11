@@ -12,7 +12,6 @@ import com.nuhkoca.udacitymoviesapp.R;
  */
 
 public class SnackbarPopper {
-
     private enum Length {
         SHORT,
         INDEFINITE

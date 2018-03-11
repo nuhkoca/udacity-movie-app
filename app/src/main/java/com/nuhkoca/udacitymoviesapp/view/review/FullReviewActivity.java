@@ -46,7 +46,6 @@ public class FullReviewActivity extends AppCompatActivity implements FullReviewA
         setSupportActionBar(mActivityFullReviewBinding.lFullReviewToolbar.toolbar);
         setTitle("");
         mActivityFullReviewBinding.lFullReviewToolbar.tvToolbarHeader.setText(getString(R.string.full_review));
-        mActivityFullReviewBinding.lFullReviewToolbar.ibSort.setVisibility(View.GONE);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

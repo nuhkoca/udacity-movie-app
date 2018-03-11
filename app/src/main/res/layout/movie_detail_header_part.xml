@@ -4,6 +4,9 @@
         <variable
             name="formattedTagline"
             type="String" />
+        <variable
+            name="overview"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -40,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:text="@{overview}"
             android:layout_marginBottom="100dp"
             style="@style/MovieDetailTextAppearance.ItemRow"/>
 

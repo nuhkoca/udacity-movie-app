@@ -33,7 +33,7 @@ public class MoviePosterBindingAdapter {
     @BindingAdapter(value = {"android:src", "progressBar", "floor", "title", "genre"})
     public static void loadImagesFromAPIAndMakeSomeOverhaul(final ImageView imageView, String logoUrl, ProgressBar progressBar, final CardView floor, final TextView title, final TextView genre) {
 
-        logoUrl = Constants.W300_IMAGE_URL_PREFIX + logoUrl;
+        logoUrl = Constants.W500_IMAGE_URL_PREFIX + logoUrl;
 
         Timber.d(logoUrl);
 

@@ -3,6 +3,7 @@ package com.nuhkoca.udacitymoviesapp.view.detail.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import com.nuhkoca.udacitymoviesapp.callback.IReviewItemTouchListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ReviewListItemCardBinding;
 import com.nuhkoca.udacitymoviesapp.model.review.ReviewResults;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
@@ -29,13 +29,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     private List<ReviewResults> mReviewResults;
     private IReviewItemTouchListener mIReviewItemTouchListener;
 
-    public ReviewAdapter(IReviewItemTouchListener iReviewItemTouchListener) {
-        this.mIReviewItemTouchListener = iReviewItemTouchListener;
-        mReviewResults = new ArrayList<>();
+    public ReviewAdapter(List<ReviewResults> mReviewResults, IReviewItemTouchListener mIReviewItemTouchListener) {
+        this.mReviewResults = mReviewResults;
+        this.mIReviewItemTouchListener = mIReviewItemTouchListener;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -49,7 +50,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ReviewResults reviewResults = mReviewResults.get(position);
 
         holder.bindView(reviewResults);

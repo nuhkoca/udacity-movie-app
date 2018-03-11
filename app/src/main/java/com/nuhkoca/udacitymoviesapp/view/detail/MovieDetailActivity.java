@@ -2,13 +2,16 @@ package com.nuhkoca.udacitymoviesapp.view.detail;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -20,8 +23,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -47,33 +50,70 @@ import com.nuhkoca.udacitymoviesapp.presenter.detail.MovieDetailActivityPresente
 import com.nuhkoca.udacitymoviesapp.utils.BarConcealer;
 import com.nuhkoca.udacitymoviesapp.utils.BottomSheetBuilder;
 import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
-import com.nuhkoca.udacitymoviesapp.view.YoutubeActivity;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.ReviewAdapter;
 import com.nuhkoca.udacitymoviesapp.view.detail.adapter.TrailerAdapter;
 import com.nuhkoca.udacitymoviesapp.view.review.FullReviewActivity;
+import com.nuhkoca.udacitymoviesapp.view.youtube.YoutubeActivity;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity implements MovieDetailActivityView, View.OnClickListener, AppBarLayout.OnOffsetChangedListener, ITrailerItemTouchListener, IReviewItemTouchListener {
 
     private ActivityMovieDetailBinding mActivityMovieDetailBinding;
     private MovieDetailActivityPresenter mMovieDetailActivityPresenter;
-    private BarConcealer barConcealer;
-    private Results results;
+    private BarConcealer mBarConcealer;
+    private Results mResults;
     private ReviewAdapter mReviewAdapter;
     private TrailerAdapter mTrailerAdapter;
     private DecimalFormat mDecimalFormat;
 
     private boolean mIsFabShown = true;
     private int mMaxScrollSize;
-    private String genre;
+    private String mGenre;
+
+    private static String mFormattedTagline;
+    private static String mFormattedBudget;
+    private static String mOverview;
+    private static String mOriginalTitle;
+    private static String mReleaseDate;
+    private static String mFormattedCount;
+    private static float mRating;
+    private static String mRatingText;
+    private static int mPopularity;
+    private static String mPopularityText;
+    private static String[] mGenres;
+    private static String mPosterPath;
+    private static String mFormattedRevenue;
+    private static String mFormattedRuntime;
+    private static String mFormattedHomepage;
+    private static String mCompanies;
+    private static String mCountries;
+    private static String mLanguages;
+    private static List<ReviewResults> mReviewResults = new ArrayList<>();
+    private static List<VideoResults> mVideoResults = new ArrayList<>();
+    private static String mReviewCount;
+    private static String mTrailerCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityMovieDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
         supportPostponeEnterTransition();
+
+        mBarConcealer = BarConcealer.create(this);
+        mBarConcealer.hideStatusBarOnly();
+
+        LinearLayoutManager llForReview = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setLayoutManager(llForReview);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setHasFixedSize(true);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setNestedScrollingEnabled(false);
+
+        LinearLayoutManager llForTrailer = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setLayoutManager(llForTrailer);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setHasFixedSize(true);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setNestedScrollingEnabled(false);
 
         setSupportActionBar(mActivityMovieDetailBinding.toolbarDetail);
         ActionBar actionBar = getSupportActionBar();
@@ -82,13 +122,20 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
+        mResults = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
 
         mMovieDetailActivityPresenter = new MovieDetailActivityPresenterImpl(this);
-        mMovieDetailActivityPresenter.populateDetails();
+
+        if (savedInstanceState == null) {
+            mMovieDetailActivityPresenter.populateDetails();
+        } else {
+            mMovieDetailActivityPresenter.handleScreenOrientation();
+        }
 
         mActivityMovieDetailBinding.fabMovieDetail.setOnClickListener(this);
         mActivityMovieDetailBinding.aplMovieDetail.addOnOffsetChangedListener(this);
+
+        mMovieDetailActivityPresenter.expandOrCollapseOtherDetails();
     }
 
     @Override
@@ -129,17 +176,16 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onDetailsLoaded() {
-        barConcealer = BarConcealer.create(this);
-        barConcealer.hideStatusBarOnly();
-
         mDecimalFormat = new DecimalFormat(Constants.NUMBER_FORMAT);
 
-        if (results != null && getIntent() != null) {
-            results = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
-            genre = getIntent().getStringExtra(Constants.GENRE_TAG);
+        if (mResults != null && getIntent() != null) {
+            mResults = getIntent().getParcelableExtra(Constants.MOVIE_MODEL_TAG);
+            mGenre = getIntent().getStringExtra(Constants.GENRE_TAG);
+            mActivityMovieDetailBinding.ivMovieDetailPoster.setTransitionName(getIntent().getStringExtra(Constants.TRANSITION_TAG));
+            mPosterPath = Constants.W500_IMAGE_URL_PREFIX + mResults.getPosterPath();
 
             GlideApp.with(this)
-                    .load(Constants.W500_IMAGE_URL_PREFIX + results.getPosterPath())
+                    .load(mPosterPath)
                     .listener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -155,30 +201,34 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                     })
                     .into(mActivityMovieDetailBinding.ivMovieDetailPoster);
 
-            mActivityMovieDetailBinding.ctlMovieDetail.setTitle(results.getOriginalTitle());
-            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsReleaseDate.
-                    setText(results.getReleaseDate());
+            // get variables
+            mOverview = mResults.getOverview();
+            mOriginalTitle = mResults.getOriginalTitle();
+            mReleaseDate = mResults.getReleaseDate();
+            mFormattedCount = String.format(getString(R.string.times_place_holder), mDecimalFormat.format(mResults.getVoteCount()));
+            mRating = mResults.getVoteAverage();
+            mRatingText = String.format(getString(R.string.rating_place_holder), mResults.getVoteAverage());
+            mPopularity = Math.round(mResults.getPopularity());
+            mPopularityText = String.format(getString(R.string.popularity_place_holder), mResults.getPopularity());
 
-            String formattedVoteCount = mDecimalFormat.format(results.getVoteCount());
-            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsVoteCount.setText(String.format(getString(R.string.times_place_holder), formattedVoteCount));
+            // bind variables
+            mActivityMovieDetailBinding.setVariable(BR.headerTitle, mOriginalTitle);
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.overview, mOverview);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.releaseDate, mReleaseDate);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedCount, mFormattedCount);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.rating, mRating);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.ratingText, mRatingText);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.popularity, mPopularity);
+            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.popularityText, mPopularityText);
 
-            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.rbOtherDetailsRating.setRating(results.getVoteAverage());
-            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsVoteAverage.setText(String.format(getString(R.string.rating_place_holder), results.getVoteAverage()));
+            mGenres = mGenre.split(",");
+            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tgMovieDetailHeaderPartGenre.setTags(mGenres);
 
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvMovieDetailHeaderPartOverview
-                    .setText(results.getOverview());
+            mMovieDetailActivityPresenter.loadTrailers(mResults.getId());
+            mMovieDetailActivityPresenter.loadOtherDetails(mResults.getId());
+            mMovieDetailActivityPresenter.loadReviews(mResults.getId());
 
-            String[] genres = genre.split(",");
-            mActivityMovieDetailBinding.lMovieDetailHeaderPart.tgMovieDetailHeaderPartGenre.setTags(genres);
-
-            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.pbOtherDetailsPopularity.setProgress((int) results.getPopularity());
-            mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsPopularity.setText(String.format(getString(R.string.popularity_place_holder), results.getPopularity()));
-
-            mMovieDetailActivityPresenter.loadTrailers(results.getId());
-            mMovieDetailActivityPresenter.loadOtherDetails(results.getId());
-            mMovieDetailActivityPresenter.loadReviews(results.getId());
-
-            mMovieDetailActivityPresenter.onChangeViewWidth();
+            mActivityMovieDetailBinding.executePendingBindings();
         }
     }
 
@@ -188,35 +238,6 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                 mActivityMovieDetailBinding.bslBottomSheetItemHolder,
                 String.format(getString(R.string.share_extra_text), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()),
                 String.format(getString(R.string.share_to), mActivityMovieDetailBinding.ctlMovieDetail.getTitle()));
-    }
-
-    @Override
-    public void onViewWidthChanged() {
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsReleaseLabel.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.tvOtherDetailsReleaseLabel.getViewTreeObserver().removeOnPreDrawListener(this);
-
-                ViewGroup.LayoutParams layoutParams = mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails1.getLayoutParams();
-
-                layoutParams.width = Constants.UNDERLINE_WIDTH_TO_VIEW;
-
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails1.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails2.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails3.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails4.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails5.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails6.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails7.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails8.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails9.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails10.setLayoutParams(layoutParams);
-                mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.vOtherDetails11.setLayoutParams(layoutParams);
-
-                return false;
-            }
-        });
     }
 
     @Override
@@ -234,68 +255,67 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     public void onReviewsLoaded(List<ReviewResults> reviewResults) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setLayoutManager(linearLayoutManager);
-
-        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setHasFixedSize(true);
-        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setNestedScrollingEnabled(false);
-
-        mReviewAdapter = new ReviewAdapter(this);
+        mReviewAdapter = new ReviewAdapter(reviewResults, this);
         mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setAdapter(mReviewAdapter);
 
         mReviewAdapter.swapData(reviewResults);
 
-        mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setText(String.format(getString(R.string.total_review_tag), reviewResults.size()));
+        mReviewCount = String.format(getString(R.string.total_review_tag), reviewResults.size());
+
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.setVariable(BR.formattedReviewCount, mReviewCount);
+
+        mReviewResults = reviewResults;
+
+        mActivityMovieDetailBinding.executePendingBindings();
     }
 
     @Override
     public void onTrailersLoaded(List<VideoResults> videoResults) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setLayoutManager(linearLayoutManager);
-
-        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setHasFixedSize(true);
-        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setNestedScrollingEnabled(false);
-
-        mTrailerAdapter = new TrailerAdapter(this);
+        mTrailerAdapter = new TrailerAdapter(videoResults, this);
         mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setAdapter(mTrailerAdapter);
 
         mTrailerAdapter.swapData(videoResults);
 
-        mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setText(String.format(getString(R.string.total_trailer_tag), videoResults.size()));
+        mTrailerCount = String.format(getString(R.string.total_trailer_tag), videoResults.size());
+
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.setVariable(BR.formattedTrailerCount, mTrailerCount);
+
+        mVideoResults = videoResults;
+
+        mActivityMovieDetailBinding.executePendingBindings();
     }
 
     @Override
     public void onOtherDetailsLoaded(DetailsResponse detailsResponse, List<String> prodCompanies, List<String> prodCountries, List<String> spokenLanguages) {
-        String formattedBudget = detailsResponse.getBudget() == 0 ? getString(R.string.no_budget_found) :
+        mFormattedBudget = detailsResponse.getBudget() == 0 ? getString(R.string.no_budget_found) :
                 String.format(getString(R.string.dollar_place_holder), mDecimalFormat.format(detailsResponse.getBudget()));
 
-        String formattedRevenue = detailsResponse.getRevenue() == 0 ? getString(R.string.no_revenue_found) :
+        mFormattedRevenue = detailsResponse.getRevenue() == 0 ? getString(R.string.no_revenue_found) :
                 String.format(getString(R.string.dollar_place_holder), mDecimalFormat.format(detailsResponse.getRevenue()));
 
-        String formattedRuntime = detailsResponse.getRuntime() == 0 ? getString(R.string.no_runtime_found) :
+        mFormattedRuntime = detailsResponse.getRuntime() == 0 ? getString(R.string.no_runtime_found) :
                 String.format(getString(R.string.times_place_holder), mDecimalFormat.format(detailsResponse.getRuntime()));
 
-        String formattedHomepage = detailsResponse.getHomepage().equals("") ? getString(R.string.no_homepage_found) : detailsResponse.getHomepage();
+        mFormattedHomepage = detailsResponse.getHomepage().equals("") ? getString(R.string.no_homepage_found) : detailsResponse.getHomepage();
 
-        String formattedTagline = String.format(getString(R.string.tagline_place_holder), detailsResponse.getTagline());
+        mFormattedTagline = String.format(getString(R.string.tagline_place_holder), detailsResponse.getTagline());
+
         mActivityMovieDetailBinding.lMovieDetailHeaderPart.tvOtherDetailsTagline.setVisibility(detailsResponse.getTagline().equals("") ? View.GONE : View.VISIBLE);
 
-        String companies = prodCompanies.size() == 0 ? getString(R.string.no_company_found) : TextUtils.join(", ", prodCompanies);
-        String countries = prodCountries.size() == 0 ? getString(R.string.no_country_found) : TextUtils.join(", ", prodCountries);
-        String languages = spokenLanguages.size() == 0 ? getString(R.string.no_language_found) : TextUtils.join(", ", spokenLanguages);
+        mCompanies = prodCompanies.size() == 0 ? getString(R.string.no_company_found) : TextUtils.join(", ", prodCompanies);
+        mCountries = prodCountries.size() == 0 ? getString(R.string.no_country_found) : TextUtils.join(", ", prodCountries);
+        mLanguages = spokenLanguages.size() == 0 ? getString(R.string.no_language_found) : TextUtils.join(", ", spokenLanguages);
 
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedHomepage, formattedHomepage);
-        mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.formattedTagline, formattedTagline);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedBudget, formattedBudget);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRevenue, formattedRevenue);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRuntime, formattedRuntime);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.companies, companies);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.countries, countries);
-        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.languages, languages);
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.formattedTagline, mFormattedTagline);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedHomepage, mFormattedHomepage);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedBudget, mFormattedBudget);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRevenue, mFormattedRevenue);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRuntime, mFormattedRuntime);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.companies, mCompanies);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.countries, mCountries);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.languages, mLanguages);
 
         mActivityMovieDetailBinding.executePendingBindings();
-
-        mMovieDetailActivityPresenter.expandOrCollapseOtherDetails();
     }
 
     @Override
@@ -349,19 +369,65 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onMovieAddedToDatabase() {
-        ContentValues contentValues = new ContentValues();
+        new AsyncTask<Void, Void, Uri>() {
+            @Override
+            protected Uri doInBackground(Void... voids) {
+                ContentValues contentValues = new ContentValues();
 
-        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, results.getOriginalTitle());
-        contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_GENRE, genre);
-        contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, Constants.W300_IMAGE_URL_PREFIX + results.getPosterPath());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, mResults.getOriginalTitle());
+                contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_GENRE, mGenre);
+                contentValues.put(MovieContract.MovieEntry.COLUMN_IMAGE, Constants.W300_IMAGE_URL_PREFIX + mResults.getPosterPath());
 
-        Uri uri = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+                return getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues);
+            }
 
-        if (uri != null) {
-            SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, String.format(getString(R.string.movie_added_to_database), results.getOriginalTitle()));
-        }
+            @Override
+            protected void onPostExecute(Uri uri) {
+                if (uri != null) {
+                    SnackbarPopper.pop(mActivityMovieDetailBinding.clMovieDetail, String.format(getString(R.string.movie_added_to_database), mResults.getOriginalTitle()));
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.movie_already_exists), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }.execute();
+    }
+
+    @Override
+    public void onAfterScreenRotated() {
+        mActivityMovieDetailBinding.setVariable(BR.headerTitle, mOriginalTitle);
+
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.formattedTagline, mFormattedTagline);
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.setVariable(BR.overview, mOverview);
+
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedBudget, mFormattedBudget);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.releaseDate, mReleaseDate);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedCount, mFormattedCount);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.rating, mRating);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.ratingText, mRatingText);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.popularity, mPopularity);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.popularityText, mPopularityText);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRevenue, mFormattedRevenue);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedRuntime, mFormattedRuntime);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.formattedHomepage, mFormattedHomepage);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.companies, mCompanies);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.countries, mCountries);
+        mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.setVariable(BR.languages, mLanguages);
+
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.setVariable(BR.formattedReviewCount, mReviewCount);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.setVariable(BR.formattedTrailerCount, mTrailerCount);
+
+        mActivityMovieDetailBinding.lMovieDetailHeaderPart.tgMovieDetailHeaderPartGenre.setTags(mGenres);
+
+        GlideApp.with(this)
+                .load(mPosterPath)
+                .into(mActivityMovieDetailBinding.ivMovieDetailPoster);
+
+        initAdaptersAfterScreenRotation();
+
+        mActivityMovieDetailBinding.executePendingBindings();
     }
 
     @Override
@@ -406,7 +472,9 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
     @Override
     protected void onDestroy() {
-        mMovieDetailActivityPresenter.onDestroy();
+        if (mMovieDetailActivityPresenter != null) {
+            mMovieDetailActivityPresenter.onDestroy();
+        }
         mReviewAdapter = null;
         mTrailerAdapter = null;
         super.onDestroy();
@@ -415,7 +483,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     @Override
     protected void onResume() {
         super.onResume();
-        barConcealer.hideStatusBarOnly();
+        mBarConcealer.hideStatusBarOnly();
     }
 
     @Override
@@ -467,7 +535,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         Intent reviewIntent = new Intent(MovieDetailActivity.this, FullReviewActivity.class);
         reviewIntent.putExtra(Constants.REVIEW_CONTENT_EXTRA, content);
         reviewIntent.putExtra(Constants.REVIEW_AUTHOR_EXTRA, author);
-        reviewIntent.putExtra(Constants.REVIEW_MOVIE_EXTRA, results.getOriginalTitle());
+        reviewIntent.putExtra(Constants.REVIEW_MOVIE_EXTRA, mResults.getOriginalTitle());
 
         startActivityForResult(reviewIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
     }
@@ -501,5 +569,74 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
                     }
                 })
                 .show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(Constants.TITLE_STATE, mFormattedTagline);
+        outState.putString(Constants.BUDGET_STATE, mFormattedBudget);
+        outState.putString(Constants.OVERVIEW_STATE, mOverview);
+        outState.putString(Constants.ORIGINAL_TITLE_STATE, mOriginalTitle);
+        outState.putString(Constants.RELEASE_DATE_STATE, mReleaseDate);
+        outState.putString(Constants.VOTE_COUNT_STATE, mFormattedCount);
+        outState.putFloat(Constants.RATING_STATE, mRating);
+        outState.putString(Constants.RATING_TEXT_STATE, mRatingText);
+        outState.putInt(Constants.POPULARITY_STATE, mPopularity);
+        outState.putString(Constants.POPULARITY_TEXT_STATE, mPopularityText);
+        outState.putStringArray(Constants.GENRES_STATE, mGenres);
+        outState.putString(Constants.POSTER_STATE, mPosterPath);
+        outState.putString(Constants.REVENUE_STATE, mFormattedRevenue);
+        outState.putString(Constants.RUNTIME_STATE, mFormattedRuntime);
+        outState.putString(Constants.HOMEPAGE_STATE, mFormattedHomepage);
+        outState.putString(Constants.COMPANIES_STATE, mCompanies);
+        outState.putString(Constants.COUNTRIES_STATE, mCountries);
+        outState.putString(Constants.LANGUAGES_STATE, mLanguages);
+        outState.putParcelableArrayList(Constants.REVIEW_STATE, (ArrayList<? extends Parcelable>) mReviewResults);
+        outState.putParcelableArrayList(Constants.TRAILER_STATE, (ArrayList<? extends Parcelable>) mVideoResults);
+        outState.putString(Constants.REVIEW_COUNT_STATE, mReviewCount);
+        outState.putString(Constants.TRAILER_COUNT_STATE, mTrailerCount);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mFormattedTagline = savedInstanceState.getString(Constants.TITLE_STATE);
+            mFormattedBudget = savedInstanceState.getString(Constants.BUDGET_STATE);
+            mOverview = savedInstanceState.getString(Constants.OVERVIEW_STATE);
+            mOriginalTitle = savedInstanceState.getString(Constants.ORIGINAL_TITLE_STATE);
+            mReleaseDate = savedInstanceState.getString(Constants.RELEASE_DATE_STATE);
+            mFormattedCount = savedInstanceState.getString(Constants.VOTE_COUNT_STATE);
+            mRating = savedInstanceState.getFloat(Constants.RATING_STATE);
+            mRatingText = savedInstanceState.getString(Constants.RATING_TEXT_STATE);
+            mPopularity = savedInstanceState.getInt(Constants.POPULARITY_STATE);
+            mPopularityText = savedInstanceState.getString(Constants.POPULARITY_TEXT_STATE);
+            mGenres = savedInstanceState.getStringArray(Constants.GENRES_STATE);
+            mPosterPath = savedInstanceState.getString(Constants.POSTER_STATE);
+            mFormattedRevenue = savedInstanceState.getString(Constants.REVENUE_STATE);
+            mFormattedRuntime = savedInstanceState.getString(Constants.RUNTIME_STATE);
+            mFormattedHomepage = savedInstanceState.getString(Constants.HOMEPAGE_STATE);
+            mCompanies = savedInstanceState.getString(Constants.COMPANIES_STATE);
+            mCountries = savedInstanceState.getString(Constants.COUNTRIES_STATE);
+            mLanguages = savedInstanceState.getString(Constants.LANGUAGES_STATE);
+            mReviewResults = savedInstanceState.getParcelableArrayList(Constants.REVIEW_STATE);
+            mVideoResults = savedInstanceState.getParcelableArrayList(Constants.TRAILER_STATE);
+            mReviewCount = savedInstanceState.getString(Constants.REVIEW_COUNT_STATE);
+            mTrailerCount = savedInstanceState.getString(Constants.TRAILER_COUNT_STATE);
+        }
+    }
+
+    private void initAdaptersAfterScreenRotation() {
+        mReviewAdapter = new ReviewAdapter(mReviewResults, this);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.rvReviews.setAdapter(mReviewAdapter);
+        mReviewAdapter.swapData(mReviewResults);
+
+
+        mTrailerAdapter = new TrailerAdapter(mVideoResults, this);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.rvTrailers.setAdapter(mTrailerAdapter);
+        mTrailerAdapter.swapData(mVideoResults);
     }
 }

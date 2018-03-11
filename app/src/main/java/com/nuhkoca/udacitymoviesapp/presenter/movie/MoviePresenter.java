@@ -7,5 +7,7 @@ package com.nuhkoca.udacitymoviesapp.presenter.movie;
 public interface MoviePresenter {
     void loadMovies(String apiKey, String movieTag);
 
+    void handleScreenRotation();
+
     void onDestroy();
 }

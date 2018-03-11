@@ -15,8 +15,6 @@ public interface MovieDetailActivityView {
 
     void onBottomSheetCreated();
 
-    void onViewWidthChanged();
-
     void onScheduledStartPostponedTransition();
 
     void onReviewsLoaded(List<ReviewResults> reviewResults);
@@ -30,6 +28,8 @@ public interface MovieDetailActivityView {
     void onPartLoadingFailed(Enum types);
 
     void onMovieAddedToDatabase();
+
+    void onAfterScreenRotated();
 
     void onOtherDetailsExpandedOrCollapsed();
 }

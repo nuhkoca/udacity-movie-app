@@ -4,34 +4,38 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
 
+import com.ToxicBakery.viewpager.transforms.DepthPageTransformer;
 import com.nuhkoca.udacitymoviesapp.R;
+import com.nuhkoca.udacitymoviesapp.callback.IHidingViewsListener;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityMovieBinding;
 import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.main.MovieActivityPresenterImpl;
-import com.nuhkoca.udacitymoviesapp.utils.ConnectionSniffer;
-import com.nuhkoca.udacitymoviesapp.utils.SnackbarPopper;
+import com.nuhkoca.udacitymoviesapp.utils.SmartFragmentStatePagerAdapter;
 import com.nuhkoca.udacitymoviesapp.view.about.MovieAboutActivity;
 import com.nuhkoca.udacitymoviesapp.view.favorite.FavoriteMoviesActivity;
 import com.nuhkoca.udacitymoviesapp.view.movie.MovieFragment;
 
-import java.util.Objects;
-
-public class MovieActivity extends AppCompatActivity implements MovieActivityView, View.OnClickListener {
+public class MovieActivity extends AppCompatActivity implements MovieActivityView, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private ActivityMovieBinding mActivityMovieBinding;
     private MovieActivityPresenter mMovieActivityPresenter;
 
-    private long backPressed;
-    private static String fragmentTag;
-    private static String fragmentTitle;
+    private long mBackPressed;
+    private MenuItem mPrevMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,44 +43,57 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         mActivityMovieBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie);
         mMovieActivityPresenter = new MovieActivityPresenterImpl(this);
 
-        if (savedInstanceState == null) {
-            mMovieActivityPresenter.beautifyUI(getString(R.string.app_name));
-            mMovieActivityPresenter.loadFragments();
-        } else {
-            mMovieActivityPresenter.beautifyUI(fragmentTitle);
-        }
+        mMovieActivityPresenter.beautifyUI(getString(R.string.app_name));
+        mMovieActivityPresenter.prepareViewPager();
 
-        mActivityMovieBinding.lMovieToolbar.ibSort.setOnClickListener(this);
+        mActivityMovieBinding.bnvMovieActivity.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
-    public void onFragmentLoadingCompleted() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.popular_tag)))
-                .commit();
+    public void onViewPagerReady() {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        if (MovieFragment.getInstance().getUserVisibleHint()) {
-            fragmentTag = getString(R.string.popular_tag);
-            changeTitle(getString(R.string.popular_header));
+        mActivityMovieBinding.vpMovieActivity.setAdapter(adapter);
+        mActivityMovieBinding.vpMovieActivity.setOffscreenPageLimit(Constants.VIEW_PAGER_SIZE);
+        mActivityMovieBinding.vpMovieActivity.setPageTransformer(true, new DepthPageTransformer());
 
-            SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.popular_movies_successfully_loaded));
-        }
+        mActivityMovieBinding.vpMovieActivity.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mPrevMenuItem != null) {
+                    mPrevMenuItem.setChecked(false);
+                } else {
+                    mActivityMovieBinding.bnvMovieActivity.getMenu().getItem(0).setChecked(false);
+                }
+                mActivityMovieBinding.bnvMovieActivity.getMenu().getItem(position).setChecked(true);
+                mPrevMenuItem = mActivityMovieBinding.bnvMovieActivity.getMenu().getItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
     public void onUIBeautified(String title) {
-        setSupportActionBar(mActivityMovieBinding.lMovieToolbar.toolbar);
+        setSupportActionBar(mActivityMovieBinding.lMovieActivity.toolbar);
         setTitle("");
 
-        mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(title);
+        mActivityMovieBinding.lMovieActivity.tvToolbarHeader.setText(title);
     }
 
     @Override
     public void onBackPressed() {
         int timeDelay = getResources().getInteger(R.integer.delay_in_seconds_to_close);
 
-        if (backPressed + timeDelay > System.currentTimeMillis()) {
+        if (mBackPressed + timeDelay > System.currentTimeMillis()) {
 
             int backStackCount = getSupportFragmentManager().getBackStackEntryCount();
 
@@ -90,7 +107,7 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
                     Toast.LENGTH_SHORT).show();
         }
 
-        backPressed = System.currentTimeMillis();
+        mBackPressed = System.currentTimeMillis();
     }
 
     @Override
@@ -98,42 +115,8 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         if (mMovieActivityPresenter != null) {
             mMovieActivityPresenter.onDestroy();
         }
+        mActivityMovieBinding.vpMovieActivity.setAdapter(null);
         super.onDestroy();
-    }
-
-    @Override
-    public void onClick(View v) {
-        boolean isConnected = ConnectionSniffer.sniff();
-
-        if (Objects.equals(fragmentTag, getString(R.string.popular_tag))) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.top_rated_tag)))
-                    .commit();
-
-            if (isConnected) {
-                if (MovieFragment.getInstance().getUserVisibleHint()) {
-                    fragmentTag = getString(R.string.top_rated_tag);
-                    changeTitle(getString(R.string.top_rated_header));
-
-                    SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.top_rated_movies_successfully_loaded));
-                }
-            }
-        } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.flMovieActivity, MovieFragment.getInstance(getString(R.string.popular_tag)))
-                    .commit();
-
-            if (isConnected) {
-                if (MovieFragment.getInstance().getUserVisibleHint()) {
-                    fragmentTag = getString(R.string.popular_tag);
-                    changeTitle(getString(R.string.popular_header));
-
-                    SnackbarPopper.pop(mActivityMovieBinding.flMovieActivity, getString(R.string.popular_movies_successfully_loaded));
-                }
-            }
-        }
     }
 
     @Override
@@ -173,27 +156,109 @@ public class MovieActivity extends AppCompatActivity implements MovieActivityVie
         return super.onOptionsItemSelected(item);
     }
 
-    private void changeTitle(final String title) {
-        mActivityMovieBinding.lMovieToolbar.tvToolbarHeader.setText(title);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int itemThatWasClicked = item.getItemId();
 
-        fragmentTitle = title;
+        switch (itemThatWasClicked) {
+            case R.id.nav_popular:
+                mActivityMovieBinding.vpMovieActivity.setCurrentItem(0);
+                break;
+
+            case R.id.nav_top_rated:
+                mActivityMovieBinding.vpMovieActivity.setCurrentItem(1);
+                break;
+
+            case R.id.nav_upcoming:
+                mActivityMovieBinding.vpMovieActivity.setCurrentItem(2);
+                break;
+
+            case R.id.nav_now_playing:
+                mActivityMovieBinding.vpMovieActivity.setCurrentItem(3);
+                break;
+
+            default:
+                break;
+        }
+
+        return false;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(Constants.FRAGMENT_TITLE, fragmentTitle);
-        outState.putString(Constants.FRAGMENT_TAG, fragmentTag);
+    public class ViewPagerAdapter extends SmartFragmentStatePagerAdapter implements IHidingViewsListener {
+        ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
 
-        super.onSaveInstanceState(outState);
-    }
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return MovieFragment.getInstance(getString(R.string.popular_tag), this);
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+                case 1:
+                    return MovieFragment.getInstance(getString(R.string.top_rated_tag), this);
 
-        if (savedInstanceState != null) {
-            fragmentTitle = savedInstanceState.getString(Constants.FRAGMENT_TITLE);
-            fragmentTag = savedInstanceState.getString(Constants.FRAGMENT_TAG);
+                case 2:
+                    return MovieFragment.getInstance(getString(R.string.upcoming_tag), this);
+
+                case 3:
+                    return MovieFragment.getInstance(getString(R.string.now_playing_tag), this);
+
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            if (object instanceof MovieFragment) {
+                return POSITION_UNCHANGED;
+            } else {
+                return POSITION_NONE;
+            }
+        }
+
+        @Override
+        public Fragment getRegisteredFragment(int position) {
+            switch (position) {
+                case 0:
+                    return MovieFragment.getInstance(getString(R.string.popular_tag), this);
+
+                case 1:
+                    return MovieFragment.getInstance(getString(R.string.top_rated_tag), this);
+
+                case 2:
+                    return MovieFragment.getInstance(getString(R.string.upcoming_tag), this);
+
+                case 3:
+                    return MovieFragment.getInstance(getString(R.string.now_playing_tag), this);
+
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return Constants.VIEW_PAGER_SIZE;
+        }
+
+        @Override
+        public void onHideViews() {
+            mActivityMovieBinding.lMovieActivity.aplMain.animate().translationY(
+                    -mActivityMovieBinding.lMovieActivity.aplMain.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+
+            mActivityMovieBinding.bnvMovieActivity.animate().translationY(
+                    mActivityMovieBinding.bnvMovieActivity.getHeight()).setInterpolator(new AccelerateInterpolator(2)).start();
+        }
+
+        @Override
+        public void onShowViews() {
+            mActivityMovieBinding.lMovieActivity.aplMain.animate().translationY(0)
+                    .setInterpolator(new DecelerateInterpolator(2));
+
+            mActivityMovieBinding.bnvMovieActivity.animate().translationY(0)
+                    .setInterpolator(new DecelerateInterpolator(2)).start();
         }
     }
 }
