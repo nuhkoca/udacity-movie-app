@@ -16,6 +16,8 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 * Timber
 * Okhttp
 * DataBinding
+* SQLite
+* Bottom Navigation View with ViewPager
 
 
 # ToDo List
@@ -29,6 +31,7 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 - [x] Improve movie details layout.
 - [x] Internal Youtube Player.
 - [x] Push Notification implementation.
+- [x] Display Popular, Top Rated, Upcoming and Now Playing movies with Bottom Navigation  View.
 - [ ] More movies, reviews and trailers as long as scrolling.
 - [ ] Two pane support for tablets.
 
