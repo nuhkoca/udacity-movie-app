@@ -94,7 +94,11 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
     private static List<ReviewResults> mReviewResults = new ArrayList<>();
     private static List<VideoResults> mVideoResults = new ArrayList<>();
     private static String mReviewCount;
+    private static String mReviewErrorText;
+    private static int mReviewErrorTextVisibility;
     private static String mTrailerCount;
+    private static String mTrailerErrorText;
+    private static int mTrailerErrorTextVisibility;
     private static int mTaglineVisibility;
     private static int mOtherDetailsVisibility;
     private static String mMoreLessText;
@@ -213,6 +217,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mMovieDetailActivityPresenter.loadOtherDetails(mResults.getId());
 
             mMovieDetailActivityPresenter.expandOrCollapseOtherDetails();
+
+            mReviewErrorText = mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.getText().toString();
+            mReviewErrorTextVisibility = mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.getVisibility();
+
+            mTrailerErrorText = mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.getText().toString();
+            mTrailerErrorTextVisibility = mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.getVisibility();
         }
     }
 
@@ -246,6 +256,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         mReviewResults = reviewResults;
 
         mReviewCount = String.format(getString(R.string.total_review_tag), reviewResults.size());
+
         mActivityMovieDetailBinding.lMovieDetailReviewPart.setVariable(BR.formattedReviewCount, mReviewCount);
         mActivityMovieDetailBinding.lMovieDetailReviewPart.executePendingBindings();
     }
@@ -259,6 +270,7 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         mVideoResults = videoResults;
 
         mTrailerCount = String.format(getString(R.string.total_trailer_tag), videoResults.size());
+
         mActivityMovieDetailBinding.lMovieDetailTrailerPart.setVariable(BR.formattedTrailerCount, mTrailerCount);
         mActivityMovieDetailBinding.lMovieDetailTrailerPart.executePendingBindings();
     }
@@ -345,10 +357,14 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mActivityMovieDetailBinding.lMovieDetailReviewPart.flMovieDetailReviewPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailReviewCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setVisibility(View.VISIBLE);
+
+            mReviewErrorTextVisibility = mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.getVisibility();
         } else if (types.equals(Constants.TYPES.TRAILER)) {
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.flMovieDetailTrailerPart.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailTrailerCount.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(View.VISIBLE);
+
+            mTrailerErrorTextVisibility = mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.getVisibility();
         } else {
             mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.cvOtherDetails.setVisibility(View.GONE);
             mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.tvOtherDetailsNoDetailError.setVisibility(View.GONE);
@@ -420,6 +436,12 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
 
         mActivityMovieDetailBinding.lMovieDetailOtherDetailsPart.lOtherDetails.
                 tvOtherDetailsMoreLess.setText(mMoreLessText);
+
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setVisibility(mReviewErrorTextVisibility == 0 ? View.VISIBLE : View.GONE);
+        mActivityMovieDetailBinding.lMovieDetailReviewPart.tvMovieDetailNoReviewError.setText(mReviewErrorText);
+
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setVisibility(mTrailerErrorTextVisibility == 0 ? View.VISIBLE : View.GONE);
+        mActivityMovieDetailBinding.lMovieDetailTrailerPart.tvMovieDetailNoTrailerError.setText(mTrailerErrorText);
 
         initAdaptersAfterScreenRotation();
         onOtherDetailsExpandedOrCollapsed();
@@ -640,6 +662,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
         outState.putInt(Constants.TAGLINE_VISIBILITY_STATE, mTaglineVisibility);
         outState.putInt(Constants.OTHER_DETAILS_VISIBILITY_STATE, mOtherDetailsVisibility);
         outState.putString(Constants.MORE_LESS_STATE, mMoreLessText);
+        outState.putString(Constants.REVIEW_ERROR_TEXT_STATE, mReviewErrorText);
+        outState.putString(Constants.TRAILER_ERROR_TEXT_STATE, mTrailerErrorText);
+        outState.putInt(Constants.REVIEW_ERROR_TEXT_VISIBILITY_STATE, mReviewErrorTextVisibility);
+        outState.putInt(Constants.TRAILER_ERROR_TEXT_VISIBILITY_STATE, mTrailerErrorTextVisibility);
 
         super.onSaveInstanceState(outState);
     }
@@ -674,6 +700,10 @@ public class MovieDetailActivity extends AppCompatActivity implements MovieDetai
             mTaglineVisibility = savedInstanceState.getInt(Constants.TAGLINE_VISIBILITY_STATE);
             mOtherDetailsVisibility = savedInstanceState.getInt(Constants.OTHER_DETAILS_VISIBILITY_STATE);
             mMoreLessText = savedInstanceState.getString(Constants.MORE_LESS_STATE);
+            mReviewErrorText = savedInstanceState.getString(Constants.REVIEW_ERROR_TEXT_STATE);
+            mTrailerErrorText = savedInstanceState.getString(Constants.TRAILER_ERROR_TEXT_STATE);
+            mReviewErrorTextVisibility = savedInstanceState.getInt(Constants.REVIEW_ERROR_TEXT_VISIBILITY_STATE);
+            mTrailerErrorTextVisibility = savedInstanceState.getInt(Constants.TRAILER_ERROR_TEXT_VISIBILITY_STATE);
         }
     }
 

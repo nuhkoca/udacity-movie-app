@@ -58,6 +58,10 @@ public class Constants {
     public static final String RUNTIME_STATE = "runtime-state";
     public static final String REVIEW_COUNT_STATE = "review-count-state";
     public static final String TRAILER_COUNT_STATE = "trailer-count-state";
+    public static final String TRAILER_ERROR_TEXT_STATE = "trailer-error-text-state";
+    public static final String TRAILER_ERROR_TEXT_VISIBILITY_STATE = "trailer-error-text-visibility-state";
+    public static final String REVIEW_ERROR_TEXT_STATE = "review-error-text-state";
+    public static final String REVIEW_ERROR_TEXT_VISIBILITY_STATE = "revivew-error-text-visibility-state";
     public static final int VIEW_PAGER_SIZE = 4;
     public static final int HIDE_THRESHOLD = 20;
     public static final String MOVIE_STATE_KEY = "movie-model";

@@ -106,7 +106,8 @@ public class FavoriteMoviesActivity extends AppCompatActivity implements Favorit
 
                                 if (cursorCount == 0) {
                                     mActivityFavoriteMoviesBinding.rvFavorites.setVisibility(View.GONE);
-                                    mActivityFavoriteMoviesBinding.tvFavoriteMoviesHeader.setText(getString(R.string.favorites_all_deleted));
+                                    mActivityFavoriteMoviesBinding.tvFavoriteMoviesHeader.setText(
+                                            getString(R.string.favorites_all_deleted));
                                 }
                             }
                         })
