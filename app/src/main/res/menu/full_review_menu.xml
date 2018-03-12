@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/open_in_browser"
+        app:showAsAction="never"
+        android:title="@string/open_in_browser" />
+
     <item android:id="@+id/report_review"
         app:showAsAction="never"
         android:title="@string/report" />

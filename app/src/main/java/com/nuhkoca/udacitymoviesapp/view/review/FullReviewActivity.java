@@ -1,15 +1,15 @@
 package com.nuhkoca.udacitymoviesapp.view.review;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.nuhkoca.udacitymoviesapp.R;
 import com.nuhkoca.udacitymoviesapp.databinding.ActivityFullReviewBinding;
@@ -17,6 +17,7 @@ import com.nuhkoca.udacitymoviesapp.helper.Constants;
 import com.nuhkoca.udacitymoviesapp.presenter.review.FullReviewActivityPresenter;
 import com.nuhkoca.udacitymoviesapp.presenter.review.FullReviewActivityPresenterImpl;
 import com.nuhkoca.udacitymoviesapp.utils.BottomSheetBuilder;
+import com.nuhkoca.udacitymoviesapp.view.browser.WebBrowserActivity;
 
 public class FullReviewActivity extends AppCompatActivity implements FullReviewActivityView {
 
@@ -69,6 +70,18 @@ public class FullReviewActivity extends AppCompatActivity implements FullReviewA
                 String.format(getString(R.string.share_to_full_review), author));
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    @Override
+    public void onReviewOpenedOnBrowser() {
+        Intent webBrowserIntent = new Intent(this, WebBrowserActivity.class);
+
+        String reviewUrl = getIntent().getStringExtra(Constants.REVIEW_URL_EXTRA);
+
+        webBrowserIntent.putExtra(Constants.REVIEW_URL_EXTRA, reviewUrl);
+
+        startActivityForResult(webBrowserIntent, Constants.CHILD_ACTIVITY_REQUEST_CODE);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClicked = item.getItemId();
@@ -89,6 +102,10 @@ public class FullReviewActivity extends AppCompatActivity implements FullReviewA
                 sendIntent.setAction(Intent.ACTION_SENDTO);
                 sendIntent.setData(Uri.parse("mailto:" + getString(R.string.mail_address)));
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+                return true;
+
+            case R.id.open_in_browser:
+                mFullReviewActivityPresenter.openReviewOnBrowser();
                 return true;
 
             default:

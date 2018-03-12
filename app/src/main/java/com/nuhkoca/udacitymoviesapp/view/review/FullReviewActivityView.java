@@ -8,4 +8,6 @@ public interface FullReviewActivityView {
     void onReviewLoaded();
 
     void onBottomSheetCreated();
+
+    void onReviewOpenedOnBrowser();
 }

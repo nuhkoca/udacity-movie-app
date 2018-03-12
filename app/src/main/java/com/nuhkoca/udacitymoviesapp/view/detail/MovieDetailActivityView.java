@@ -31,5 +31,7 @@ public interface MovieDetailActivityView {
 
     void onAfterScreenRotated();
 
+    void onInitialStarted();
+
     void onOtherDetailsExpandedOrCollapsed();
 }

@@ -8,7 +8,7 @@
     <string name="popularity_place_holder">%.1f/1000</string>
     <string name="times_place_holder">%s times</string>
     <string name="dollar_place_holder">%s $</string>
-    <string name="tagline_place_holder">\"%s\"</string>
+    <string name="tagline_place_holder">\"%1$s\"</string>
     <string name="thumbnail_place_holder">%s%s/hqdefault.jpg</string>
     <string name="no_company_found">No company info found.</string>
     <string name="no_country_found">No country info found.</string>
@@ -105,6 +105,7 @@
     <string name="report">Report</string>
     <string name="my_favorites">Favorites</string>
     <string name="share">Share</string>
+    <string name="open_in_browser">Open in browser</string>
     <string name="about">About</string>
     <string name="full_review">Full Review</string>
     <string name="delete_all">Delete all</string>

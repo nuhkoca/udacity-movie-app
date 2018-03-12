@@ -61,6 +61,7 @@
                  app:srcCompat="@drawable/ic_splash_screen_icon"
                  android:scaleType="centerCrop"
                  android:visibility="visible"
+                 android:background="?attr/selectableItemBackgroundBorderless"
                  android:clickable="true"
                  android:focusable="true"
                  android:onClick="@{() -> trailerTouchListener.onTrailerItemTouched(videoResults.key)}"

@@ -7,6 +7,8 @@ package com.nuhkoca.udacitymoviesapp.presenter.detail;
 public interface MovieDetailActivityPresenter {
     void populateDetails();
 
+    void startInitialRun();
+
     void onDestroy();
 
     void onCreateBottomSheet();

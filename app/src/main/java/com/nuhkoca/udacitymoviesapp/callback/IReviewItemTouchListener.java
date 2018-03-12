@@ -5,5 +5,5 @@ package com.nuhkoca.udacitymoviesapp.callback;
  */
 
 public interface IReviewItemTouchListener {
-    void onReviewItemTouched(String content, String author);
+    void onReviewItemTouched(String content, String author, String url);
 }

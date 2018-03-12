@@ -9,5 +9,7 @@ public interface FullReviewActivityPresenter {
 
     void initBottomSheet();
 
+    void openReviewOnBrowser();
+
     void onDestroy();
 }

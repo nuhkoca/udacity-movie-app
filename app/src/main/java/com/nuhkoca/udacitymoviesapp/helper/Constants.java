@@ -32,6 +32,7 @@ public class Constants {
     public static final String REVIEW_CONTENT_EXTRA = "content";
     public static final String REVIEW_AUTHOR_EXTRA = "author";
     public static final String REVIEW_MOVIE_EXTRA = "movie";
+    public static final String REVIEW_URL_EXTRA = "url";
     public static final String INTENT_CONDITION = "com.android";
     public static final String NUMBER_FORMAT = "#,###,###";
     public static final String YOUTUBE_VIDEO_ID = "youtube-video-id";
@@ -63,6 +64,9 @@ public class Constants {
     public static final String TEXT_VISIBILITY_KEY = "text-visibility";
     public static final String ERROR_TEXT_KEY = "error-text";
     public static final String MOVIE_TAG_KEY = "movie-tag";
+    public static final String TAGLINE_VISIBILITY_STATE = "tagline-visibility-state";
+    public static final String OTHER_DETAILS_VISIBILITY_STATE = "other-details-visibility-state";
+    public static final String MORE_LESS_STATE = "more-less-state";
 
     private Constants() {
         throw new AssertionError();

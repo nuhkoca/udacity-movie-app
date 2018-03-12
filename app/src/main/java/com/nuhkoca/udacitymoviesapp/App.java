@@ -22,6 +22,10 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+
         LeakCanary.install(this);
 
         app = this;

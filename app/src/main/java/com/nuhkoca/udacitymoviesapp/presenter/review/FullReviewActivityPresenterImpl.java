@@ -25,6 +25,11 @@ public class FullReviewActivityPresenterImpl implements FullReviewActivityPresen
     }
 
     @Override
+    public void openReviewOnBrowser() {
+        mFullReviewActivityView.onReviewOpenedOnBrowser();
+    }
+
+    @Override
     public void onDestroy() {
         if (mFullReviewActivityView != null) {
             mFullReviewActivityView = null;
