@@ -40,6 +40,10 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 
 # License
 
+App icon based on:
+
+Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY
+
 ```
 MIT License
 
