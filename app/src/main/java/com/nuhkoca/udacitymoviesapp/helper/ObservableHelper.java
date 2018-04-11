@@ -48,7 +48,7 @@ public class ObservableHelper {
         return iMovieAPI.getTrailers(movieId, apiKey);
     }
 
-    public Observable<DetailsResponse> getOtherDetails(int movieId){
+    public Observable<DetailsResponse> getOtherDetails(int movieId) {
         return iMovieAPI.getOtherDetails(movieId, apiKey);
     }
 

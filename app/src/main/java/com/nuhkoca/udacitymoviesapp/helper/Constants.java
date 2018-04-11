@@ -71,6 +71,7 @@ public class Constants {
     public static final String TAGLINE_VISIBILITY_STATE = "tagline-visibility-state";
     public static final String OTHER_DETAILS_VISIBILITY_STATE = "other-details-visibility-state";
     public static final String MORE_LESS_STATE = "more-less-state";
+    public static final int NETWORK_TIMEOUT_DURATION = 5;
 
     private Constants() {
         throw new AssertionError();

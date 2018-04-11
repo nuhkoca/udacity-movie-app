@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import com.nuhkoca.udacitymoviesapp.App;
 import com.nuhkoca.udacitymoviesapp.BuildConfig;
+import com.nuhkoca.udacitymoviesapp.helper.Constants;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -16,8 +17,6 @@ import java.net.InetAddress;
  */
 
 public class ConnectionSniffer {
-
-    private static final int TIMEOUT_DURATION = 5;
     private static boolean isReachable;
 
     public static boolean sniff() {
@@ -44,7 +43,7 @@ public class ConnectionSniffer {
             String hostName = strings[0];
 
             try {
-                return InetAddress.getByName(hostName).isReachable(TIMEOUT_DURATION);
+                return InetAddress.getByName(hostName).isReachable(Constants.NETWORK_TIMEOUT_DURATION);
             } catch (IOException e) {
                 return false;
             }

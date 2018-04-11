@@ -38,6 +38,7 @@
     <string name="scholarship_link" translatable="false">https://www.udacity.com/scholarships</string>
     <string name="chooser_title" translatable="false">Open with...</string>
 
+
     <!-- Tags -->
     <string name="popular_tag" translatable="false">popular</string>
     <string name="top_rated_tag" translatable="false">top_rated</string>
@@ -92,6 +93,7 @@
     <string name="dialog_negative_button_youtube">Youtube app</string>
     <string name="dialog_action_message">%s has been deleted from your favorites list!</string>
     <string name="dialog_action_message_all">All movies has been deleted from your favorites list!</string>
+
 
     <!-- ShareIntent Texts -->
     <string name="send_to">Send with…</string>
@@ -167,7 +169,9 @@
         <item name="android-about-page">android-about-page</item>
         <item name="taggroup">taggroup</item>
         <item name="material-dialogs">material-dialogs</item>
+        <item name="blurry">Blurry</item>
     </string-array>
+
 
     <!-- Libraries Excluded -->
     <string-array name="libraries_excluded">
