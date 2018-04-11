@@ -1,5 +1,7 @@
 # Udacity Popular Movies App
 
+![Movies!](https://github.com/nuhkoca/udacity-movie-app/blob/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png)
+
 Udacity Popular Movies App is the second project of Android Nanodegree Scholarship. It is consist of two steps which are displaying both Popular and Top Rated Movies in the first screen and details of the selected movie.
 
 To use the app, you should add your own API_KEY inside `gradle.properties`. For API Key please visit [The Movie DB](https://www.themoviedb.org/) website.
@@ -7,17 +9,17 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 
 # What the project uses
 
-* MVP Pattern
-* BindingAdapter
-* Retrofit2
-* RxJava2
-* Glidev4
-* GlideModule
-* Timber
-* Okhttp
-* DataBinding
-* SQLite
-* Bottom Navigation View with ViewPager
+* [MVP Pattern](https://github.com/MindorksOpenSource/android-mvp-architecture)
+* [BindingAdapter](https://developer.android.com/reference/android/databinding/BindingAdapter.html)
+* [Retrofit2](https://github.com/square/retrofit)
+* [RxJava2](https://github.com/ReactiveX/RxJava)
+* [Glidev4](https://github.com/bumptech/glide)
+* [GlideModule](http://bumptech.github.io/glide/doc/generatedapi.html#availability)
+* [Timber](https://github.com/JakeWharton/timber)
+* [Okhttp](https://github.com/square/okhttp)
+* [DataBinding](https://developer.android.com/topic/libraries/data-binding/index.html)
+* [SQLite](https://www.sqlite.org/index.html)
+* [Bottom Navigation View with ViewPager](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html)
 
 
 # ToDo List
@@ -37,6 +39,10 @@ To use the app, you should add your own API_KEY inside `gradle.properties`. For 
 
 
 # License
+
+App icon based on:
+
+Icons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY
 
 ```
 MIT License
