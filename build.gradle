@@ -7,8 +7,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath 'com.google.gms:google-services:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.google.gms:google-services:4.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,7 +21,8 @@ ext {
     targetSdkVersion = 27
     supportLibraryVersion = '27.1.1'
     rxJavaLibraryVersion = '2.3.0'
-    glideLibraryVersion = '4.6.1'
+    glideLibraryVersion = '4.7.1'
+    timberVersion = '4.7.0'
     flipBoardBottomSheetVersion = '1.5.3'
     glidePaletteVersion = '2.1.2'
     okHttpVersion = '3.8.0'
@@ -32,8 +33,8 @@ ext {
     materialDialogsVersion = '0.9.6.0'
     tagGroupLibraryVersion = '1.4'
     aboutLibrariesVersion = '6.0.6'
-    firebaseVersion = '15.0.2'
-    constraintLayoutVersion = '1.1.0'
+    firebaseVersion = '17.0.0'
+    constraintLayoutVersion = '1.1.2'
 }
 
 allprojects {
