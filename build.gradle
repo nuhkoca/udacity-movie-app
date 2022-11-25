@@ -34,7 +34,7 @@ ext {
     tagGroupLibraryVersion = '1.4'
     aboutLibrariesVersion = '6.0.6'
     firebaseVersion = '17.0.0'
-    constraintLayoutVersion = '1.1.2'
+    constraintLayoutVersion = '1.1.3'
 }
 
 allprojects {
