@@ -20,7 +20,7 @@ ext {
     minSdkVersion = 21
     targetSdkVersion = 27
     supportLibraryVersion = '27.1.1'
-    rxJavaLibraryVersion = '2.3.0'
+    rxJavaLibraryVersion = '2.9.0'
     glideLibraryVersion = '4.7.1'
     timberVersion = '4.7.1'
     flipBoardBottomSheetVersion = '1.5.3'
