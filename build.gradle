@@ -31,7 +31,7 @@ ext {
     rxAndroidVersion = '1.2.1'
     aboutPageVersion = '1.3.1'
     materialDialogsVersion = '0.9.6.0'
-    tagGroupLibraryVersion = '1.4'
+    tagGroupLibraryVersion = '1.5'
     aboutLibrariesVersion = '6.0.6'
     firebaseVersion = '17.0.0'
     constraintLayoutVersion = '1.1.3'
