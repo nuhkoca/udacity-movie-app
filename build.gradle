@@ -22,7 +22,7 @@ ext {
     supportLibraryVersion = '28.0.0'
     rxJavaLibraryVersion = '2.9.0'
     glideLibraryVersion = '4.7.1'
-    timberVersion = '4.7.1'
+    timberVersion = '5.0.1'
     flipBoardBottomSheetVersion = '1.5.3'
     glidePaletteVersion = '2.1.2'
     okHttpVersion = '3.14.9'
