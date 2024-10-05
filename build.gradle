@@ -33,7 +33,7 @@ ext {
     materialDialogsVersion = '3.3.0'
     tagGroupLibraryVersion = '1.5'
     aboutLibrariesVersion = '11.2.3'
-    firebaseVersion = '24.0.1'
+    firebaseVersion = '24.0.2'
     constraintLayoutVersion = '2.0.4'
 }
 
