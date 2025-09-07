@@ -21,7 +21,7 @@ ext {
     targetSdkVersion = 27
     supportLibraryVersion = '28.0.0'
     rxJavaLibraryVersion = '3.0.0'
-    glideLibraryVersion = '5.0.0'
+    glideLibraryVersion = '5.0.4'
     timberVersion = '5.0.1'
     flipBoardBottomSheetVersion = '1.5.3'
     glidePaletteVersion = '2.1.2'
